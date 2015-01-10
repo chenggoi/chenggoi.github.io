@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[Chenggoi]]></title>
+  <subtitle><![CDATA[工作之余也不要忘记休息哦～～]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://chenggoi.com/"/>
+  <updated>2015-01-10T08:48:05.724Z</updated>
+  <id>http://chenggoi.com/</id>
+  
+  <author>
+    <name><![CDATA[Chenggoi]]></name>
+    <email><![CDATA[chenggoi@163.com]]></email>
+  </author>
+  
+  <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Android 4.4.2 系统源码字体库精简、添加]]></title>
+    <link href="http://chenggoi.com/2015/01/07/Android_Fonts_Customizing/"/>
+    <id>http://chenggoi.com/2015/01/07/Android_Fonts_Customizing/</id>
+    <published>2015-01-07T07:30:16.000Z</published>
+    <updated>2015-01-10T06:44:03.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="环境配置">环境配置</h2>
+<pre><code>操作系统：Ubuntu <span class="number">14.04</span> <span class="number">64</span>位
+Android版本：<span class="number">4.4</span><span class="number">.2</span>
+gcc版本：<span class="number">4.4</span>
+jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
+</code></pre><hr>
+<h2 id="字体加载原理">字体加载原理</h2>
+<p>首先先来阐述一下Android的字体加载原理，Android系统的字体配置文件位于 <code>workspace/frameworks/base/data/fonts/</code> 文件夹下，分为 <code>system_fonts.xml</code> 和 <code>fallback_fonts.xml</code> 两个文件。当系统需要加载字体时，会优先从 <code>system_fonts.xml</code> 文件开始查找，如果没有找到再进入 <code>fallback_fonts.xml</code> 查找。以下是 <code>system_fonts.xml</code> 的部分文件：</p>
+<pre><code><span class="tag">&lt;<span class="title">family</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">nameset</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">name</span>&gt;</span>sans-serif<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">name</span>&gt;</span>arial<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">name</span>&gt;</span>helvetica<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">name</span>&gt;</span>tahoma<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">name</span>&gt;</span>verdana<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">nameset</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">fileset</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">file</span>&gt;</span>Roboto-Regular.ttf<span class="tag">&lt;/<span class="title">file</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">file</span>&gt;</span>Roboto-Bold.ttf<span class="tag">&lt;/<span class="title">file</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">file</span>&gt;</span>Roboto-Italic.ttf<span class="tag">&lt;/<span class="title">file</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">file</span>&gt;</span>Roboto-BoldItalic.ttf<span class="tag">&lt;/<span class="title">file</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">fileset</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">family</span>&gt;</span>
+</code></pre><p>我们称 <code>&lt;family&gt; &lt;/family&gt;</code> 之间的内容为一个字体族， <code>&lt;nameset&gt;&lt;/nameset&gt;</code> 之间的内容为字体的名称， <code>&lt;fileset&gt;&lt;/fileset&gt;</code> 之间的内容为实际调用的字体文件，包括粗体，斜体等。Android字体调用的顺序便是从第一个字体族开始逐个字体族寻找，直到匹配上可以使用的字体便停止寻找。也就是说如果你想添加一些字体并让它显示的话，则要添加到能匹配它的字体之前，这是后话。</p>
+<p>总之，Android对于字体就是这样的调用流程，明白了这个后面无论添加还是删除都会好理解一些。</p>
+<h2 id="精简字体库">精简字体库</h2>
+<p>一般来说， <code>system_fonts.xml</code> 下的字体是为英文等拉丁文字准备的，同上不予以精简（毕竟英语的使用面很广），对于字体的精简大都集中在 <code>fallback_fonts.xml</code> 文件上（看名字也知道这是备用的），这里包括了很多地区的字体以及各种表情符号等。</p>
+<p><strong>精简字体的方法：</strong>在 <code>fallback_fonts.xml</code> 文件中注释掉该字体所在的整个字体族，并找到调用他的 <code>Android.mk</code> 和 <code>fonts.mk</code> 文件也将他注释掉，如</p>
+<pre><code>fallback_fonts.xml
+
+<span class="comment">&lt;!--    
+&lt;family&gt;
+      &lt;fileset&gt;
+        &lt;file variant="elegant"&gt;DroidNaskh-Regular.ttf&lt;/file&gt;
+      &lt;/fileset&gt;
+&lt;/family&gt;
+--&gt;</span>
+</code></pre><hr>
+<pre><code>fonts.mk
+
+<span class="preprocessor">#    DroidNaskh-Regular.ttf \</span>
+</code></pre><hr>
+<pre><code>Android.mk(要注释掉整个include）
+
+<span class="preprocessor">#include $(CLEAR_VARS)</span>
+<span class="preprocessor">#LOCAL_MODULE := NotoSansMalayalam-Regular.ttf</span>
+<span class="preprocessor">#LOCAL_SRC_FILES := $(LOCAL_MODULE)</span>
+<span class="preprocessor">#LOCAL_MODULE_CLASS := ETC</span>
+<span class="preprocessor">#LOCAL_MODULE_TAGS := optional</span>
+<span class="preprocessor">#LOCAL_MODULE_PATH := $(PRODUCT_OUT)/vendor/fonts</span>
+<span class="preprocessor">#include $(BUILD_PREBUILT)</span>
+</code></pre><p>精简完以后将整个系统源码 <code>make</code> 一下就可以刷入手机或虚拟机了</p>
+<h3 id="附上每个字体对应的语言及所在位置">附上每个字体对应的语言及所在位置</h3>
+<h4 id="混合字库（workspace/frameworks/base/data/fonts）">混合字库（<code>workspace/frameworks/base/data/fonts</code>）</h4>
+<ul>
+<li>显示不同的时间格式<ul>
+<li>AndroidClock.ttf</li>
+<li>AndroidClock_Highlight.ttf</li>
+<li>AndroidClock_Solid.ttf</li>
+</ul>
+</li>
+<li>锁屏时钟<ul>
+<li>Clockopia.ttf</li>
+</ul>
+</li>
+<li>Emoji表情符号<ul>
+<li>AndroidEmoji.ttf</li>
+</ul>
+</li>
+<li>波斯语、阿拉伯语、乌尔都语字库<ul>
+<li>DroidNaskhRegular.ttf </li>
+<li>DroidNaskhUIRegular.ttf</li>
+</ul>
+</li>
+<li>亚美尼亚语<ul>
+<li>DroidSansArmenian.ttf </li>
+</ul>
+</li>
+<li>阿姆哈拉语、提格雷语(埃塞俄比亚)<ul>
+<li>DroidSansEthiopicRegular.ttf </li>
+</ul>
+</li>
+<li>中日韩字库，包含完整中文<ul>
+<li>DroidSansFallback.ttf </li>
+</ul>
+</li>
+<li>格鲁吉亚语<ul>
+<li>DroidSansGeorgian.ttf </li>
+</ul>
+</li>
+<li>希伯来语<ul>
+<li>DroidSansHebrewBold.ttf </li>
+<li>DroidSansHebrewRegular.ttf</li>
+</ul>
+</li>
+<li>西里尔和拉丁字母扩充附加<ul>
+<li>DroidSansMono.ttf </li>
+</ul>
+</li>
+<li>拉丁字母:衬线体<ul>
+<li>DroidSerifBold.ttf </li>
+<li>DroidSerifBoldItalic.ttf</li>
+<li>DroidSerifItalic.ttf</li>
+<li>DroidSerifRegular.ttf</li>
+</ul>
+</li>
+<li>繁体中文字库<ul>
+<li>MTLmr3m.ttf </li>
+</ul>
+</li>
+<li>谚文字母(朝鲜语、韩语)<ul>
+<li>NanumGothic.ttf </li>
+</ul>
+</li>
+<li>官方缅甸语字库<ul>
+<li>padauk.ttf </li>
+</ul>
+</li>
+<li>民间缅甸语字库<ul>
+<li>ZawgyiOne.ttf </li>
+</ul>
+</li>
+<li>欧洲使用的拉丁、西里尔字母<ul>
+<li>Roboto-Regular.ttf</li>
+<li>Roboto-Bold.ttf</li>
+<li>Roboto-Italic.ttf</li>
+<li>Roboto-BoldItalic.ttf</li>
+<li>Roboto-Light.ttf</li>
+<li>Roboto-LightItalic.ttf</li>
+<li>Roboto-Thin.ttf</li>
+<li>Roboto-ThinItalic.ttf</li>
+<li>RobotoCondensed-Regular.ttf</li>
+<li>RobotoCondensed-Bold.ttf</li>
+<li>RobotoCondensed-Italic.ttf</li>
+<li>RobotoCondensed-BoldItalic.ttf</li>
+</ul>
+</li>
+</ul>
+<h4 id="Noto字库：_workspace/external/noto-fonts">Noto字库： <code>workspace/external/noto-fonts</code></h4>
+<ul>
+<li>表情字符<ul>
+<li>NotoColorEmoji.ttf </li>
+</ul>
+</li>
+<li>孟加拉语字库<ul>
+<li>NotoSansBengali-Regular.ttf</li>
+<li>NotoSansBengali-Bold.ttf</li>
+<li>NotoSansBengaliUIBold.ttf </li>
+<li>NotoSansBengaliUIRegular.ttf</li>
+</ul>
+</li>
+<li>印度语字库<ul>
+<li>NotoSansDevanagari-Regular.ttf <ul>
+<li>NotoSansDevanagari-Bold.ttf </li>
+</ul>
+</li>
+<li>NotoSansDevanagariUIBold.ttf </li>
+<li>NotoSansDevanagariUIRegular.ttf</li>
+</ul>
+</li>
+<li>卡纳达语字库(印度)<ul>
+<li>NotoSansKannada-Regular.ttf </li>
+<li>NotoSansKannada-Bold.ttf </li>
+<li>NotoSansKannadaUIBold.ttf </li>
+<li>NotoSansKannadaUIRegular.ttf</li>
+</ul>
+</li>
+<li>高棉语字库(柬埔寨)<ul>
+<li>NotoSansKhmer-Regular.ttf</li>
+<li>NotoSansKhmer-Bold.ttf</li>
+<li>NotoSansKhmerUIBold.ttf </li>
+<li>NotoSansKhmerUIRegular.ttf</li>
+</ul>
+</li>
+<li>老挝语字库<ul>
+<li>NotoSansLao-Regular.ttf</li>
+<li>NotoSansLao-Bold.ttf</li>
+<li>NotoSansLaoUIBold.ttf </li>
+<li>NotoSansLaoUIRegular.ttf</li>
+</ul>
+</li>
+<li>马拉雅拉姆文字库(印度)<ul>
+<li>NotoSansMalayalam-Regular.ttf </li>
+<li>NotoSansMalayalam-Bold.ttf</li>
+<li>NotoSansMalayalamUIBold.ttf </li>
+<li>NotoSansMalayalamUIRegular.ttf</li>
+</ul>
+</li>
+<li>泰米尔语字库(印度、斯里兰卡、新加坡)<ul>
+<li>NotoSansTamil-Regular.ttf</li>
+<li>NotoSansTamil-Bold.ttf</li>
+<li>NotoSansTamilUIBold.ttf </li>
+<li>NotoSansTamilUIRegular.ttf</li>
+</ul>
+</li>
+<li>泰卢固语(印度)<ul>
+<li>NotoSansTelugu-Regular.ttf</li>
+<li>NotoSansTelugu-Bold.ttf</li>
+<li>NotoSansTeluguUIBold.ttf </li>
+<li>NotoSansTeluguUIRegular.ttf</li>
+</ul>
+</li>
+<li>泰语字库<ul>
+<li>NotoSansThai-Regular.ttf</li>
+<li>NotoSansThai-Bold.ttf</li>
+<li>NotoSansThaiUIBold.ttf </li>
+<li>NotoSansThaiUIRegular.ttf </li>
+</ul>
+</li>
+</ul>
+<h4 id="NanumGothic（workspace/external/naver-fonts)">NanumGothic（<code>workspace/external/naver-fonts</code>)</h4>
+<ul>
+<li>韩文字体<ul>
+<li>NanumGothic.ttf</li>
+<li>NanumGothicBold.ttf </li>
+</ul>
+</li>
+</ul>
+<h2 id="添加字体">添加字体</h2>
+<p>添加字体这块我就直接给个链接啦，因为本人也没有尝试过，所以不敢妄言啊。</p>
+<ul>
+<li><a href="https://www.librehat.com/elegant-and-geek-way-to-add-or-change-android-system-fonts/" target="_blank" rel="external">优雅并极客地添加/更改Android系统的字体</a></li>
+<li><a href="http://blog.oubeichen.com/201303/anzhuoshenruzitipeizhiwenjian/" target="_blank" rel="external">安卓深入字体配置文件</a></li>
+</ul>
+<h2 id="ICU语言包精简">ICU语言包精简</h2>
+<p>最后，如果大家还想要对语言包进行精简的话，可以参考我的另一篇文章</p>
+<p><a href="http://chenggoi.github.io/2015/01/06/Android-ICU-Customizing.html" target="_blank" rel="external">Android 4.4.2 ICU 语言包 精简、裁剪、定制、本地化</a></p>
+<p><strong>参考资料</strong></p>
+<p><a href="http://blog.csdn.net/zhoumushui/article/details/41623903" target="_blank" rel="external">Android字库文件简介</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[精简或者添加Android系统源码的Fonts文件夹中.mk文件所调用的ttf文件，以达到定制字体库的目的]]>
+    
+    </summary>
+    
+      <category term="Android" scheme="http://chenggoi.com/tags/Android/"/>
+    
+      <category term="技术" scheme="http://chenggoi.com/categories/code/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Android 4.4.2 ICU 语言包 精简、裁剪、定制、本地化]]></title>
+    <link href="http://chenggoi.com/2015/01/06/Android_ICU_Customizing/"/>
+    <id>http://chenggoi.com/2015/01/06/Android_ICU_Customizing/</id>
+    <published>2015-01-06T07:30:16.000Z</published>
+    <updated>2015-01-10T06:43:54.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="引言">引言</h2>
+<p>最近接到了精简Android 4.4.2系统源码中的ICU4c语言包的任务，随即百度谷歌一通找，可是找来找去结果很不令人满意。大部分结果都是如何添加语言包实现国际化的，而且多是基于ICU48及更早的版本（也就是Android 4.2.2版本及之前版本），由于ICU51相比较旧版本在配置方面有很大改动，所以网上的方案大多行不通，特在此总结一下。</p>
+<h3 id="环境配置">环境配置</h3>
+<pre><code>操作系统：Ubuntu <span class="number">14.04</span> <span class="number">64</span>位
+Android版本：<span class="number">4.4</span><span class="number">.2</span>
+ICU版本：ICU <span class="number">51</span>
+gcc版本：<span class="number">4.4</span>
+jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
+</code></pre><hr>
+<p><strong>声明：</strong>本方法目前还存在如下缺陷,如有解决方案望告知：</p>
+<ol>
+<li>locals文件夹中的 <code>ps.txt</code> 及 <code>ps_AF.txt</code> 文件不能在 <code>*.mk</code> 中删除，貌似是阿富汗语关联，但是始终没有找到在哪里被调用，删除会报错</li>
+<li>如果要保留如 <code>zh_CN.txt</code> 文件，则要将以 <code>zh</code> 开头的所有txt文件都保留，即全部保留在 <code>*.mk</code> 中，因为在脚本中是使用的对 <code>zh.txt</code> 及 <code>zh_*.txt</code> 这样的遍历方式，如果只删除了部分文件会提示 <code>can not open xxx.xx</code> 也就是文件缺失</li>
+<li>本文内有部分很有帮助的网站由于某些原因无法连接（你懂得），所以我觉得想做Android系统开发的话 <code>fq</code> 技术是必须的</li>
+</ol>
+<h2 id="正文">正文</h2>
+<h3 id="1-_哪些包可以被裁减（以下所列文件夹均在_(icu_PATH)/data/_目录下）">1. 哪些包可以被裁减（以下所列文件夹均在 <code>(icu_PATH)/data/</code> 目录下）</h3>
+<p><strong><em>首先说明，所谓的裁剪，并非是将文件夹内的 <code>*.txt</code> 文件直接删除，而是通过修改 <code>*.mk</code> 文件来屏蔽掉不需要的字库。修改时注意上文声明的两点。</em></strong></p>
+<p><strong><em>其次强调一下 <code>.mk</code> 的简单语法，知道的可以略过。 <code>#</code> 号代表注释后面一行的内容，每个txt文件的文件名要用空格隔开，如需换行要在行尾打 <code>\</code> 且后面不能有任何的空格或其他字符，每行之间不能有无关字符混入，注释也不可以，所以注释的话要移到文件尾部。</em></strong></p>
+<ul>
+<li>文本转换信息<ul>
+<li>mappings/ucmfiles.mk </li>
+<li>mappings/ucmcore.mk </li>
+<li>mappings/ucmebcdic.mk </li>
+<li>方法：直接用 <code>#</code> 注释掉不需要的文件名并直接移至文件尾部（当然也可以考虑直接删除，不过这样就没后路了）</li>
+<li>参考该网站可了解每个文件是干什么的(也可以通过该网站直接定制dat包，并且下面有不同版本的选择)：<a href="http://apps.icu-project.org/datacustom/ICUData51.html" target="_blank" rel="external">ICU Data Library Customizer</a></li>
+</ul>
+</li>
+<li>基于数字规格的语音转换<ul>
+<li>brkiter/brkfiles.mk</li>
+<li>方法：修改或者新建（如果没有） <code>brklocal.mk</code> 文件，并将 <code>brkfiles.mk</code>  的内容复制进去，然后删除不需要的文件名即可</li>
+<li>字符串本地化的排序比较相关</li>
+<li>coll/collfiles.mk</li>
+<li>方法：修改或者新建（如果没有） <code>collocal.mk</code> 文件，并将 <code>collfiles.mk</code> 的内容复制进去，然后删除不需要的文件名即可</li>
+</ul>
+</li>
+<li>为网络协议提供本地化字符串转换(如网址可以输入中文，阿拉伯文等)<ul>
+<li>spreg/spregfiles.mk</li>
+<li>方法：修改或者新建（如果没有） <code>spreplocal.mk</code> 文件，并将 <code>spregfiles.mk</code> 的内容复制进去，然后删除不需要的文件名即可</li>
+</ul>
+</li>
+<li>脚本语言转化 <ul>
+<li>translit/trnsfiles.mk</li>
+<li>方法：修改或者新建（如果没有） <code>trnslocal.mk</code> 文件，并将 <code>trnsfiles.mk</code> 的内容复制进去，然后删除不需要的文件名即可 </li>
+</ul>
+</li>
+<li>时间，货币，计数等本地化的格式<ul>
+<li>curr/resfiles.mk</li>
+<li>zone/resfiles.mk</li>
+<li>region/resfiles.mk</li>
+<li>lang/resfiles.mk</li>
+<li>locals/resfiles</li>
+<li>方法：在相应的的文件夹下修改或者新建（如果没有） <code>reslocal.mk</code> 文件，并将 <code>resfiles.mk</code> 的内容复制进去，然后删除不需要的文件名即可 </li>
+</ul>
+</li>
+<li>杂项文件<ul>
+<li>misc/miscfiles.mk</li>
+<li>方法：修改或者新建（如果没有） <code>misclocal.mk</code> 文件，并将 <code>miscfiles.mk</code> 的内容复制进去，然后删除不需要的文件名即可</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-编译修改的这些文件，生成_icudt51l-dat_文件">2.编译修改的这些文件，生成 <code>icudt51l.dat</code> 文件</h3>
+<ul>
+<li>打开终端，切换到icu4c目录下</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>cd ~<span class="regexp">/workspace/external</span><span class="regexp">/icu4c/</span></div></pre></td></tr></table></figure>
+
+<ul>
+<li>新建一个临时文件夹，并进入该文件夹</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">mkdir</span> icuBuild</div><div class="line">$ <span class="keyword">cd</span> icuBuild/</div></pre></td></tr></table></figure>
+
+<ul>
+<li>使用管理员权限运行配置文件</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">sudo</span> ../runConfigureICU  Linux</div></pre></td></tr></table></figure>
+
+<ul>
+<li>使用管理员权限编译ICU</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">sudo</span> make -j2</div></pre></td></tr></table></figure>
+
+<ul>
+<li><p>编译过程中如果出现 <code>can not open xxx</code> 的错误请参考文章开头的声明，如果依旧无法解决则将缺少的文件添加进去即可，目前还没有出现过其他问题，如果有则只好自行百度</p>
+</li>
+<li><p>编译成功的话那么恭喜你，已经完成了一半，在 <code>icuBuild/data/out/tmp/</code> 文件夹中找到 <code>icudt51l.dat</code> 文件，并将其复制到根目录下的 <code>stubdata/</code> 文件夹中并替换掉 <code>icudt51l-all.dat</code> 文件，并切换到该文件夹，即</p>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="keyword">cp</span> data/out/tmp/icudt51l.dat ../stubdata/icudt51l-<span class="keyword">all</span>.dat</div><div class="line">$ <span class="keyword">cd</span> ../stubdata/</div></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>接下来修改 <code>icu_dat_generator.py</code> 这个文件，找到 <code>GenResIndex()</code> 这个函数，并屏蔽掉 <code>languages</code> 里不需要的语言,如</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">languages = [</div><div class="line">    <span class="comment"># Group 0.</span></div><div class="line">    <span class="string">'en'</span>,</div><div class="line"></div><div class="line">    <span class="comment"># Group 1.</span></div><div class="line">    <span class="comment">#'ar',</span></div><div class="line">    <span class="string">'zh'</span>,</div><div class="line">    <span class="comment">#'nl',</span></div><div class="line">    <span class="comment">#'fr',</span></div><div class="line">    <span class="comment">#'de',</span></div><div class="line">    <span class="comment">#'it',</span></div><div class="line">    <span class="comment">#'ja',</span></div><div class="line">	<span class="keyword">...</span></div></pre></td></tr></table></figure>
+
+<ul>
+<li>接下来修改 <code>icu-data-default.txt</code> 这个文件，这个文件就是与之前的版本不同，里面的内容决定了编译的时候需要哪些文件，如果不会改的话可以先运行一下脚本</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./icu_dat_generator.<span class="keyword">py</span></div></pre></td></tr></table></figure>
+
+<ul>
+<li><p>看看报错提示缺少什么，然后再到该文件中 <code>Ctrl+F</code> ，如果存在并确定无用则将其用 <code>#</code> 注释掉，如果没有找到，就要回到最开始的步骤，将缺少的文件及其关联都添加进去，然后重新打包生成 <code>icudt51l.dat</code> 文件并重复以上步骤，直到生成 <code>icudt51l-default.dat</code> 即表示编译成功</p>
+</li>
+<li><p>编译成功之后删除 <code>icuBuild</code> 文件夹并切换到Android的根目录下对全局 <code>make</code> 一下即可</p>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>rm -rf icuBuild/</div><div class="line"><span class="variable">$ </span>cd ../../..</div><div class="line"><span class="variable">$ </span>make -j4</div></pre></td></tr></table></figure>
+
+<ul>
+<li>OK~将生成的 <code>system.img</code> 赶紧刷到手机里或者模拟器里看看效果吧</li>
+</ul>
+<h2 id="总结">总结</h2>
+<p>本人也是刚入行的菜鸟，可能解决方法并不完美，也存在一些无法解决的问题，本文旨在为大家提供一些思路，少走一点弯路，如果有什么好的意见和建议欢迎留言或者email我，另提一句，我将语言精简到只剩三个， <code>system.img</code> 大概缩小了10m左右。</p>
+<p><strong>以下提供一些参考网站：</strong></p>
+<ul>
+<li><p>官方文档（推荐阅读，不过需要fq以及不错的英文水平）</p>
+<ul>
+<li><a href="http://userguide.icu-project.org/icudata#TOC-Reducing-the-Size-of-ICU-s-Data:-Locale-Data" target="_blank" rel="external">ICU Data的定制（Customizing）相关说明及原理</a></li>
+<li><a href="http://apps.icu-project.org/datacustom/ICUData51.html" target="_blank" rel="external">ICU Data Library Customizer</a></li>
+<li><a href="http://androidxref.com/4.4.2_r1/" target="_blank" rel="external">Androidxref，检索源码</a> </li>
+</ul>
+</li>
+<li><p>参考文档(大概是我搜到的所有中文文档了，算是做个归纳吧)</p>
+<ul>
+<li><a href="http://baike.baidu.com/view/8177861.htm" target="_blank" rel="external">语言代码</a></li>
+<li><a href="http://blog.sina.com.cn/s/blog_4fcc6ef20101pjp0.html" target="_blank" rel="external">icu4c中资源的修改，编译</a> </li>
+<li><a href="http://blog.csdn.net/jiayouxjh/article/details/8613541" target="_blank" rel="external">Android系统多语言支持总结文档</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-04/58964.htm" target="_blank" rel="external">Android新增语言的方法（墨西哥的西班牙语）</a></li>
+<li><a href="http://www.cnblogs.com/KiloNet/p/3145791.html" target="_blank" rel="external">编译android源码中的icu4c</a></li>
+<li><a href="http://blog.csdn.net/foolenough/article/details/38112043" target="_blank" rel="external"> ICU移植到Android与ICUData裁剪</a></li>
+<li><a href="http://blog.csdn.net/yicao821/article/details/17559851" target="_blank" rel="external">android添加新语言之缅甸语</a></li>
+<li><a href="http://blog.csdn.net/eimsteim/article/details/7246175" target="_blank" rel="external">Android 语言资源库的添加</a></li>
+</ul>
+</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[对ICU51语言包进行精简 本地化]]>
+    
+    </summary>
+    
+      <category term="Android" scheme="http://chenggoi.com/tags/Android/"/>
+    
+      <category term="技术" scheme="http://chenggoi.com/categories/code/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Markdown的常用语法]]></title>
+    <link href="http://chenggoi.com/2015/01/01/markdown/"/>
+    <id>http://chenggoi.com/2015/01/01/markdown/</id>
+    <published>2015-01-01T07:30:16.000Z</published>
+    <updated>2015-01-10T06:43:27.000Z</updated>
+    <content type="html"><![CDATA[<p><strong>声明：</strong>本文仅针对本人的日常使用，并非Markdown的完整语法，也不做原理性的分析，如有需要请出门百度</p>
+<h2 id="段落和换行">段落和换行</h2>
+<ul>
+<li>方法一：段落末尾按两次回车，即保证段落的前后都有一行以上的空行</li>
+<li>方法二：在段落内按两次空格一次回车即可强制换行,即起到  <code>&lt;br /&gt;</code> 的效果</li>
+</ul>
+<h2 id="标题">标题</h2>
+<ul>
+<li>在行首插入1到6个 <code>#</code> ，表示1到6阶标题，例：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor"># 1阶标题</span></div><div class="line"><span class="preprocessor">## 2阶标题</span></div><div class="line"><span class="preprocessor">###### 6阶标题</span></div></pre></td></tr></table></figure>
+
+<h2 id="区块引用">区块引用</h2>
+<ul>
+<li>在要引用的每行加上<code>&gt;</code>即为引用，也可<code>&gt; &gt;</code>嵌套引用(注意每个<code>&gt;</code>后面要加空格)，例：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="input"><span class="prompt">&gt; 我是第一行</span></span></div><div class="line"></div><div class="line">&gt; 我是第二行</div><div class="line"><span class="input"><span class="prompt">&gt; 我没有换行</span></span></div><div class="line"></div><div class="line">&gt; &gt; 嵌套引用</div></pre></td></tr></table></figure>
+
+<ul>
+<li><p>效果为：</p>
+<blockquote>
+<p>我是第一行</p>
+<p>我是第二行<br>我没有换行</p>
+<blockquote>
+<p>嵌套引用</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<h2 id="无序列表">无序列表</h2>
+<ul>
+<li>在文字开头使用 <code>-</code> 或者 <code>+</code> 或者 <code>*</code> (注意每个后面都要加空格)，则形成无序列表，例：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="bullet">- </span>a</div><div class="line"><span class="bullet">+ </span>b</div><div class="line"><span class="bullet">* </span>c</div></pre></td></tr></table></figure>
+
+<ul>
+<li>效果为：<ul>
+<li>a</li>
+</ul>
+<ul>
+<li>b</li>
+</ul>
+<ul>
+<li>c</li>
+</ul>
+</li>
+</ul>
+<h2 id="有序列表">有序列表</h2>
+<ul>
+<li>数字后面跟上<code>.</code>以及空格，可以乱序，会自动顺序输出，但最好第一行为<code>1.</code>，例：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="bullet">1. </span>a</div><div class="line"><span class="bullet">3. </span>c</div><div class="line"><span class="bullet">2. </span>b</div></pre></td></tr></table></figure>
+
+<ul>
+<li>效果为：<ol>
+<li>a</li>
+<li>c</li>
+<li>b</li>
+</ol>
+</li>
+</ul>
+<h2 id="斜体粗体">斜体粗体</h2>
+<ul>
+<li>将需要斜体的文字两端使用1个<code>*</code>或者<code>_</code>夹起来</li>
+<li>将需要加粗的文字两端使用2个<code>*</code>或者<code>_</code>夹起来</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">*</span>斜体<span class="keyword">*</span> _斜体_ <span class="keyword">*</span><span class="keyword">*</span>粗体<span class="keyword">*</span><span class="keyword">*</span> __粗体__</div></pre></td></tr></table></figure>
+
+<p>效果为：</p>
+<p>  <em>斜体</em>  <em>斜体</em> <strong>粗体</strong> <strong>粗体</strong></p>
+<h2 id="代码">代码</h2>
+<ul>
+<li>对于代码区块，只需要简单的缩进四个空格或者一个Tab,或者可以使用两个`` </li>
+</ul>
+<figure class="highlight ``将代码区块夹起来"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 对于单行的代码注释可使用两个<span class="escape">``</span> <span class="escape">` </span><span class="escape">``</span>将其夹起来，例</div></pre></td></tr></table></figure>
+
+
+<p>  <code>aaa</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">效果为：</div><div class="line"></div><div class="line">  `aaa`</div><div class="line"></div><div class="line"><span class="comment">##分割线</span></div><div class="line"></div><div class="line">- 可以在一行中使用三个以上的`*`或者`-`或者`_`来建立分割线，例：</div><div class="line"></div><div class="line"></div><div class="line">        ---</div><div class="line">        ___</div><div class="line"></div><div class="line">        ***</div><div class="line"></div><div class="line"></div><div class="line">效果为：</div><div class="line"></div><div class="line"></div><div class="line">---</div><div class="line">___</div><div class="line"></div><div class="line">***</div><div class="line"></div><div class="line"><span class="comment">##链接</span></div><div class="line">- 内联方式：`<span class="type">This</span> <span class="keyword">is</span> an [example link](http://baidu.com/)`</div><div class="line">- 引用方式（注意换行，网址写全且顶头）：</div><div class="line">           </div><div class="line">        <span class="type">This</span> <span class="keyword">is</span> an [example link][<span class="keyword">ref</span>]</div><div class="line"></div><div class="line">	    [<span class="keyword">ref</span>]:http://baidu.com</div><div class="line"></div><div class="line">效果为：</div><div class="line"></div><div class="line">- <span class="type">This</span> <span class="keyword">is</span> an [example link](http://baidu.com/)</div><div class="line">- <span class="type">This</span> <span class="keyword">is</span> an [example link][<span class="keyword">ref</span>].</div><div class="line"></div><div class="line">[<span class="keyword">ref</span>]:http://baidu.com</div><div class="line"></div><div class="line"><span class="comment">##图片</span></div><div class="line">- 内联方式：`![example](http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg)`</div><div class="line">- 外联方式（注意换行，网址写全且顶头）：</div><div class="line">          </div><div class="line">        ![example][<span class="keyword">ref</span>]</div><div class="line"></div><div class="line">	    [<span class="keyword">ref</span>]:http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg</div><div class="line"></div><div class="line">效果为：</div><div class="line"></div><div class="line">- ![example](http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg)</div><div class="line">- ![example][<span class="keyword">ref</span>]</div><div class="line"></div><div class="line">[<span class="keyword">ref</span>]:http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg</div><div class="line"></div><div class="line"><span class="comment">##自动连接</span></div><div class="line">- 使用` &lt;&gt; `将输入的<span class="type">URL</span>及邮箱夹在中间，例:</div></pre></td></tr></table></figure>
+
+<p>  <a href="http://www.baidu.com" target="_blank" rel="external">http://www.baidu.com</a><br>  <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#99;&#104;&#x65;&#110;&#103;&#103;&#x6f;&#105;&#64;&#115;&#x69;&#110;&#97;&#46;&#x63;&#111;&#x6d;">&#99;&#104;&#x65;&#110;&#103;&#103;&#x6f;&#105;&#64;&#115;&#x69;&#110;&#97;&#46;&#x63;&#111;&#x6d;</a><br>  ```</p>
+<p>效果为：</p>
+<p>  <a href="http://www.baidu.com" target="_blank" rel="external">http://www.baidu.com</a></p>
+<p>  <a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x74;&#101;&#115;&#116;&#64;&#99;&#x68;&#101;&#x6e;&#x67;&#103;&#x6f;&#x69;&#x2e;&#x63;&#x6f;&#109;">&#x74;&#101;&#115;&#116;&#64;&#99;&#x68;&#101;&#x6e;&#x67;&#103;&#x6f;&#x69;&#x2e;&#x63;&#x6f;&#109;</a></p>
+<h2 id="转义字符">转义字符</h2>
+<ul>
+<li>\\表示<code>\</code></li>
+<li>\`表示<code>` </code></li>
+<li>\_表示<code>_</code></li>
+<li>\*表示<code>*</code></li>
+<li>\{\}表示<code>{}</code></li>
+<li>\[\]表示<code>[]</code></li>
+<li>\(\)表示<code>()</code></li>
+<li>\#表示<code>#</code></li>
+<li>\+表示<code>+</code></li>
+<li>\-表示<code>-</code></li>
+<li>\.表示<code>.</code></li>
+<li>\!表示<code>!</code></li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[Markdown的简单知识]]>
+    
+    </summary>
+    
+      <category term="Markdown" scheme="http://chenggoi.com/tags/Markdown/"/>
+    
+      <category term="技术" scheme="http://chenggoi.com/categories/code/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[SDK Manager更新速度慢]]></title>
+    <link href="http://chenggoi.com/2015/01/01/SDK_Manager/"/>
+    <id>http://chenggoi.com/2015/01/01/SDK_Manager/</id>
+    <published>2015-01-01T07:30:16.000Z</published>
+    <updated>2015-01-10T06:43:43.000Z</updated>
+    <content type="html"><![CDATA[<p>1、打开tools-&gt;opinion</p>
+<p>2、设置HTTP Proxy server：mirrors.neusoft.edu.cn</p>
+<p>3、设置HTTP Proxy Port：80</p>
+<p>4、选中Force ..<a href="https://...sources" target="_blank" rel="external">https://...sources</a> to be fetched using http:</p>
+<p>5、关闭，重新更新</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[更新SDK缓慢解决方案]]>
+    
+    </summary>
+    
+      <category term="Android" scheme="http://chenggoi.com/tags/Android/"/>
+    
+      <category term="技术" scheme="http://chenggoi.com/categories/code/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[My first blog]]></title>
+    <link href="http://chenggoi.com/2014/12/15/HelloWorlds/"/>
+    <id>http://chenggoi.com/2014/12/15/HelloWorlds/</id>
+    <published>2014-12-15T07:30:16.000Z</published>
+    <updated>2015-01-10T06:42:43.000Z</updated>
+    <content type="html"><![CDATA[<ul>
+<li>目前使用还不纯熟的Markdown语法</li>
+<li>感觉像是被坑了一样的编辑器</li>
+<li>有空就上来写两笔吧</li>
+<li>北漂开始了</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[初出茅庐]]>
+    
+    </summary>
+    
+      <category term="心情" scheme="http://chenggoi.com/tags/%E5%BF%83%E6%83%85/"/>
+    
+      <category term="随笔" scheme="http://chenggoi.com/categories/life/"/>
+    
+  </entry>
+  
+</feed>
