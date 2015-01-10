@@ -1,0 +1,666 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu_union_verify" content="d1952c66cf48912e21c18c7c581f382a">
+  <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
+<meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
+  
+    <title>Android 4.4.2 系统源码字体库精简、添加 | Chenggoi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Chenggoi">
+    
+    <meta name="description" itemprop="description" content="精简或者添加Android系统源码的Fonts文件夹中.mk文件所调用的ttf文件，以达到定制字体库的目的">
+    
+    
+    
+    
+    <link rel="alternate" href="atom.xml" title="Chenggoi" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.jpg">
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+     
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Chenggoi">Chenggoi</a></h1>
+				<a class="blog-motto">工作之余也不要忘记休息哦～～</a>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/categories/技术">技术</a></li>
+					
+						<li><a href="/categories/随笔">随笔</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+					<li>
+					
+                                            <form class="search" action=http://chenggoi.com target="_blank">
+                                            <label>Search</label>
+                                        <input name="s" type="hidden" value= 3228584831427514000 ><input type="text" name="q" size="30" placeholder="搜索"><br>
+					
+					</li>
+				</ul>
+                            </nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/01/10/2015-01-07-Android-Fonts-Customizing/" title="Android 4.4.2 系统源码字体库精简、添加" itemprop="url">Android 4.4.2 系统源码字体库精简、添加</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://chenggoi.com" title="Chenggoi">Chenggoi</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-01-10T05:20:25.000Z" itemprop="datePublished">1月 10 2015</time>
+    更新日期:<time datetime="2015-01-10T01:35:06.000Z" itemprop="dateModified">1月 10 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字体加载原理"><span class="toc-number">2.</span> <span class="toc-text">字体加载原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#精简字体库"><span class="toc-number">3.</span> <span class="toc-text">精简字体库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#附上每个字体对应的语言及所在位置"><span class="toc-number">3.1.</span> <span class="toc-text">附上每个字体对应的语言及所在位置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#混合字库（workspace/frameworks/base/data/fonts）"><span class="toc-number">3.1.1.</span> <span class="toc-text">混合字库（workspace/frameworks/base/data/fonts）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Noto字库：_workspace/external/noto-fonts"><span class="toc-number">3.1.2.</span> <span class="toc-text">Noto字库： workspace/external/noto-fonts</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NanumGothic（workspace/external/naver-fonts)"><span class="toc-number">3.1.3.</span> <span class="toc-text">NanumGothic（workspace/external/naver-fonts)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加字体"><span class="toc-number">4.</span> <span class="toc-text">添加字体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ICU语言包精简"><span class="toc-number">5.</span> <span class="toc-text">ICU语言包精简</span></a></li></ol>
+		</div>
+		
+		<h2 id="环境配置">环境配置</h2>
+<pre><code>操作系统：Ubuntu <span class="number">14.04</span> <span class="number">64</span>位
+Android版本：<span class="number">4.4</span><span class="number">.2</span>
+gcc版本：<span class="number">4.4</span>
+jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
+</code></pre><hr>
+<h2 id="字体加载原理">字体加载原理</h2>
+<p>首先先来阐述一下Android的字体加载原理，Android系统的字体配置文件位于 <code>workspace/frameworks/base/data/fonts/</code> 文件夹下，分为 <code>system_fonts.xml</code> 和 <code>fallback_fonts.xml</code> 两个文件。当系统需要加载字体时，会优先从 <code>system_fonts.xml</code> 文件开始查找，如果没有找到再进入 <code>fallback_fonts.xml</code> 查找。以下是 <code>system_fonts.xml</code> 的部分文件：</p>
+<pre><code><span class="tag">&lt;<span class="title">family</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">nameset</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">name</span>&gt;</span>sans-serif<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">name</span>&gt;</span>arial<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">name</span>&gt;</span>helvetica<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">name</span>&gt;</span>tahoma<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">name</span>&gt;</span>verdana<span class="tag">&lt;/<span class="title">name</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">nameset</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">fileset</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">file</span>&gt;</span>Roboto-Regular.ttf<span class="tag">&lt;/<span class="title">file</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">file</span>&gt;</span>Roboto-Bold.ttf<span class="tag">&lt;/<span class="title">file</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">file</span>&gt;</span>Roboto-Italic.ttf<span class="tag">&lt;/<span class="title">file</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">file</span>&gt;</span>Roboto-BoldItalic.ttf<span class="tag">&lt;/<span class="title">file</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">fileset</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">family</span>&gt;</span>
+</code></pre><p>我们称 <code>&lt;family&gt; &lt;/family&gt;</code> 之间的内容为一个字体族， <code>&lt;nameset&gt;&lt;/nameset&gt;</code> 之间的内容为字体的名称， <code>&lt;fileset&gt;&lt;/fileset&gt;</code> 之间的内容为实际调用的字体文件，包括粗体，斜体等。Android字体调用的顺序便是从第一个字体族开始逐个字体族寻找，直到匹配上可以使用的字体便停止寻找。也就是说如果你想添加一些字体并让它显示的话，则要添加到能匹配它的字体之前，这是后话。</p>
+<p>总之，Android对于字体就是这样的调用流程，明白了这个后面无论添加还是删除都会好理解一些。</p>
+<h2 id="精简字体库">精简字体库</h2>
+<p>一般来说， <code>system_fonts.xml</code> 下的字体是为英文等拉丁文字准备的，同上不予以精简（毕竟英语的使用面很广），对于字体的精简大都集中在 <code>fallback_fonts.xml</code> 文件上（看名字也知道这是备用的），这里包括了很多地区的字体以及各种表情符号等。</p>
+<p><strong>精简字体的方法：</strong>在 <code>fallback_fonts.xml</code> 文件中注释掉该字体所在的整个字体族，并找到调用他的 <code>Android.mk</code> 和 <code>fonts.mk</code> 文件也将他注释掉，如</p>
+<pre><code>fallback_fonts.xml
+
+<span class="comment">&lt;!--    
+&lt;family&gt;
+      &lt;fileset&gt;
+        &lt;file variant="elegant"&gt;DroidNaskh-Regular.ttf&lt;/file&gt;
+      &lt;/fileset&gt;
+&lt;/family&gt;
+--&gt;</span>
+</code></pre><hr>
+<pre><code>fonts.mk
+
+<span class="preprocessor">#    DroidNaskh-Regular.ttf \</span>
+</code></pre><hr>
+<pre><code>Android.mk(要注释掉整个include）
+
+<span class="preprocessor">#include $(CLEAR_VARS)</span>
+<span class="preprocessor">#LOCAL_MODULE := NotoSansMalayalam-Regular.ttf</span>
+<span class="preprocessor">#LOCAL_SRC_FILES := $(LOCAL_MODULE)</span>
+<span class="preprocessor">#LOCAL_MODULE_CLASS := ETC</span>
+<span class="preprocessor">#LOCAL_MODULE_TAGS := optional</span>
+<span class="preprocessor">#LOCAL_MODULE_PATH := $(PRODUCT_OUT)/vendor/fonts</span>
+<span class="preprocessor">#include $(BUILD_PREBUILT)</span>
+</code></pre><p>精简完以后将整个系统源码 <code>make</code> 一下就可以刷入手机或虚拟机了</p>
+<h3 id="附上每个字体对应的语言及所在位置">附上每个字体对应的语言及所在位置</h3>
+<h4 id="混合字库（workspace/frameworks/base/data/fonts）">混合字库（<code>workspace/frameworks/base/data/fonts</code>）</h4>
+<ul>
+<li>显示不同的时间格式<ul>
+<li>AndroidClock.ttf</li>
+<li>AndroidClock_Highlight.ttf</li>
+<li>AndroidClock_Solid.ttf</li>
+</ul>
+</li>
+<li>锁屏时钟<ul>
+<li>Clockopia.ttf</li>
+</ul>
+</li>
+<li>Emoji表情符号<ul>
+<li>AndroidEmoji.ttf</li>
+</ul>
+</li>
+<li>波斯语、阿拉伯语、乌尔都语字库<ul>
+<li>DroidNaskhRegular.ttf </li>
+<li>DroidNaskhUIRegular.ttf</li>
+</ul>
+</li>
+<li>亚美尼亚语<ul>
+<li>DroidSansArmenian.ttf </li>
+</ul>
+</li>
+<li>阿姆哈拉语、提格雷语(埃塞俄比亚)<ul>
+<li>DroidSansEthiopicRegular.ttf </li>
+</ul>
+</li>
+<li>中日韩字库，包含完整中文<ul>
+<li>DroidSansFallback.ttf </li>
+</ul>
+</li>
+<li>格鲁吉亚语<ul>
+<li>DroidSansGeorgian.ttf </li>
+</ul>
+</li>
+<li>希伯来语<ul>
+<li>DroidSansHebrewBold.ttf </li>
+<li>DroidSansHebrewRegular.ttf</li>
+</ul>
+</li>
+<li>西里尔和拉丁字母扩充附加<ul>
+<li>DroidSansMono.ttf </li>
+</ul>
+</li>
+<li>拉丁字母:衬线体<ul>
+<li>DroidSerifBold.ttf </li>
+<li>DroidSerifBoldItalic.ttf</li>
+<li>DroidSerifItalic.ttf</li>
+<li>DroidSerifRegular.ttf</li>
+</ul>
+</li>
+<li>繁体中文字库<ul>
+<li>MTLmr3m.ttf </li>
+</ul>
+</li>
+<li>谚文字母(朝鲜语、韩语)<ul>
+<li>NanumGothic.ttf </li>
+</ul>
+</li>
+<li>官方缅甸语字库<ul>
+<li>padauk.ttf </li>
+</ul>
+</li>
+<li>民间缅甸语字库<ul>
+<li>ZawgyiOne.ttf </li>
+</ul>
+</li>
+<li>欧洲使用的拉丁、西里尔字母<ul>
+<li>Roboto-Regular.ttf</li>
+<li>Roboto-Bold.ttf</li>
+<li>Roboto-Italic.ttf</li>
+<li>Roboto-BoldItalic.ttf</li>
+<li>Roboto-Light.ttf</li>
+<li>Roboto-LightItalic.ttf</li>
+<li>Roboto-Thin.ttf</li>
+<li>Roboto-ThinItalic.ttf</li>
+<li>RobotoCondensed-Regular.ttf</li>
+<li>RobotoCondensed-Bold.ttf</li>
+<li>RobotoCondensed-Italic.ttf</li>
+<li>RobotoCondensed-BoldItalic.ttf</li>
+</ul>
+</li>
+</ul>
+<h4 id="Noto字库：_workspace/external/noto-fonts">Noto字库： <code>workspace/external/noto-fonts</code></h4>
+<ul>
+<li>表情字符<ul>
+<li>NotoColorEmoji.ttf </li>
+</ul>
+</li>
+<li>孟加拉语字库<ul>
+<li>NotoSansBengali-Regular.ttf</li>
+<li>NotoSansBengali-Bold.ttf</li>
+<li>NotoSansBengaliUIBold.ttf </li>
+<li>NotoSansBengaliUIRegular.ttf</li>
+</ul>
+</li>
+<li>印度语字库<ul>
+<li>NotoSansDevanagari-Regular.ttf <ul>
+<li>NotoSansDevanagari-Bold.ttf </li>
+</ul>
+</li>
+<li>NotoSansDevanagariUIBold.ttf </li>
+<li>NotoSansDevanagariUIRegular.ttf</li>
+</ul>
+</li>
+<li>卡纳达语字库(印度)<ul>
+<li>NotoSansKannada-Regular.ttf </li>
+<li>NotoSansKannada-Bold.ttf </li>
+<li>NotoSansKannadaUIBold.ttf </li>
+<li>NotoSansKannadaUIRegular.ttf</li>
+</ul>
+</li>
+<li>高棉语字库(柬埔寨)<ul>
+<li>NotoSansKhmer-Regular.ttf</li>
+<li>NotoSansKhmer-Bold.ttf</li>
+<li>NotoSansKhmerUIBold.ttf </li>
+<li>NotoSansKhmerUIRegular.ttf</li>
+</ul>
+</li>
+<li>老挝语字库<ul>
+<li>NotoSansLao-Regular.ttf</li>
+<li>NotoSansLao-Bold.ttf</li>
+<li>NotoSansLaoUIBold.ttf </li>
+<li>NotoSansLaoUIRegular.ttf</li>
+</ul>
+</li>
+<li>马拉雅拉姆文字库(印度)<ul>
+<li>NotoSansMalayalam-Regular.ttf </li>
+<li>NotoSansMalayalam-Bold.ttf</li>
+<li>NotoSansMalayalamUIBold.ttf </li>
+<li>NotoSansMalayalamUIRegular.ttf</li>
+</ul>
+</li>
+<li>泰米尔语字库(印度、斯里兰卡、新加坡)<ul>
+<li>NotoSansTamil-Regular.ttf</li>
+<li>NotoSansTamil-Bold.ttf</li>
+<li>NotoSansTamilUIBold.ttf </li>
+<li>NotoSansTamilUIRegular.ttf</li>
+</ul>
+</li>
+<li>泰卢固语(印度)<ul>
+<li>NotoSansTelugu-Regular.ttf</li>
+<li>NotoSansTelugu-Bold.ttf</li>
+<li>NotoSansTeluguUIBold.ttf </li>
+<li>NotoSansTeluguUIRegular.ttf</li>
+</ul>
+</li>
+<li>泰语字库<ul>
+<li>NotoSansThai-Regular.ttf</li>
+<li>NotoSansThai-Bold.ttf</li>
+<li>NotoSansThaiUIBold.ttf </li>
+<li>NotoSansThaiUIRegular.ttf </li>
+</ul>
+</li>
+</ul>
+<h4 id="NanumGothic（workspace/external/naver-fonts)">NanumGothic（<code>workspace/external/naver-fonts</code>)</h4>
+<ul>
+<li>韩文字体<ul>
+<li>NanumGothic.ttf</li>
+<li>NanumGothicBold.ttf </li>
+</ul>
+</li>
+</ul>
+<h2 id="添加字体">添加字体</h2>
+<p>添加字体这块我就直接给个链接啦，因为本人也没有尝试过，所以不敢妄言啊。</p>
+<ul>
+<li><a href="https://www.librehat.com/elegant-and-geek-way-to-add-or-change-android-system-fonts/" target="_blank" rel="external">优雅并极客地添加/更改Android系统的字体</a></li>
+<li><a href="http://blog.oubeichen.com/201303/anzhuoshenruzitipeizhiwenjian/" target="_blank" rel="external">安卓深入字体配置文件</a></li>
+</ul>
+<h2 id="ICU语言包精简">ICU语言包精简</h2>
+<p>最后，如果大家还想要对语言包进行精简的话，可以参考我的另一篇文章</p>
+<p><a href="http://chenggoi.github.io/2015/01/06/Android-ICU-Customizing.html" target="_blank" rel="external">Android 4.4.2 ICU 语言包 精简、裁剪、定制、本地化</a></p>
+<p><strong>参考资料</strong></p>
+<p><a href="http://blog.csdn.net/zhoumushui/article/details/41623903" target="_blank" rel="external">Android字库文件简介</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Android/">Android</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/技术/">技术</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://chenggoi.com/2015/01/10/2015-01-07-Android-Fonts-Customizing/" data-title="Android 4.4.2 系统源码字体库精简、添加 | Chenggoi" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/01/10/2014-12-15-Hello-World/" title="My first blog">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  My first blog</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/01/10/2015-01-06-Android-ICU-Customizing/"  title="Android 4.4.2 ICU 语言包 精简、裁剪、定制、本地化">
+ <strong>NEXT:</strong><br/> 
+ <span>Android 4.4.2 ICU 语言包 精简、裁剪、定制、本地化
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	
+	<div class="ds-thread" data-title="Android 4.4.2 系统源码字体库精简、添加" data-thread-key="2015-01-07-Android-Fonts-Customizing" data-author-key="Chenggoi" data-url="http://chenggoi.com/post/2015-01-07-Android-Fonts-Customizing"></div>
+	
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字体加载原理"><span class="toc-number">2.</span> <span class="toc-text">字体加载原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#精简字体库"><span class="toc-number">3.</span> <span class="toc-text">精简字体库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#附上每个字体对应的语言及所在位置"><span class="toc-number">3.1.</span> <span class="toc-text">附上每个字体对应的语言及所在位置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#混合字库（workspace/frameworks/base/data/fonts）"><span class="toc-number">3.1.1.</span> <span class="toc-text">混合字库（workspace/frameworks/base/data/fonts）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Noto字库：_workspace/external/noto-fonts"><span class="toc-number">3.1.2.</span> <span class="toc-text">Noto字库： workspace/external/noto-fonts</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NanumGothic（workspace/external/naver-fonts)"><span class="toc-number">3.1.3.</span> <span class="toc-text">NanumGothic（workspace/external/naver-fonts)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加字体"><span class="toc-number">4.</span> <span class="toc-text">添加字体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ICU语言包精简"><span class="toc-number">5.</span> <span class="toc-text">ICU语言包精简</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+<div id="authorInfo">
+	
+		<div class="author-logo"></div>		
+	
+	<div class="social-list" class="clearfix">
+		
+		
+		
+		<a href="https://github.com/chenggoi" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/心情/" title="心情">心情<sup>0</sup></a></li>
+		
+			<li><a href="/categories/技术/" title="技术">技术<sup>4</sup></a></li>
+		
+			<li><a href="/categories/随笔/" title="随笔">随笔<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Android/" title="Android">Android<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Markdown/" title="Markdown">Markdown<sup>1</sup></a></li>
+		
+			<li><a href="/tags/心情/" title="心情">心情<sup>1</sup></a></li>
+		
+			<li><a href="/tags/随笔/" title="随笔">随笔<sup>0</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://chenggoi.com" target="_blank" title="Chenggoi">Chenggoi's Blog</a></li>
+    </ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">2015 年 01 月</a><span class="archive-list-count">5</span></li></ul>
+  </div>
+
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+    
+            <p class="copyright"> © 2015 
+		
+		<a href="http://chenggoi.com" target="_blank" title="Chenggoi">Chenggoi</a>
+		
+            && Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> && Theme by <a href="http://gengbiao.me" target="_blank" title="coney">coney</a>
+            </div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"chenggoi"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+<script>
+    
+        var _bdImg = '2';
+    
+    window._bd_share_config={
+        "common":{
+            "bdSnsKey":{
+
+            },
+            "bdText":"",
+            "bdMini":"2",
+            "bdMiniList":[
+                "qzone",
+                "tsina",
+                "weixin",
+                "renren",
+                "tqq",
+                "tieba",
+                "douban",
+                "sqq",
+                "diandian",
+                "huaban",
+                "youdao",
+                "mail",
+                "ty",
+                "fbook",
+                "twi",
+                "linkedin",
+                "copy",
+                "print"
+            ],
+            "bdPic":"",
+            "bdStyle":"0",
+            "bdSize":"16"
+        },
+        "slide":{
+            "type":"slide",
+            "bdImg":_bdImg,
+            "bdPos":"right",
+            "bdTop":"350"
+        },
+        "image":{
+            "viewList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ],
+            "viewText":"分享：",
+            "viewSize":"16"
+        },
+        "selectShare":{
+            "bdContainerClass":null,
+            "bdSelectMiniList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ]
+        }
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+
+
+
+
+  </body>
+</html>
+

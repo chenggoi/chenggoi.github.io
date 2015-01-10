@@ -1,0 +1,574 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu_union_verify" content="d1952c66cf48912e21c18c7c581f382a">
+  <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
+<meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
+  
+    <title>Android 4.4.2 ICU 语言包 精简、裁剪、定制、本地化 | Chenggoi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Chenggoi">
+    
+    <meta name="description" itemprop="description" content="对ICU51语言包进行精简 本地化">
+    
+    
+    
+    
+    <link rel="alternate" href="atom.xml" title="Chenggoi" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.jpg">
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+     
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Chenggoi">Chenggoi</a></h1>
+				<a class="blog-motto">工作之余也不要忘记休息哦～～</a>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/categories/技术">技术</a></li>
+					
+						<li><a href="/categories/随笔">随笔</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+					<li>
+					
+                                            <form class="search" action=http://chenggoi.com target="_blank">
+                                            <label>Search</label>
+                                        <input name="s" type="hidden" value= 3228584831427514000 ><input type="text" name="q" size="30" placeholder="搜索"><br>
+					
+					</li>
+				</ul>
+                            </nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/01/10/2015-01-06-Android-ICU-Customizing/" title="Android 4.4.2 ICU 语言包 精简、裁剪、定制、本地化" itemprop="url">Android 4.4.2 ICU 语言包 精简、裁剪、定制、本地化</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://chenggoi.com" title="Chenggoi">Chenggoi</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-01-10T05:20:25.000Z" itemprop="datePublished">1月 10 2015</time>
+    更新日期:<time datetime="2015-01-10T01:35:06.000Z" itemprop="dateModified">1月 10 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#环境配置"><span class="toc-number">1.1.</span> <span class="toc-text">环境配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#正文"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_哪些包可以被裁减（以下所列文件夹均在_(icu_PATH)/data/_目录下）"><span class="toc-number">2.1.</span> <span class="toc-text">1. 哪些包可以被裁减（以下所列文件夹均在 (icu_PATH)/data/ 目录下）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-编译修改的这些文件，生成_icudt51l-dat_文件"><span class="toc-number">2.2.</span> <span class="toc-text">2.编译修改的这些文件，生成 icudt51l.dat 文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+		</div>
+		
+		<h2 id="引言">引言</h2>
+<p>最近接到了精简Android 4.4.2系统源码中的ICU4c语言包的任务，随即百度谷歌一通找，可是找来找去结果很不令人满意。大部分结果都是如何添加语言包实现国际化的，而且多是基于ICU48及更早的版本（也就是Android 4.2.2版本及之前版本），由于ICU51相比较旧版本在配置方面有很大改动，所以网上的方案大多行不通，特在此总结一下。</p>
+<h3 id="环境配置">环境配置</h3>
+<pre><code>操作系统：Ubuntu <span class="number">14.04</span> <span class="number">64</span>位
+Android版本：<span class="number">4.4</span><span class="number">.2</span>
+ICU版本：ICU <span class="number">51</span>
+gcc版本：<span class="number">4.4</span>
+jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
+</code></pre><hr>
+<p><strong>声明：</strong>本方法目前还存在如下缺陷,如有解决方案望告知：</p>
+<ol>
+<li>locals文件夹中的 <code>ps.txt</code> 及 <code>ps_AF.txt</code> 文件不能在 <code>*.mk</code> 中删除，貌似是阿富汗语关联，但是始终没有找到在哪里被调用，删除会报错</li>
+<li>如果要保留如 <code>zh_CN.txt</code> 文件，则要将以 <code>zh</code> 开头的所有txt文件都保留，即全部保留在 <code>*.mk</code> 中，因为在脚本中是使用的对 <code>zh.txt</code> 及 <code>zh_*.txt</code> 这样的遍历方式，如果只删除了部分文件会提示 <code>can not open xxx.xx</code> 也就是文件缺失</li>
+<li>本文内有部分很有帮助的网站由于某些原因无法连接（你懂得），所以我觉得想做Android系统开发的话 <code>fq</code> 技术是必须的</li>
+</ol>
+<h2 id="正文">正文</h2>
+<h3 id="1-_哪些包可以被裁减（以下所列文件夹均在_(icu_PATH)/data/_目录下）">1. 哪些包可以被裁减（以下所列文件夹均在 <code>(icu_PATH)/data/</code> 目录下）</h3>
+<p><strong><em>首先说明，所谓的裁剪，并非是将文件夹内的 <code>*.txt</code> 文件直接删除，而是通过修改 <code>*.mk</code> 文件来屏蔽掉不需要的字库。修改时注意上文声明的两点。</em></strong></p>
+<p><strong><em>其次强调一下 <code>.mk</code> 的简单语法，知道的可以略过。 <code>#</code> 号代表注释后面一行的内容，每个txt文件的文件名要用空格隔开，如需换行要在行尾打 <code>\</code> 且后面不能有任何的空格或其他字符，每行之间不能有无关字符混入，注释也不可以，所以注释的话要移到文件尾部。</em></strong></p>
+<ul>
+<li>文本转换信息<ul>
+<li>mappings/ucmfiles.mk </li>
+<li>mappings/ucmcore.mk </li>
+<li>mappings/ucmebcdic.mk </li>
+<li>方法：直接用 <code>#</code> 注释掉不需要的文件名并直接移至文件尾部（当然也可以考虑直接删除，不过这样就没后路了）</li>
+<li>参考该网站可了解每个文件是干什么的(也可以通过该网站直接定制dat包，并且下面有不同版本的选择)：<a href="http://apps.icu-project.org/datacustom/ICUData51.html" target="_blank" rel="external">ICU Data Library Customizer</a></li>
+</ul>
+</li>
+<li>基于数字规格的语音转换<ul>
+<li>brkiter/brkfiles.mk</li>
+<li>方法：修改或者新建（如果没有） <code>brklocal.mk</code> 文件，并将 <code>brkfiles.mk</code>  的内容复制进去，然后删除不需要的文件名即可</li>
+<li>字符串本地化的排序比较相关</li>
+<li>coll/collfiles.mk</li>
+<li>方法：修改或者新建（如果没有） <code>collocal.mk</code> 文件，并将 <code>collfiles.mk</code> 的内容复制进去，然后删除不需要的文件名即可</li>
+</ul>
+</li>
+<li>为网络协议提供本地化字符串转换(如网址可以输入中文，阿拉伯文等)<ul>
+<li>spreg/spregfiles.mk</li>
+<li>方法：修改或者新建（如果没有） <code>spreplocal.mk</code> 文件，并将 <code>spregfiles.mk</code> 的内容复制进去，然后删除不需要的文件名即可</li>
+</ul>
+</li>
+<li>脚本语言转化 <ul>
+<li>translit/trnsfiles.mk</li>
+<li>方法：修改或者新建（如果没有） <code>trnslocal.mk</code> 文件，并将 <code>trnsfiles.mk</code> 的内容复制进去，然后删除不需要的文件名即可 </li>
+</ul>
+</li>
+<li>时间，货币，计数等本地化的格式<ul>
+<li>curr/resfiles.mk</li>
+<li>zone/resfiles.mk</li>
+<li>region/resfiles.mk</li>
+<li>lang/resfiles.mk</li>
+<li>locals/resfiles</li>
+<li>方法：在相应的的文件夹下修改或者新建（如果没有） <code>reslocal.mk</code> 文件，并将 <code>resfiles.mk</code> 的内容复制进去，然后删除不需要的文件名即可 </li>
+</ul>
+</li>
+<li>杂项文件<ul>
+<li>misc/miscfiles.mk</li>
+<li>方法：修改或者新建（如果没有） <code>misclocal.mk</code> 文件，并将 <code>miscfiles.mk</code> 的内容复制进去，然后删除不需要的文件名即可</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-编译修改的这些文件，生成_icudt51l-dat_文件">2.编译修改的这些文件，生成 <code>icudt51l.dat</code> 文件</h3>
+<ul>
+<li>打开终端，切换到icu4c目录下</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>cd ~<span class="regexp">/workspace/external</span><span class="regexp">/icu4c/</span></div></pre></td></tr></table></figure>
+
+<ul>
+<li>新建一个临时文件夹，并进入该文件夹</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">mkdir</span> icuBuild</div><div class="line">$ <span class="keyword">cd</span> icuBuild/</div></pre></td></tr></table></figure>
+
+<ul>
+<li>使用管理员权限运行配置文件</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">sudo</span> ../runConfigureICU  Linux</div></pre></td></tr></table></figure>
+
+<ul>
+<li>使用管理员权限编译ICU</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">sudo</span> make -j2</div></pre></td></tr></table></figure>
+
+<ul>
+<li><p>编译过程中如果出现 <code>can not open xxx</code> 的错误请参考文章开头的声明，如果依旧无法解决则将缺少的文件添加进去即可，目前还没有出现过其他问题，如果有则只好自行百度</p>
+</li>
+<li><p>编译成功的话那么恭喜你，已经完成了一半，在 <code>icuBuild/data/out/tmp/</code> 文件夹中找到 <code>icudt51l.dat</code> 文件，并将其复制到根目录下的 <code>stubdata/</code> 文件夹中并替换掉 <code>icudt51l-all.dat</code> 文件，并切换到该文件夹，即</p>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="keyword">cp</span> data/out/tmp/icudt51l.dat ../stubdata/icudt51l-<span class="keyword">all</span>.dat</div><div class="line">$ <span class="keyword">cd</span> ../stubdata/</div></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>接下来修改 <code>icu_dat_generator.py</code> 这个文件，找到 <code>GenResIndex()</code> 这个函数，并屏蔽掉 <code>languages</code> 里不需要的语言,如</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">languages = [</div><div class="line">    <span class="comment"># Group 0.</span></div><div class="line">    <span class="string">'en'</span>,</div><div class="line"></div><div class="line">    <span class="comment"># Group 1.</span></div><div class="line">    <span class="comment">#'ar',</span></div><div class="line">    <span class="string">'zh'</span>,</div><div class="line">    <span class="comment">#'nl',</span></div><div class="line">    <span class="comment">#'fr',</span></div><div class="line">    <span class="comment">#'de',</span></div><div class="line">    <span class="comment">#'it',</span></div><div class="line">    <span class="comment">#'ja',</span></div><div class="line">	<span class="keyword">...</span></div></pre></td></tr></table></figure>
+
+<ul>
+<li>接下来修改 <code>icu-data-default.txt</code> 这个文件，这个文件就是与之前的版本不同，里面的内容决定了编译的时候需要哪些文件，如果不会改的话可以先运行一下脚本</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./icu_dat_generator.<span class="keyword">py</span></div></pre></td></tr></table></figure>
+
+<ul>
+<li><p>看看报错提示缺少什么，然后再到该文件中 <code>Ctrl+F</code> ，如果存在并确定无用则将其用 <code>#</code> 注释掉，如果没有找到，就要回到最开始的步骤，将缺少的文件及其关联都添加进去，然后重新打包生成 <code>icudt51l.dat</code> 文件并重复以上步骤，直到生成 <code>icudt51l-default.dat</code> 即表示编译成功</p>
+</li>
+<li><p>编译成功之后删除 <code>icuBuild</code> 文件夹并切换到Android的根目录下对全局 <code>make</code> 一下即可</p>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>rm -rf icuBuild/</div><div class="line"><span class="variable">$ </span>cd ../../..</div><div class="line"><span class="variable">$ </span>make -j4</div></pre></td></tr></table></figure>
+
+<ul>
+<li>OK~将生成的 <code>system.img</code> 赶紧刷到手机里或者模拟器里看看效果吧</li>
+</ul>
+<h2 id="总结">总结</h2>
+<p>本人也是刚入行的菜鸟，可能解决方法并不完美，也存在一些无法解决的问题，本文旨在为大家提供一些思路，少走一点弯路，如果有什么好的意见和建议欢迎留言或者email我，另提一句，我将语言精简到只剩三个， <code>system.img</code> 大概缩小了10m左右。</p>
+<p><strong>以下提供一些参考网站：</strong></p>
+<ul>
+<li><p>官方文档（推荐阅读，不过需要fq以及不错的英文水平）</p>
+<ul>
+<li><a href="http://userguide.icu-project.org/icudata#TOC-Reducing-the-Size-of-ICU-s-Data:-Locale-Data" target="_blank" rel="external">ICU Data的定制（Customizing）相关说明及原理</a></li>
+<li><a href="http://apps.icu-project.org/datacustom/ICUData51.html" target="_blank" rel="external">ICU Data Library Customizer</a></li>
+<li><a href="http://androidxref.com/4.4.2_r1/" target="_blank" rel="external">Androidxref，检索源码</a> </li>
+</ul>
+</li>
+<li><p>参考文档(大概是我搜到的所有中文文档了，算是做个归纳吧)</p>
+<ul>
+<li><a href="http://baike.baidu.com/view/8177861.htm" target="_blank" rel="external">语言代码</a></li>
+<li><a href="http://blog.sina.com.cn/s/blog_4fcc6ef20101pjp0.html" target="_blank" rel="external">icu4c中资源的修改，编译</a> </li>
+<li><a href="http://blog.csdn.net/jiayouxjh/article/details/8613541" target="_blank" rel="external">Android系统多语言支持总结文档</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-04/58964.htm" target="_blank" rel="external">Android新增语言的方法（墨西哥的西班牙语）</a></li>
+<li><a href="http://www.cnblogs.com/KiloNet/p/3145791.html" target="_blank" rel="external">编译android源码中的icu4c</a></li>
+<li><a href="http://blog.csdn.net/foolenough/article/details/38112043" target="_blank" rel="external"> ICU移植到Android与ICUData裁剪</a></li>
+<li><a href="http://blog.csdn.net/yicao821/article/details/17559851" target="_blank" rel="external">android添加新语言之缅甸语</a></li>
+<li><a href="http://blog.csdn.net/eimsteim/article/details/7246175" target="_blank" rel="external">Android 语言资源库的添加</a></li>
+</ul>
+</li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Android/">Android</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/技术/">技术</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://chenggoi.com/2015/01/10/2015-01-06-Android-ICU-Customizing/" data-title="Android 4.4.2 ICU 语言包 精简、裁剪、定制、本地化 | Chenggoi" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/01/10/2015-01-07-Android-Fonts-Customizing/" title="Android 4.4.2 系统源码字体库精简、添加">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  Android 4.4.2 系统源码字体库精简、添加</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/01/10/2015-01-01-SDK-Manager/"  title="SDK Manager更新速度慢">
+ <strong>NEXT:</strong><br/> 
+ <span>SDK Manager更新速度慢
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	
+	<div class="ds-thread" data-title="Android 4.4.2 ICU 语言包 精简、裁剪、定制、本地化" data-thread-key="2015-01-06-Android-ICU-Customizing" data-author-key="Chenggoi" data-url="http://chenggoi.com/post/2015-01-06-Android-ICU-Customizing"></div>
+	
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#环境配置"><span class="toc-number">1.1.</span> <span class="toc-text">环境配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#正文"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_哪些包可以被裁减（以下所列文件夹均在_(icu_PATH)/data/_目录下）"><span class="toc-number">2.1.</span> <span class="toc-text">1. 哪些包可以被裁减（以下所列文件夹均在 (icu_PATH)/data/ 目录下）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-编译修改的这些文件，生成_icudt51l-dat_文件"><span class="toc-number">2.2.</span> <span class="toc-text">2.编译修改的这些文件，生成 icudt51l.dat 文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+<div id="authorInfo">
+	
+		<div class="author-logo"></div>		
+	
+	<div class="social-list" class="clearfix">
+		
+		
+		
+		<a href="https://github.com/chenggoi" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/心情/" title="心情">心情<sup>0</sup></a></li>
+		
+			<li><a href="/categories/技术/" title="技术">技术<sup>4</sup></a></li>
+		
+			<li><a href="/categories/随笔/" title="随笔">随笔<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Android/" title="Android">Android<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Markdown/" title="Markdown">Markdown<sup>1</sup></a></li>
+		
+			<li><a href="/tags/心情/" title="心情">心情<sup>1</sup></a></li>
+		
+			<li><a href="/tags/随笔/" title="随笔">随笔<sup>0</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://chenggoi.com" target="_blank" title="Chenggoi">Chenggoi's Blog</a></li>
+    </ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">2015 年 01 月</a><span class="archive-list-count">5</span></li></ul>
+  </div>
+
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+    
+            <p class="copyright"> © 2015 
+		
+		<a href="http://chenggoi.com" target="_blank" title="Chenggoi">Chenggoi</a>
+		
+            && Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> && Theme by <a href="http://gengbiao.me" target="_blank" title="coney">coney</a>
+            </div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"chenggoi"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+<script>
+    
+        var _bdImg = '2';
+    
+    window._bd_share_config={
+        "common":{
+            "bdSnsKey":{
+
+            },
+            "bdText":"",
+            "bdMini":"2",
+            "bdMiniList":[
+                "qzone",
+                "tsina",
+                "weixin",
+                "renren",
+                "tqq",
+                "tieba",
+                "douban",
+                "sqq",
+                "diandian",
+                "huaban",
+                "youdao",
+                "mail",
+                "ty",
+                "fbook",
+                "twi",
+                "linkedin",
+                "copy",
+                "print"
+            ],
+            "bdPic":"",
+            "bdStyle":"0",
+            "bdSize":"16"
+        },
+        "slide":{
+            "type":"slide",
+            "bdImg":_bdImg,
+            "bdPos":"right",
+            "bdTop":"350"
+        },
+        "image":{
+            "viewList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ],
+            "viewText":"分享：",
+            "viewSize":"16"
+        },
+        "selectShare":{
+            "bdContainerClass":null,
+            "bdSelectMiniList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ]
+        }
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+
+
+
+
+  </body>
+</html>
+

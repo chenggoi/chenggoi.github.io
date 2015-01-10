@@ -1,0 +1,528 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu_union_verify" content="d1952c66cf48912e21c18c7c581f382a">
+  <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
+<meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
+  
+    <title>Markdown的常用语法 | Chenggoi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Chenggoi">
+    
+    <meta name="description" itemprop="description" content="Markdown的简单知识">
+    
+    
+    
+    
+    <link rel="alternate" href="atom.xml" title="Chenggoi" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.jpg">
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+     
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Chenggoi">Chenggoi</a></h1>
+				<a class="blog-motto">工作之余也不要忘记休息哦～～</a>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/categories/技术">技术</a></li>
+					
+						<li><a href="/categories/随笔">随笔</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+					<li>
+					
+                                            <form class="search" action=http://chenggoi.com target="_blank">
+                                            <label>Search</label>
+                                        <input name="s" type="hidden" value= 3228584831427514000 ><input type="text" name="q" size="30" placeholder="搜索"><br>
+					
+					</li>
+				</ul>
+                            </nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/01/10/2015-01-01-markdown/" title="Markdown的常用语法" itemprop="url">Markdown的常用语法</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://chenggoi.com" title="Chenggoi">Chenggoi</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-01-10T04:28:47.000Z" itemprop="datePublished">1月 10 2015</time>
+    更新日期:<time datetime="2015-01-10T01:35:06.000Z" itemprop="dateModified">1月 10 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#段落和换行"><span class="toc-number">1.</span> <span class="toc-text">段落和换行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#标题"><span class="toc-number">2.</span> <span class="toc-text">标题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#区块引用"><span class="toc-number">3.</span> <span class="toc-text">区块引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#无序列表"><span class="toc-number">4.</span> <span class="toc-text">无序列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有序列表"><span class="toc-number">5.</span> <span class="toc-text">有序列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#斜体粗体"><span class="toc-number">6.</span> <span class="toc-text">斜体粗体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码"><span class="toc-number">7.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#转义字符"><span class="toc-number">8.</span> <span class="toc-text">转义字符</span></a></li></ol>
+		</div>
+		
+		<p><strong>声明：</strong>本文仅针对本人的日常使用，并非Markdown的完整语法，也不做原理性的分析，如有需要请出门百度</p>
+<h2 id="段落和换行">段落和换行</h2>
+<ul>
+<li>方法一：段落末尾按两次回车，即保证段落的前后都有一行以上的空行</li>
+<li>方法二：在段落内按两次空格一次回车即可强制换行,即起到  <code>&lt;br /&gt;</code> 的效果</li>
+</ul>
+<h2 id="标题">标题</h2>
+<ul>
+<li>在行首插入1到6个 <code>#</code> ，表示1到6阶标题，例：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor"># 1阶标题</span></div><div class="line"><span class="preprocessor">## 2阶标题</span></div><div class="line"><span class="preprocessor">###### 6阶标题</span></div></pre></td></tr></table></figure>
+
+<h2 id="区块引用">区块引用</h2>
+<ul>
+<li>在要引用的每行加上<code>&gt;</code>即为引用，也可<code>&gt; &gt;</code>嵌套引用(注意每个<code>&gt;</code>后面要加空格)，例：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="input"><span class="prompt">&gt; 我是第一行</span></span></div><div class="line"></div><div class="line">&gt; 我是第二行</div><div class="line"><span class="input"><span class="prompt">&gt; 我没有换行</span></span></div><div class="line"></div><div class="line">&gt; &gt; 嵌套引用</div></pre></td></tr></table></figure>
+
+<ul>
+<li><p>效果为：</p>
+<blockquote>
+<p>我是第一行</p>
+<p>我是第二行<br>我没有换行</p>
+<blockquote>
+<p>嵌套引用</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<h2 id="无序列表">无序列表</h2>
+<ul>
+<li>在文字开头使用 <code>-</code> 或者 <code>+</code> 或者 <code>*</code> (注意每个后面都要加空格)，则形成无序列表，例：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="bullet">- </span>a</div><div class="line"><span class="bullet">+ </span>b</div><div class="line"><span class="bullet">* </span>c</div></pre></td></tr></table></figure>
+
+<ul>
+<li>效果为：<ul>
+<li>a</li>
+</ul>
+<ul>
+<li>b</li>
+</ul>
+<ul>
+<li>c</li>
+</ul>
+</li>
+</ul>
+<h2 id="有序列表">有序列表</h2>
+<ul>
+<li>数字后面跟上<code>.</code>以及空格，可以乱序，会自动顺序输出，但最好第一行为<code>1.</code>，例：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="bullet">1. </span>a</div><div class="line"><span class="bullet">3. </span>c</div><div class="line"><span class="bullet">2. </span>b</div></pre></td></tr></table></figure>
+
+<ul>
+<li>效果为：<ol>
+<li>a</li>
+<li>c</li>
+<li>b</li>
+</ol>
+</li>
+</ul>
+<h2 id="斜体粗体">斜体粗体</h2>
+<ul>
+<li>将需要斜体的文字两端使用1个<code>*</code>或者<code>_</code>夹起来</li>
+<li>将需要加粗的文字两端使用2个<code>*</code>或者<code>_</code>夹起来</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">*</span>斜体<span class="keyword">*</span> _斜体_ <span class="keyword">*</span><span class="keyword">*</span>粗体<span class="keyword">*</span><span class="keyword">*</span> __粗体__</div></pre></td></tr></table></figure>
+
+<p>效果为：</p>
+<p>  <em>斜体</em>  <em>斜体</em> <strong>粗体</strong> <strong>粗体</strong></p>
+<h2 id="代码">代码</h2>
+<ul>
+<li>对于代码区块，只需要简单的缩进四个空格或者一个Tab,或者可以使用两个`` </li>
+</ul>
+<figure class="highlight ``将代码区块夹起来"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 对于单行的代码注释可使用两个<span class="escape">``</span> <span class="escape">` </span><span class="escape">``</span>将其夹起来，例</div></pre></td></tr></table></figure>
+
+
+<p>  <code>aaa</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">效果为：</div><div class="line"></div><div class="line">  `aaa`</div><div class="line"></div><div class="line"><span class="comment">##分割线</span></div><div class="line"></div><div class="line">- 可以在一行中使用三个以上的`*`或者`-`或者`_`来建立分割线，例：</div><div class="line"></div><div class="line"></div><div class="line">        ---</div><div class="line">        ___</div><div class="line"></div><div class="line">        ***</div><div class="line"></div><div class="line"></div><div class="line">效果为：</div><div class="line"></div><div class="line"></div><div class="line">---</div><div class="line">___</div><div class="line"></div><div class="line">***</div><div class="line"></div><div class="line"><span class="comment">##链接</span></div><div class="line">- 内联方式：`<span class="type">This</span> <span class="keyword">is</span> an [example link](http://baidu.com/)`</div><div class="line">- 引用方式（注意换行，网址写全且顶头）：</div><div class="line">           </div><div class="line">        <span class="type">This</span> <span class="keyword">is</span> an [example link][<span class="keyword">ref</span>]</div><div class="line"></div><div class="line">	    [<span class="keyword">ref</span>]:http://baidu.com</div><div class="line"></div><div class="line">效果为：</div><div class="line"></div><div class="line">- <span class="type">This</span> <span class="keyword">is</span> an [example link](http://baidu.com/)</div><div class="line">- <span class="type">This</span> <span class="keyword">is</span> an [example link][<span class="keyword">ref</span>].</div><div class="line"></div><div class="line">[<span class="keyword">ref</span>]:http://baidu.com</div><div class="line"></div><div class="line"><span class="comment">##图片</span></div><div class="line">- 内联方式：`![example](http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg)`</div><div class="line">- 外联方式（注意换行，网址写全且顶头）：</div><div class="line">          </div><div class="line">        ![example][<span class="keyword">ref</span>]</div><div class="line"></div><div class="line">	    [<span class="keyword">ref</span>]:http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg</div><div class="line"></div><div class="line">效果为：</div><div class="line"></div><div class="line">- ![example](http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg)</div><div class="line">- ![example][<span class="keyword">ref</span>]</div><div class="line"></div><div class="line">[<span class="keyword">ref</span>]:http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg</div><div class="line"></div><div class="line"><span class="comment">##自动连接</span></div><div class="line">- 使用` &lt;&gt; `将输入的<span class="type">URL</span>及邮箱夹在中间，例:</div></pre></td></tr></table></figure>
+
+<p>  <a href="http://www.baidu.com" target="_blank" rel="external">http://www.baidu.com</a><br>  <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#x63;&#104;&#101;&#x6e;&#x67;&#x67;&#x6f;&#105;&#x40;&#115;&#x69;&#x6e;&#97;&#46;&#99;&#111;&#x6d;">&#x63;&#104;&#101;&#x6e;&#x67;&#x67;&#x6f;&#105;&#x40;&#115;&#x69;&#x6e;&#97;&#46;&#99;&#111;&#x6d;</a><br>  ```</p>
+<p>效果为：</p>
+<p>  <a href="http://www.baidu.com" target="_blank" rel="external">http://www.baidu.com</a></p>
+<p>  <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x74;&#101;&#x73;&#x74;&#64;&#99;&#104;&#x65;&#x6e;&#103;&#x67;&#x6f;&#105;&#x2e;&#99;&#111;&#109;">&#x74;&#101;&#x73;&#x74;&#64;&#99;&#104;&#x65;&#x6e;&#103;&#x67;&#x6f;&#105;&#x2e;&#99;&#111;&#109;</a></p>
+<h2 id="转义字符">转义字符</h2>
+<ul>
+<li>\\表示<code>\</code></li>
+<li>\`表示<code>` </code></li>
+<li>\_表示<code>_</code></li>
+<li>\*表示<code>*</code></li>
+<li>\{\}表示<code>{}</code></li>
+<li>\[\]表示<code>[]</code></li>
+<li>\(\)表示<code>()</code></li>
+<li>\#表示<code>#</code></li>
+<li>\+表示<code>+</code></li>
+<li>\-表示<code>-</code></li>
+<li>\.表示<code>.</code></li>
+<li>\!表示<code>!</code></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Markdown/">Markdown</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/技术/">技术</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://chenggoi.com/2015/01/10/2015-01-01-markdown/" data-title="Markdown的常用语法 | Chenggoi" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/01/10/2015-01-01-SDK-Manager/" title="SDK Manager更新速度慢">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  SDK Manager更新速度慢</span>
+</a>
+</div>
+
+
+</nav>
+
+	
+<section class="comment">
+	
+	<div class="ds-thread" data-title="Markdown的常用语法" data-thread-key="2015-01-01-markdown" data-author-key="Chenggoi" data-url="http://chenggoi.com/post/2015-01-01-markdown"></div>
+	
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#段落和换行"><span class="toc-number">1.</span> <span class="toc-text">段落和换行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#标题"><span class="toc-number">2.</span> <span class="toc-text">标题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#区块引用"><span class="toc-number">3.</span> <span class="toc-text">区块引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#无序列表"><span class="toc-number">4.</span> <span class="toc-text">无序列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有序列表"><span class="toc-number">5.</span> <span class="toc-text">有序列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#斜体粗体"><span class="toc-number">6.</span> <span class="toc-text">斜体粗体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码"><span class="toc-number">7.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#转义字符"><span class="toc-number">8.</span> <span class="toc-text">转义字符</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+<div id="authorInfo">
+	
+		<div class="author-logo"></div>		
+	
+	<div class="social-list" class="clearfix">
+		
+		
+		
+		<a href="https://github.com/chenggoi" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/心情/" title="心情">心情<sup>0</sup></a></li>
+		
+			<li><a href="/categories/技术/" title="技术">技术<sup>4</sup></a></li>
+		
+			<li><a href="/categories/随笔/" title="随笔">随笔<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Android/" title="Android">Android<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Markdown/" title="Markdown">Markdown<sup>1</sup></a></li>
+		
+			<li><a href="/tags/心情/" title="心情">心情<sup>1</sup></a></li>
+		
+			<li><a href="/tags/随笔/" title="随笔">随笔<sup>0</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://chenggoi.com" target="_blank" title="Chenggoi">Chenggoi's Blog</a></li>
+    </ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">2015 年 01 月</a><span class="archive-list-count">5</span></li></ul>
+  </div>
+
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+    
+            <p class="copyright"> © 2015 
+		
+		<a href="http://chenggoi.com" target="_blank" title="Chenggoi">Chenggoi</a>
+		
+            && Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> && Theme by <a href="http://gengbiao.me" target="_blank" title="coney">coney</a>
+            </div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"chenggoi"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+<script>
+    
+        var _bdImg = '2';
+    
+    window._bd_share_config={
+        "common":{
+            "bdSnsKey":{
+
+            },
+            "bdText":"",
+            "bdMini":"2",
+            "bdMiniList":[
+                "qzone",
+                "tsina",
+                "weixin",
+                "renren",
+                "tqq",
+                "tieba",
+                "douban",
+                "sqq",
+                "diandian",
+                "huaban",
+                "youdao",
+                "mail",
+                "ty",
+                "fbook",
+                "twi",
+                "linkedin",
+                "copy",
+                "print"
+            ],
+            "bdPic":"",
+            "bdStyle":"0",
+            "bdSize":"16"
+        },
+        "slide":{
+            "type":"slide",
+            "bdImg":_bdImg,
+            "bdPos":"right",
+            "bdTop":"350"
+        },
+        "image":{
+            "viewList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ],
+            "viewText":"分享：",
+            "viewSize":"16"
+        },
+        "selectShare":{
+            "bdContainerClass":null,
+            "bdSelectMiniList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ]
+        }
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+
+
+
+
+  </body>
+</html>
+
