@@ -7,12 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>SDK Manager更新速度慢 | Chenggoi&#39;s Blog</title>
+    <title>Android 4.2.2 添加暗码 | Chenggoi&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Chenggoi">
     
-    <meta name="description" itemprop="description" content="更新SDK缓慢解决方案">
+    <meta name="description" itemprop="description" content="基于Android系统源码，为Android添加如“*#06#”一样的暗码">
     
     
     
@@ -68,15 +68,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/01/01/SDK_Manager/" title="SDK Manager更新速度慢" itemprop="url">SDK Manager更新速度慢</a>
+      <a href="/2015/01/15/AddSecretCode/" title="Android 4.2.2 添加暗码" itemprop="url">Android 4.2.2 添加暗码</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://chenggoi.com" title="Chenggoi">Chenggoi</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-01-01T07:30:16.000Z" itemprop="datePublished">1月 1 2015</time>
-    更新日期:<time datetime="2015-01-10T06:43:43.000Z" itemprop="dateModified">1月 10 2015</time>
+    <time datetime="2015-01-15T12:35:05.000Z" itemprop="datePublished">1月 15 2015</time>
+    更新日期:<time datetime="2015-01-15T13:05:51.000Z" itemprop="dateModified">1月 15 2015</time>
     
   </p>
 </header>
@@ -85,21 +85,47 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">2.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Activity"><span class="toc-number">3.</span> <span class="toc-text">创建Activity</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置配置文件"><span class="toc-number">4.</span> <span class="toc-text">设置配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加调用代码"><span class="toc-number">5.</span> <span class="toc-text">添加调用代码</span></a></li></ol>
 		</div>
 		
-		<p>1、打开tools-&gt;opinion</p>
-<p>2、设置HTTP Proxy server：mirrors.neusoft.edu.cn</p>
-<p>3、设置HTTP Proxy Port：80</p>
-<p>4、选中Force ..<a href="https://...sources" target="_blank" rel="external">https://...sources</a> to be fetched using http:</p>
-<p>5、关闭，重新更新</p>
+		<h2 id="环境配置">环境配置</h2>
+<pre><code>操作系统：Unubtu <span class="number">14.04</span>
+Android：<span class="number">4.2</span><span class="number">.2</span>
+gcc：<span class="number">4.4</span>
+java：<span class="number">1.6</span> <span class="number">71u</span>
+</code></pre><h2 id="引言">引言</h2>
+<p>在手机的拨号界面输入 <code>*#06#</code> 会出现手机的串号，这个功能想必大家都知道，这就是所谓的<code>暗码</code>。这种暗码是可以自己添加定义的，以下我会写出添加的方法，至于原理网上有很多，大家可以自行查找。</p>
+<h2 id="创建Activity">创建Activity</h2>
+<p>首先要创建一个想要显示<code>Activity</code>，<code>Activity</code>可以创建在<code>workspace/packages/apps/Contacts/src/com/android/contacts/</code>目录下。这里我就不多赘述了，网上教程一大把。要注意的是，暗码实际上是通过<code>Intent</code>来启动<code>Activity</code>。我在这里就以<code>WiFiTestActivity.java</code>为例子为大家讲解。</p>
+<h2 id="设置配置文件">设置配置文件</h2>
+<p>打开<code>workspace/packages/apps/Contacts/</code>目录下的<code>AndroidManifest.xml</code>配置文件，添加如下代码注册刚建好的<code>Activity</code>并配置<code>Intent</code>，其中与<code>name</code>是你的<code>Activity</code>文件名，注意前面有个点，<code>label</code>是你自己定义的字符串，<code>OPEN_WiFiTestActivity</code>修改为<code>OPEN_你自己的Activity</code></p>
+<pre><code><span class="tag">&lt;<span class="title">activity
+</span> <span class="attribute">android:name</span>=<span class="value">".WiFiTestActivity"</span>
+ <span class="attribute">android:label</span>=<span class="value">"@string/wifi_test"</span>
+ <span class="attribute">android:screenOrientation</span>=<span class="value">"portrait"</span> &gt;</span>
+ <span class="tag">&lt;<span class="title">intent-filter</span>&gt;</span>
+   <span class="tag">&lt;<span class="title">action</span> <span class="attribute">android:name</span>=<span class="value">"android.intent.action.OPEN_WiFiTestActivity"</span> /&gt;</span>
+   <span class="tag">&lt;<span class="title">category</span> <span class="attribute">android:name</span>=<span class="value">"android.intent.category.DEFAULT"</span> /&gt;</span>
+ <span class="tag">&lt;/<span class="title">intent-filter</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">activity</span>&gt;</span>
+</code></pre><h2 id="添加调用代码">添加调用代码</h2>
+<p>打开    </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">workspace<span class="regexp">/packages/</span>apps<span class="regexp">/Contacts/</span>src<span class="regexp">/com/</span>android<span class="regexp">/contacts/</span>src<span class="regexp">/com/</span>android<span class="regexp">/contacts/</span>SpecialCharSequenceMgr.java</div></pre></td></tr></table></figure>
+
+<p>文件，找到<code>handleSecretCode</code>方法的定义，并在其中添加如下代码，其中<code>OPEN_WiFiTestActivity</code>替换为之前注册的，<code>*#1111#</code>替换为你自己的暗码</p>
+<pre><code><span class="keyword">else</span> <span class="keyword">if</span> (input<span class="built_in">.</span><span class="keyword">equals</span>(<span class="string">"*#1111#"</span>)) {
+    Intent i <span class="subst">=</span> <span class="literal">new</span> Intent(<span class="string">"android.intent.action.OPEN_WiFiTestActivity"</span>);
+    context<span class="built_in">.</span>startActivity(i);
+    <span class="keyword">return</span> <span class="literal">true</span>;
+}
+</code></pre><p>之后就可以<code>make -j4</code>一下刷到手机或者虚拟机里看看效果了～</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/Android/">Android</a>
+  <span></span> <a href="/tags/Android/">Android</a><a href="/tags/暗码/">暗码</a>
   </div>
 
 
@@ -112,7 +138,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://chenggoi.com/2015/01/01/SDK_Manager/" data-title="SDK Manager更新速度慢 | Chenggoi&#39;s Blog" data-tsina="null" class="share clearfix">
+  <div data-url="http://chenggoi.com/2015/01/15/AddSecretCode/" data-title="Android 4.2.2 添加暗码 | Chenggoi&#39;s Blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -121,19 +147,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/01/01/markdown/" title="Markdown的常用语法">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  Markdown的常用语法</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/12/15/HelloWorlds/"  title="My first blog">
+<a href="/2015/01/13/Add_ampm_Android/"  title="Android系统源码之桌面和锁屏时钟添加Am/Pm显示">
  <strong>NEXT:</strong><br/> 
- <span>My first blog
+ <span>Android系统源码之桌面和锁屏时钟添加Am/Pm显示
 </span>
 </a>
 </div>
@@ -143,7 +161,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="SDK Manager更新速度慢" data-thread-key="SDK_Manager" data-author-key="Chenggoi" data-url="http://chenggoi.com/post/SDK_Manager"></div>
+	<div class="ds-thread" data-title="Android 4.2.2 添加暗码" data-thread-key="AddSecretCode" data-author-key="Chenggoi" data-url="http://chenggoi.com/post/AddSecretCode"></div>
 	
 </section>
 
@@ -153,7 +171,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">2.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Activity"><span class="toc-number">3.</span> <span class="toc-text">创建Activity</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置配置文件"><span class="toc-number">4.</span> <span class="toc-text">设置配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加调用代码"><span class="toc-number">5.</span> <span class="toc-text">添加调用代码</span></a></li></ol>
   </div>
 
 <div id="asidepart">
