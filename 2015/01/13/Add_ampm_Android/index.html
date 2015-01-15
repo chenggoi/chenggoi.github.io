@@ -1,0 +1,535 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu_union_verify" content="d1952c66cf48912e21c18c7c581f382a">
+  <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
+<meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
+  
+    <title>Android系统源码之桌面和锁屏时钟添加Am/Pm显示 | Chenggoi&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Chenggoi">
+    
+    <meta name="description" itemprop="description" content="为Android 4.2.2 和 Android 4.4.2 的桌面时钟及锁屏时钟添加am/pm显示">
+    
+    
+    
+    
+    <link rel="alternate" href="/atom.xml" title="Chenggoi&#39;s Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+     
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Chenggoi&#39;s Blog">Chenggoi&#39;s Blog</a></h1>
+				<a class="blog-motto">工作虽然很开心但也不要忘记休息哦～～</a>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/categories/code">技术</a></li>
+					
+						<li><a href="/categories/life">随笔</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+					<li>
+					
+                                            <form class="search" action=http://chenggoi.com target="_blank">
+                                            <label>Search</label>
+                                        <input name="s" type="hidden" value= 3228584831427514000 ><input type="text" name="q" size="30" placeholder="搜索"><br>
+					
+					</li>
+				</ul>
+                            </nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/01/13/Add_ampm_Android/" title="Android系统源码之桌面和锁屏时钟添加Am/Pm显示" itemprop="url">Android系统源码之桌面和锁屏时钟添加Am/Pm显示</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://chenggoi.com" title="Chenggoi">Chenggoi</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-01-13T13:00:00.000Z" itemprop="datePublished">1月 13 2015</time>
+    更新日期:<time datetime="2015-01-15T04:41:25.000Z" itemprop="dateModified">1月 15 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">2.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android_4-2-2"><span class="toc-number">3.</span> <span class="toc-text">Android 4.2.2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#锁屏时钟"><span class="toc-number">3.1.</span> <span class="toc-text">锁屏时钟</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#桌面时钟"><span class="toc-number">3.2.</span> <span class="toc-text">桌面时钟</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android_4-4-2"><span class="toc-number">4.</span> <span class="toc-text">Android 4.4.2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#锁屏时钟-1"><span class="toc-number">4.1.</span> <span class="toc-text">锁屏时钟</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#桌面时钟-1"><span class="toc-number">4.2.</span> <span class="toc-text">桌面时钟</span></a></li></ol></li></ol>
+		</div>
+		
+		<h2 id="环境配置">环境配置</h2>
+<pre><code>操作系统：Ubuntu <span class="number">14.04</span> <span class="number">64</span>位
+gcc版本：<span class="number">4.4</span>
+jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
+</code></pre><hr>
+<h2 id="引言">引言</h2>
+<p> 　　Google官方原生的Android系统在桌面的时间控件和锁屏界面的时间控件上都默认不显示 <code>am</code> 和 <code>pm</code> 标识的，虽然我觉得的确在大多数情况下人们是可以不通过标识对时间作出正确判断的，而且由于<code>local</code> 的不同，去掉 <code>ampm</code> 可以让时间显示固定在一个相对固定的长度，方便布局。不过各有所好，所以在这里总结下此次修改的过程。不要问我为什么要分成 <code>Android 4.2.2</code> 和 <code>Android 4.4.2</code> ，我也不敢想象Google对于两个系统四个时钟用了几乎完全不同的方式，不过最核心的还是 <code>TextClock</code> 布局的使用，以及如 <code>hmma</code> 这样的时间格式化的方法，对这块有兴趣的可以去研究下官方文档。</p>
+<h2 id="Android_4-2-2">Android 4.2.2</h2>
+<h3 id="锁屏时钟">锁屏时钟</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">需要修改的文件：</div><div class="line">workspace/frameworks/base/目录下</div><div class="line">    policy/src/<span class="keyword">com</span>/android/internal/policy/impl/keyguard/ClockView.java</div><div class="line">    core/<span class="keyword">res</span>/<span class="keyword">res</span>/layout/keyguard_status_view.xml</div><div class="line">    core/<span class="keyword">res</span>/<span class="keyword">res</span>/<span class="built_in">values</span>/public.xml</div><div class="line">    core/<span class="keyword">res</span>/<span class="keyword">res</span>/<span class="built_in">values</span>/ids.xml</div><div class="line">    api/current.txt</div></pre></td></tr></table></figure>
+
+<ul>
+<li>首先在 <code>ClockView.java</code> 中有如下代码：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">AmPm(View parent, Typeface tf) {</div><div class="line">    // No longer used, uncomment <span class="keyword">if</span> we decide to use AM/PM indicator again</div><div class="line">    // <span class="variable">mAmPmTextView =</span> (TextView) parent.findViewById(R.id.am_pm);</div><div class="line">    <span class="keyword">if</span> (mAmPmTextView != <span class="constant">null</span> && tf != <span class="constant">null</span>) {</div><div class="line">        mAmPmTextView.setTypeface(tf);</div><div class="line">    }</div><div class="line"></div><div class="line">    String[] <span class="variable">ampm =</span> new DateFormatSymbols().getAmPmStrings();</div><div class="line">    <span class="variable">mAmString =</span> ampm[<span class="number">0</span>];</div><div class="line">    <span class="variable">mPmString =</span> ampm[<span class="number">1</span>];</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<ul>
+<li>我们可以看到Google将显示ampm的控件注释掉了，而且在布局文件中也没有该Textiew，所以接下来我们先取消注释：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">AmPm(View parent, Typeface tf) {</div><div class="line">    // No longer used, uncomment <span class="keyword">if</span> we decide to use AM/PM indicator again</div><div class="line">    <span class="variable">mAmPmTextView =</span> (TextView) parent.findViewById(R.id.am_pm);</div><div class="line">    <span class="keyword">if</span> (mAmPmTextView != <span class="constant">null</span> && tf != <span class="constant">null</span>) {</div><div class="line">        mAmPmTextView.setTypeface(tf);</div><div class="line">    }</div><div class="line"></div><div class="line">    String[] <span class="variable">ampm =</span> new DateFormatSymbols().getAmPmStrings();</div><div class="line">    <span class="variable">mAmString =</span> ampm[<span class="number">0</span>];</div><div class="line">    <span class="variable">mPmString =</span> ampm[<span class="number">1</span>];</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<ul>
+<li>然后在 <code>keyguard_status_view.xml</code> 下添加相应的布局文件：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">	&lt;TextView</div><div class="line">	    android:id=<span class="string">"@+id/clock_text"</span></div><div class="line">	    <span class="keyword">...</span>/&gt;</div><div class="line">	    </div><div class="line">	&lt;TextView</div><div class="line">	    android:id=<span class="string">"@+id/am_pm"</span></div><div class="line">	    android:layout_width=<span class="string">"wrap_content"</span></div><div class="line">	    android:layout_height=<span class="string">"wrap_content"</span></div><div class="line">	    android:layout_toRightOf=<span class="string">"@id/clock_text"</span></div><div class="line">	    android:drawablePadding=<span class="string">"2dip"</span></div><div class="line">	    android:ellipsize=<span class="string">"none"</span></div><div class="line">	    android:singleLine=<span class="string">"true"</span></div><div class="line">	    android:textAppearance=<span class="string">"?android:attr/textAppearanceMedium"</span></div><div class="line">	    android:textColor=<span class="string">"#ffffffff"</span></div><div class="line">	    android:textSize=<span class="string">"20dp"</span> /&gt;</div><div class="line">	</div><div class="line">		<span class="keyword">...</span></div><div class="line">&lt;/com.android.internal.policy.impl.keyguard.ClockView&gt;</div></pre></td></tr></table></figure>
+
+<ul>
+<li>由于Android系统源码在添加 <code>res</code> 资源时并不会自动的注册 <code>id</code> ，因此接下来我们要手动为刚添加的 <code>TextView</code> 分配id。首先打开 <code>ids.xml</code> 文件，添加如下一行：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">  &lt;resources&gt;</div><div class="line"><span class="keyword">...</span></div><div class="line">  &lt;item type=<span class="string">"id"</span> name=<span class="string">"am_pm"</span> /&gt;</div><div class="line"><span class="keyword">...</span></div><div class="line">  &lt;/resources&gt;</div></pre></td></tr></table></figure>
+
+<ul>
+<li><p>然后打开 <code>public.xml</code> 文件，利用查找功能查找 <code>type=&quot;id&quot;</code> 并定位到最后一个 <code>type=&quot;id&quot;</code> 的public项，例如我这里是 <code>&lt;public type=&quot;id&quot; name=&quot;selectTextMode&quot; id=&quot;0x0102002d&quot; /&gt;</code> ，然后在他下面另起一行，添加 <code>&lt;public type=&quot;id&quot; name=&quot;am_pm&quot; id=&quot;0x0102002e&quot; /&gt;</code> ，注意 <code>id</code> 后面的 <code>0x0102002e</code> 是你刚才找到的那个最后一项的 <code>id+1</code> (16进制)，这样可以避免id冲突。</p>
+</li>
+<li><p>以上完成后我们要在 <code>frameworks/base/core/res/</code> 中执行 <code>mm</code>，编译后会更新 <code>com.android.internal.R</code> 文件，该 R文件 所对应的文件为 <code>/out/target/common/R/com/android/internal/R.java</code> ，可以在该文件中查看自己的资源是否已经加进去了。（如果mm出错可以尝试先执行一下 <code>touch 资源文件</code> 命令）</p>
+</li>
+<li><p>接下来后退到 <code>workspace</code> 目录下，执行 <code>make update-api</code> 指令，更新 <code>current.txt</code> 文件，然后执行 <code>make -j4</code> 对源码全编一遍，就可以看效果了</p>
+</li>
+</ul>
+<h3 id="桌面时钟">桌面时钟</h3>
+<pre><code>需要修改的文件：
+workspace<span class="regexp">/packages/</span>apps<span class="regexp">/DeskClock/</span>目录下：
+    res<span class="regexp">/layout/</span>digital_widget_time.xml
+</code></pre><ul>
+<li>桌面时钟的修改相对比较简单，只需要打开 <code>digital_widget_time.xml</code> 文件，将 <code>@+id/the_clock2</code> 的 <code>TextClock</code> 中的 <code>android:format12Hour=&quot;@string/widget_12_hours_format_no_ampm_m&quot;</code> 改为 <code>android:format12Hour=&quot;@string/widget_12_hours_format_m&quot;</code> 即可。</li>
+</ul>
+<h2 id="Android_4-4-2">Android 4.4.2</h2>
+<h3 id="锁屏时钟-1">锁屏时钟</h3>
+<pre><code>需要修改的文件：
+workspace<span class="regexp">/frameworks/</span>base目录下
+    packages<span class="regexp">/Keyguard/</span>res<span class="regexp">/values/</span>strings.xml
+    packages<span class="regexp">/Keyguard/</span>src<span class="regexp">/com/</span>android<span class="regexp">/keyguard/</span>KeyguardStatusView.java
+</code></pre><ul>
+<li><p>首先调整 <code>strings.xml</code> 里的时间格式，将</p>
+<pre><code>  &lt;string <span class="variable">name=</span><span class="string">"keyguard_widget_12_hours_format"</span> <span class="variable">translatable=</span><span class="string">"false"</span>&gt;h&amp;<span class="comment">#58;mm&lt;/string&gt;</span>
+</code></pre></li>
+<li><p>调整为</p>
+<pre><code>  <span class="tag">&lt;<span class="title">string</span> <span class="attribute">name</span>=<span class="value">"keyguard_widget_12_hours_format"</span> <span class="attribute">translatable</span>=<span class="value">"false"</span>&gt;</span>h&amp;#58;mm&amp;#8202;<span class="tag">&lt;<span class="title">b</span>&gt;</span><span class="tag">&lt;<span class="title">font</span> <span class="attribute">size</span>=<span class="value">"16"</span> <span class="attribute">face</span>=<span class="value">"sans-serif-condensed"</span>&gt;</span>a<span class="tag">&lt;/<span class="title">font</span>&gt;</span><span class="tag">&lt;/<span class="title">b</span>&gt;</span><span class="tag">&lt;/<span class="title">string</span>&gt;</span>
+</code></pre></li>
+<li><p>然后在 <code>KeyguardStatusView.java</code> 文件中作如下修改</p>
+<ul>
+<li>添加缩小ampm字体大小的方法</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="javadoc">/***</span></div><div class="line">    * Add Code for show amPm in right size</div><div class="line">    *<span class="javadoctag"> @param</span> amPmFontSize - size of am/pm label (label removed is size is 0).</div><div class="line">    *<span class="javadoctag"> @return</span> format string for 12 hours mode time</div><div class="line">    */</div><div class="line">   <span class="keyword">public</span> <span class="keyword">static</span> CharSequence <span class="title">get12ModeFormat</span>() {</div><div class="line">String skeleton = <span class="string">"hma"</span>;</div><div class="line">String pattern = DateFormat.getBestDateTimePattern(Locale.getDefault(), skeleton);</div><div class="line"><span class="keyword">int</span> amPmFontSize=<span class="number">14</span>;</div><div class="line"><span class="comment">// Replace spaces with "Hair Space" </span></div><div class="line">pattern = pattern.replaceAll(<span class="string">" "</span>, <span class="string">"\u200A"</span>);</div><div class="line"><span class="comment">// Build a spannable so that the am/pm will be formatted </span></div><div class="line"><span class="keyword">int</span> amPmPos = pattern.indexOf(<span class="string">'a'</span>);</div><div class="line"><span class="keyword">if</span> (amPmPos == -<span class="number">1</span>) {</div><div class="line">    <span class="keyword">return</span> pattern;</div><div class="line">}</div><div class="line">Spannable sp = <span class="keyword">new</span> SpannableString(pattern);</div><div class="line">sp.setSpan(<span class="keyword">new</span> StyleSpan(android.graphics.Typeface.BOLD), amPmPos, amPmPos + <span class="number">1</span>,</div><div class="line">        Spannable.SPAN_POINT_MARK);</div><div class="line">sp.setSpan(<span class="keyword">new</span> AbsoluteSizeSpan(amPmFontSize), amPmPos, amPmPos + <span class="number">1</span>,</div><div class="line">        Spannable.SPAN_POINT_MARK);</div><div class="line">sp.setSpan(<span class="keyword">new</span> TypefaceSpan(<span class="string">"sans-serif-condensed"</span>), amPmPos, amPmPos + <span class="number">1</span>,</div><div class="line">        Spannable.SPAN_POINT_MARK);</div><div class="line"><span class="keyword">return</span> sp;</div><div class="line">      }</div><div class="line">    }</div></pre></td></tr></table></figure>
+
+<ul>
+<li>注释掉以下代码</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//        static String clockView12; </span></div><div class="line"><span class="comment">//            clockView12 = DateFormat.getBestDateTimePattern(locale, clockView12Skel); </span></div><div class="line"><span class="comment">//            if (!clockView12Skel.contains("a")) { </span></div><div class="line">				clockView12 = clockView12.replaceAll(<span class="string">"a"</span>, <span class="string">""</span>).<span class="keyword">trim</span>(); </div><div class="line"><span class="comment">//            }</span></div></pre></td></tr></table></figure>
+
+<ul>
+<li>修改以下代码</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mClockView.setFormat12Hour(Patterns.clockView12);</div><div class="line">final String clockView12Skel = <span class="keyword">res</span>.getString(R.<span class="built_in">string</span>.clock_12hr_format);</div></pre></td></tr></table></figure>
+
+<ul>
+<li>改为</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mClockView.setFormat12Hour(get12ModeFormat());</div><div class="line">final String clockView12Skel = <span class="keyword">res</span>.getString(R.<span class="built_in">string</span>.keyguard_widget_12_hours_format);</div></pre></td></tr></table></figure>
+
+<ul>
+<li>完成以上所有工作并对全局进行<code>make -j4</code>之后锁屏时钟就修改好了</li>
+</ul>
+<h3 id="桌面时钟-1">桌面时钟</h3>
+<pre><code>需要修改的文件：
+workspace<span class="regexp">/packages/</span>apps<span class="regexp">/DeskClock/</span>目录下
+   res<span class="regexp">/values/</span>strings.xml
+   src<span class="regexp">/com/</span>android<span class="regexp">/deskclock/</span>Utils.java
+</code></pre><ul>
+<li><p>将 <code>strings.xml</code> 中的</p>
+<pre><code>  &lt;string <span class="variable">name=</span><span class="string">"main_widget_12_hours_format"</span> <span class="variable">translatable=</span><span class="string">"false"</span>&gt;h&amp;<span class="comment">#58;mm&lt;/string&gt;</span>
+</code></pre></li>
+<li><p>改为</p>
+<pre><code>  <span class="tag">&lt;<span class="title">string</span> <span class="attribute">name</span>=<span class="value">"main_widget_12_hours_format"</span> <span class="attribute">translatable</span>=<span class="value">"false"</span>&gt;</span>h&amp;#58;mm<span class="tag">&lt;<span class="title">b</span>&gt;</span><span class="tag">&lt;<span class="title">font</span> <span class="attribute">size</span>=<span class="value">"14"</span> <span class="attribute">face</span>=<span class="value">"sans-serif-condensed"</span>&gt;</span>a<span class="tag">&lt;/<span class="title">font</span>&gt;</span><span class="tag">&lt;/<span class="title">b</span>&gt;</span><span class="tag">&lt;/<span class="title">string</span>&gt;</span>
+</code></pre></li>
+<li><p>然后在 <code>Utils.java</code> 中将如下部分注释修改即可</p>
+<pre><code>   //       <span class="keyword">if</span> (amPmFontSize &lt;= <span class="number">0</span>) {
+  //            <span class="variable">pattern =</span> pattern.replaceAll(<span class="string">"a"</span>, <span class="string">""</span>).trim();
+  <span class="variable">amPmFontSize=</span><span class="number">14</span>;
+  //        }
+</code></pre></li>
+<li><p>在 <code>DeskClock</code> 文件夹下执行 <code>mm</code> 即可完成编译</p>
+</li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Android-时钟-ampm/">Android 时钟 ampm</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/code/">技术</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://chenggoi.com/2015/01/13/Add_ampm_Android/" data-title="Android系统源码之桌面和锁屏时钟添加Am/Pm显示 | Chenggoi&#39;s Blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/01/07/Android_Fonts_Customizing/"  title="Android 4.4.2 系统源码字体库精简、添加">
+ <strong>NEXT:</strong><br/> 
+ <span>Android 4.4.2 系统源码字体库精简、添加
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	
+	<div class="ds-thread" data-title="Android系统源码之桌面和锁屏时钟添加Am/Pm显示" data-thread-key="Add_ampm_Android" data-author-key="Chenggoi" data-url="http://chenggoi.com/post/Add_ampm_Android"></div>
+	
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">2.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android_4-2-2"><span class="toc-number">3.</span> <span class="toc-text">Android 4.2.2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#锁屏时钟"><span class="toc-number">3.1.</span> <span class="toc-text">锁屏时钟</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#桌面时钟"><span class="toc-number">3.2.</span> <span class="toc-text">桌面时钟</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Android_4-4-2"><span class="toc-number">4.</span> <span class="toc-text">Android 4.4.2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#锁屏时钟-1"><span class="toc-number">4.1.</span> <span class="toc-text">锁屏时钟</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#桌面时钟-1"><span class="toc-number">4.2.</span> <span class="toc-text">桌面时钟</span></a></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+<div id="authorInfo">
+	
+		<div class="author-logo"></div>		
+	
+	<div class="social-list" class="clearfix">
+		
+		
+		
+		<a href="https://github.com/chenggoi" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/code/" title="技术">技术<sup>5</sup></a></li>
+		
+			<li><a href="/categories/life/" title="随笔">随笔<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Android/" title="Android">Android<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Android-时钟-ampm/" title="Android 时钟 ampm">Android 时钟 ampm<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Markdown/" title="Markdown">Markdown<sup>1</sup></a></li>
+		
+			<li><a href="/tags/心情/" title="心情">心情<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://chenggoi.com" target="_blank" title="Chenggoi">Chenggoi's Blog</a></li>
+    </ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">2015 年 01 月</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">2014 年 12 月</a><span class="archive-list-count">1</span></li></ul>
+  </div>
+
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+    
+            <p class="copyright"> © 2015 
+		
+		<a href="http://chenggoi.com" target="_blank" title="Chenggoi">Chenggoi</a>
+		
+            && Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> && Theme by <a href="http://gengbiao.me" target="_blank" title="coney">coney</a>
+            </div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"chenggoi"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+<script>
+    
+        var _bdImg = '2';
+    
+    window._bd_share_config={
+        "common":{
+            "bdSnsKey":{
+
+            },
+            "bdText":"",
+            "bdMini":"2",
+            "bdMiniList":[
+                "qzone",
+                "tsina",
+                "weixin",
+                "renren",
+                "tqq",
+                "tieba",
+                "douban",
+                "sqq",
+                "diandian",
+                "huaban",
+                "youdao",
+                "mail",
+                "ty",
+                "fbook",
+                "twi",
+                "linkedin",
+                "copy",
+                "print"
+            ],
+            "bdPic":"",
+            "bdStyle":"0",
+            "bdSize":"16"
+        },
+        "slide":{
+            "type":"slide",
+            "bdImg":_bdImg,
+            "bdPos":"right",
+            "bdTop":"350"
+        },
+        "image":{
+            "viewList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ],
+            "viewText":"分享：",
+            "viewSize":"16"
+        },
+        "selectShare":{
+            "bdContainerClass":null,
+            "bdSelectMiniList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ]
+        }
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254061909'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1254061909%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  </body>
+</html>
+
