@@ -4,7 +4,7 @@
   <subtitle><![CDATA[工作虽然很开心但也不要忘记休息哦～～]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://chenggoi.com/"/>
-  <updated>2015-01-15T13:05:59.546Z</updated>
+  <updated>2015-01-16T13:19:22.839Z</updated>
   <id>http://chenggoi.com/</id>
   
   <author>
@@ -13,6 +13,68 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[为EditText输入框添加自动弹出输入法框]]></title>
+    <link href="http://chenggoi.com/2015/01/16/EditTextShowKeyboard/"/>
+    <id>http://chenggoi.com/2015/01/16/EditTextShowKeyboard/</id>
+    <published>2015-01-16T12:56:16.000Z</published>
+    <updated>2015-01-16T13:19:16.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="环境配置">环境配置</h2>
+<pre><code>操作系统：Ubuntu <span class="number">14.04</span>
+Android：<span class="number">4.4</span><span class="number">.2</span>
+java：<span class="number">1.6</span> <span class="number">71u</span>
+</code></pre><h2 id="引言">引言</h2>
+<p>对于<code>Android</code>系统来说，理论上如果一个<code>Activity</code>页面含有一个或多个<code>EditText</code>，则在用户切换到该<code>Activity</code>时会自动聚焦在第一个<code>EditText</code> 上，并弹出输入法框。但是实际情况却是在有的时候无法自动弹出，这时候我们就可以帮他们一把了。本人是在<code>Android</code> 源码中进行的修改，如果是要自己建<code>Activity</code>原理也是相同的。</p>
+<h2 id="自动显示">自动显示</h2>
+<p><strong>添加如下函数并在待显示的view声明之后调用</strong>，通过调用<code>Handle</code> 线程来避免在主线程更新UI：</p>
+<pre><code>    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">showKeyboardPassword</span> (<span class="keyword">final</span> TextView v) {
+    v.setFocusable(<span class="keyword">true</span>); 
+    v.requestFocus(); 
+    (<span class="keyword">new</span> Handler()).postDelayed(<span class="keyword">new</span> Runnable() { 
+        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() { 
+            InputMethodManager imm = (InputMethodManager) 
+            mPasswordView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE); 
+            <span class="keyword">if</span>(v.isFocused()) 
+            { 
+            imm.toggleSoftInput(<span class="number">0</span>, InputMethodManager.HIDE_NOT_ALWAYS); 
+            } 
+            <span class="keyword">else</span> 
+            { 
+            imm.hideSoftInputFromWindow(v.getWindowToken(),<span class="number">0</span>); 
+            }
+            } 
+        }, <span class="number">100</span>); 
+}
+</code></pre><h2 id="自动隐藏">自动隐藏</h2>
+<p>由于自动弹出键盘有时也是挺烦人的，特从网上搜集了一些强制隐藏的方法</p>
+<p><strong>方法一：</strong>在<code>AndroidMainfest.xml</code>中找到想要隐藏弹出键盘的<code>Activity</code>，添加如下语句</p>
+<pre><code>android:<span class="variable">windowSoftInputMode=</span><span class="string">"adjustUnspecified|stateHidden"</span> 
+</code></pre><p><strong>方法二:</strong>对EditText使用clearFocus方法清除焦点</p>
+<pre><code>EditText <span class="keyword">edit</span>=(EditText)findViewById(R.id.<span class="keyword">edit</span>);
+<span class="keyword">edit</span>.clearFocus();
+</code></pre><p>  <strong>方法三：</strong>强制隐藏输入法</p>
+<pre><code>EditText <span class="keyword">edit</span>=(EditText)findViewById(R.id.<span class="keyword">edit</span>);  
+InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE); 
+imm.hideSoftInputFromWindow(<span class="keyword">edit</span>.getWindowToken(),<span class="number">0</span>);
+</code></pre><h2 id="相关资料">相关资料</h2>
+<ul>
+<li><a href="http://www.360doc.com/content/14/0722/10/11800748_396211794.shtml" target="_blank" rel="external">Android通过事件触发EditText焦点和自动弹出键盘</a></li>
+<li><a href="http://kfc-davy.iteye.com/blog/1098403" target="_blank" rel="external">android edittext不弹出软键盘</a></li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[切换到某个含有EditText的Activity页面以后自动聚焦并弹出输入法框]]>
+    
+    </summary>
+    
+      <category term="Android" scheme="http://chenggoi.com/tags/Android/"/>
+    
+      <category term="EditText" scheme="http://chenggoi.com/tags/EditText/"/>
+    
+      <category term="技术" scheme="http://chenggoi.com/categories/code/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Android 4.2.2 添加暗码]]></title>

@@ -311,7 +311,7 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
 	<p class="asidetitle">分类</p>
 		<ul>
 		
-			<li><a href="/categories/code/" title="技术">技术<sup>6</sup></a></li>
+			<li><a href="/categories/code/" title="技术">技术<sup>7</sup></a></li>
 		
 			<li><a href="/categories/life/" title="随笔">随笔<sup>1</sup></a></li>
 		
@@ -324,7 +324,9 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
 	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
-			<li><a href="/tags/Android/" title="Android">Android<sup>5</sup></a></li>
+			<li><a href="/tags/Android/" title="Android">Android<sup>6</sup></a></li>
+		
+			<li><a href="/tags/EditText/" title="EditText">EditText<sup>1</sup></a></li>
 		
 			<li><a href="/tags/Markdown/" title="Markdown">Markdown<sup>1</sup></a></li>
 		
@@ -341,9 +343,10 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
+  <p class="asidetitle"><%= __('links') %></p>
     <ul>
-      <li><a href="http://chenggoi.com" target="_blank" title="Chenggoi">Chenggoi's Blog</a></li>
+      <li><a href="http://hexo.io" target="_blank" title="Hexo">Hexo</a></li>
+      <li><a href="http://gengbiao.me" target="_blank" title="coney">coney's Blog</a></li>
     </ul>
 </div>
 
@@ -355,7 +358,7 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">归档</a></p>
-    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">2015 年 01 月</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">2014 年 12 月</a><span class="archive-list-count">1</span></li></ul>
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">2015 年 01 月</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">2014 年 12 月</a><span class="archive-list-count">1</span></li></ul>
   </div>
 
 
@@ -372,7 +375,7 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
             && Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> && Theme by <a href="http://gengbiao.me" target="_blank" title="coney">coney</a>
             </div>
 </footer>
-    <script src="/js/jquery-2.1.0.min.js"></script>
+    <script src="<%- config.root %>js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){ 
   $('.navbar').click(function(){
@@ -399,9 +402,9 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
-      
+      <% if( is_post()&&(page.toc !== false) && theme.toc.aside){ %>
       $('#toc.toc-aside').css('display', 'none');
-        
+      <% } %>  
     }
   });
   c.click(function(){
@@ -419,7 +422,7 @@ $(document).ready(function(){
   });
 });
 </script>
-
+<% if (is_post()) { %>
 <script type="text/javascript">
 $(document).ready(function(){ 
   var ai = $('.article-content>iframe'),
@@ -451,8 +454,8 @@ $(document).ready(function(){
   };
 });
 </script>
-
-
+<% } %>
+<% if ((page.layout=='post'||page.layout=='page')&&!theme.jiathis.enable) { %>
 <script type="text/javascript">
 $(document).ready(function(){ 
   var $this = $('.share'),
@@ -480,10 +483,10 @@ $(document).ready(function(){
   });
 });     
 </script>
-
-
+<% } %>
+<% if (((page.layout=='post'||page.layout=='page')&&theme.duoshuo.enable && page.comments) || (theme.duoshuo.enable && theme.widgets.indexOf('recent_comments')!==-1 )) { %>
 <script type="text/javascript">
-  var duoshuoQuery = {short_name:"chenggoi"};
+  var duoshuoQuery = {short_name:"<%= theme.duoshuo.short_name %>"};
   (function() {
     var ds = document.createElement('script');
     ds.type = 'text/javascript';ds.async = true;
@@ -493,85 +496,52 @@ $(document).ready(function(){
     || document.getElementsByTagName('body')[0]).appendChild(ds);
   })();
 </script> 
+<% } %>
 
-
-
-
-
-
-<script>
-    
-        var _bdImg = '2';
-    
-    window._bd_share_config={
-        "common":{
-            "bdSnsKey":{
-
-            },
-            "bdText":"",
-            "bdMini":"2",
-            "bdMiniList":[
-                "qzone",
-                "tsina",
-                "weixin",
-                "renren",
-                "tqq",
-                "tieba",
-                "douban",
-                "sqq",
-                "diandian",
-                "huaban",
-                "youdao",
-                "mail",
-                "ty",
-                "fbook",
-                "twi",
-                "linkedin",
-                "copy",
-                "print"
-            ],
-            "bdPic":"",
-            "bdStyle":"0",
-            "bdSize":"16"
-        },
-        "slide":{
-            "type":"slide",
-            "bdImg":_bdImg,
-            "bdPos":"right",
-            "bdTop":"350"
-        },
-        "image":{
-            "viewList":[
-                "weixin",
-                "qzone",
-                "tsina",
-                "renren",
-                "douban",
-                "tqq"
-            ],
-            "viewText":"分享：",
-            "viewSize":"16"
-        },
-        "selectShare":{
-            "bdContainerClass":null,
-            "bdSelectMiniList":[
-                "weixin",
-                "qzone",
-                "tsina",
-                "renren",
-                "douban",
-                "tqq"
-            ]
-        }
-    };
-    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+<% if (page.layout=='tags'||page.layout=='categories'){ %>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var list    = $('.archive-title a'),
+      box     = $('.all-list-box'),
+      first   = $('.archive-title a:first-of-type');
+      box.load(first.attr('data-src').toString()+' #archive-page');
+      first.addClass('current');
+  list.each(function(){
+    $(this).click(function(){
+      var listSrc=$(this).attr('data-src').toString()+' #archive-page';
+      box.load(listSrc);
+      list.removeClass('current');
+      $(this).addClass('current');
+     });  
+    });
+  }); 
 </script>
+<% } %>
+<% if ((page.layout=='post'||page.layout=='page')&&theme.fancybox){ %>
+<link rel="stylesheet" href="<%- config.root %>fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="<%- config.root %>fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+<% } %>
 
-
-
-
-
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254061909'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1254061909%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+<%- partial('baidu_analytics') %>
+<%- partial('google_analytics') %>
 
   </body>
 </html>
