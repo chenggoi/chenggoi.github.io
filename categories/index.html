@@ -87,7 +87,7 @@
             && Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> && Theme by <a href="http://gengbiao.me" target="_blank" title="coney">coney</a>
             </div>
 </footer>
-      <script src="<%- config.root %>js/jquery-2.1.0.min.js"></script>
+      <script src="/js/jquery-2.1.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){ 
   $('.navbar').click(function(){
@@ -114,9 +114,7 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
-      <% if( is_post()&&(page.toc !== false) && theme.toc.aside){ %>
-      $('#toc.toc-aside').css('display', 'none');
-      <% } %>  
+        
     }
   });
   c.click(function(){
@@ -134,83 +132,11 @@ $(document).ready(function(){
   });
 });
 </script>
-<% if (is_post()) { %>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var ai = $('.article-content>iframe'),
-      ae = $('.article-content>embed'),
-      t  = $('#toc'),
-      h  = $('article h2')
-      ah = $('article h2'),
-      ta = $('#toc.toc-aside'),
-      o  = $('.openaside'),
-      c  = $('.closeaside');
-  if(ai.length>0){
-    ai.wrap('<div class="video-container" />');
-  };
-  if(ae.length>0){
-   ae.wrap('<div class="video-container" />');
-  };
-  if(ah.length==0){
-    t.css('display','none');
-  }else{
-    c.click(function(){
-      ta.css('display', 'block').addClass('fadeIn');
-    });
-    o.click(function(){
-      ta.css('display', 'none');
-    });
-    $(window).scroll(function(){
-      ta.css("top",Math.max(140,320-$(this).scrollTop()));
-    });
-  };
-});
-</script>
-<% } %>
-<% if ((page.layout=='post'||page.layout=='page')&&!theme.jiathis.enable) { %>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  var $this = $('.share'),
-      url = $this.attr('data-url'),
-      encodedUrl = encodeURIComponent(url),
-      title = $this.attr('data-title'),
-      tsina = $this.attr('data-tsina');
-  var html = [
-  '<a href="#" class="overlay" id="qrcode"></a>',
-  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
-  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
-  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
-  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
-  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
-  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
-  '<span title="Share to"></span>'
-  ].join('');
-  $this.append(html);
-  $('.article-share-qrcode').click(function(){
-    var imgSrc = $('#qrcode-pic').attr('data-src');
-    $('#qrcode-pic').attr('src', imgSrc);
-    $('#qrcode-pic').load(function(){
-        $('.qrcode strong').text(' ');
-    });
-  });
-});     
-</script>
-<% } %>
-<% if (((page.layout=='post'||page.layout=='page')&&theme.duoshuo.enable && page.comments) || (theme.duoshuo.enable && theme.widgets.indexOf('recent_comments')!==-1 )) { %>
-<script type="text/javascript">
-  var duoshuoQuery = {short_name:"<%= theme.duoshuo.short_name %>"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] 
-    || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
-</script> 
-<% } %>
 
-<% if (page.layout=='tags'||page.layout=='categories'){ %>
+
+
+
+
 <script type="text/javascript">
 $(document).ready(function(){ 
   var list    = $('.archive-title a'),
@@ -228,32 +154,83 @@ $(document).ready(function(){
     });
   }); 
 </script>
-<% } %>
-<% if ((page.layout=='post'||page.layout=='page')&&theme.fancybox){ %>
-<link rel="stylesheet" href="<%- config.root %>fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="<%- config.root %>fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){ 
-  $('.article-content').each(function(i){
-    $(this).find('img').each(function(){
-      if ($(this).parent().hasClass('fancybox')) return;
-      var alt = this.alt;
-      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
-      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
-    });
-    $(this).find('.fancybox').each(function(){
-      $(this).attr('rel', 'article' + i);
-    });
-  });
-  if($.fancybox){
-    $('.fancybox').fancybox();
-  }
-}); 
-</script>
-<% } %>
 
-<%- partial('baidu_analytics') %>
-<%- partial('google_analytics') %>
+
+
+
+<script>
+    
+        var _bdImg = '2';
+    
+    window._bd_share_config={
+        "common":{
+            "bdSnsKey":{
+
+            },
+            "bdText":"",
+            "bdMini":"2",
+            "bdMiniList":[
+                "qzone",
+                "tsina",
+                "weixin",
+                "renren",
+                "tqq",
+                "tieba",
+                "douban",
+                "sqq",
+                "diandian",
+                "huaban",
+                "youdao",
+                "mail",
+                "ty",
+                "fbook",
+                "twi",
+                "linkedin",
+                "copy",
+                "print"
+            ],
+            "bdPic":"",
+            "bdStyle":"0",
+            "bdSize":"16"
+        },
+        "slide":{
+            "type":"slide",
+            "bdImg":_bdImg,
+            "bdPos":"right",
+            "bdTop":"350"
+        },
+        "image":{
+            "viewList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ],
+            "viewText":"分享：",
+            "viewSize":"16"
+        },
+        "selectShare":{
+            "bdContainerClass":null,
+            "bdSelectMiniList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ]
+        }
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254061909'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1254061909%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
 
     </body>
    </html>
