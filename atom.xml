@@ -4,7 +4,7 @@
   <subtitle><![CDATA[工作虽然很开心但也不要忘记休息哦～～]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://chenggoi.com/"/>
-  <updated>2015-01-21T12:49:53.246Z</updated>
+  <updated>2015-01-21T13:19:32.416Z</updated>
   <id>http://chenggoi.com/</id>
   
   <author>
@@ -717,7 +717,7 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
     <link href="http://chenggoi.com/2015/01/01/markdown/"/>
     <id>http://chenggoi.com/2015/01/01/markdown/</id>
     <published>2015-01-01T07:30:16.000Z</published>
-    <updated>2015-01-10T06:43:27.000Z</updated>
+    <updated>2015-01-21T13:18:40.000Z</updated>
     <content type="html"><![CDATA[<p><strong>声明：</strong>本文仅针对本人的日常使用，并非Markdown的完整语法，也不做原理性的分析，如有需要请出门百度</p>
 <h2 id="段落和换行">段落和换行</h2>
 <ul>
@@ -726,21 +726,19 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
 </ul>
 <h2 id="标题">标题</h2>
 <ul>
-<li>在行首插入1到6个 <code>#</code> ，表示1到6阶标题，例：</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="preprocessor"># 1阶标题</span></div><div class="line"><span class="preprocessor">## 2阶标题</span></div><div class="line"><span class="preprocessor">###### 6阶标题</span></div></pre></td></tr></table></figure>
-
-<h2 id="区块引用">区块引用</h2>
-<ul>
-<li>在要引用的每行加上<code>&gt;</code>即为引用，也可<code>&gt; &gt;</code>嵌套引用(注意每个<code>&gt;</code>后面要加空格)，例：</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="input"><span class="prompt">&gt; 我是第一行</span></span></div><div class="line"></div><div class="line">&gt; 我是第二行</div><div class="line"><span class="input"><span class="prompt">&gt; 我没有换行</span></span></div><div class="line"></div><div class="line">&gt; &gt; 嵌套引用</div></pre></td></tr></table></figure>
-
-<ul>
+<li>在行首插入1到6个 <code>#</code> ，表示1到6阶标题，例：<pre><code>  <span class="comment"># 1阶标题</span>
+  <span class="comment">## 2阶标题</span>
+  <span class="comment">###### 6阶标题</span>
+</code></pre><h2 id="区块引用">区块引用</h2>
+</li>
+<li>在要引用的每行加上<code>&gt;</code>即为引用，也可<code>&gt; &gt;</code>嵌套引用(注意每个<code>&gt;</code>后面要加空格)，例：<pre><code><span class="xml"><span class="tag">  &gt;</span> 我是第一行
+  &gt; 我是第二行
+  &gt; &gt; 嵌套引用</span>
+</code></pre></li>
 <li><p>效果为：</p>
 <blockquote>
 <p>我是第一行</p>
-<p>我是第二行<br>我没有换行</p>
+<p>我是第二行</p>
 <blockquote>
 <p>嵌套引用</p>
 </blockquote>
@@ -749,11 +747,10 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
 </ul>
 <h2 id="无序列表">无序列表</h2>
 <ul>
-<li>在文字开头使用 <code>-</code> 或者 <code>+</code> 或者 <code>*</code> (注意每个后面都要加空格)，则形成无序列表，例：</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="bullet">- </span>a</div><div class="line"><span class="bullet">+ </span>b</div><div class="line"><span class="bullet">* </span>c</div></pre></td></tr></table></figure>
-
-<ul>
+<li>在文字开头使用 <code>-</code> 或者 <code>+</code> 或者 <code>*</code> (注意每个后面都要加空格)，则形成无序列表，例：<pre><code>  -<span class="ruby"> a
+</span>  + b
+  * c
+</code></pre></li>
 <li>效果为：<ul>
 <li>a</li>
 </ul>
@@ -767,11 +764,10 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
 </ul>
 <h2 id="有序列表">有序列表</h2>
 <ul>
-<li>数字后面跟上<code>.</code>以及空格，可以乱序，会自动顺序输出，但最好第一行为<code>1.</code>，例：</li>
-</ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="bullet">1. </span>a</div><div class="line"><span class="bullet">3. </span>c</div><div class="line"><span class="bullet">2. </span>b</div></pre></td></tr></table></figure>
-
-<ul>
+<li>数字后面跟上<code>.</code>以及空格，可以乱序，会自动顺序输出，但最好第一行为<code>1.</code>，例：<pre><code>  <span class="number">1</span>. a
+  <span class="number">3</span>. <span class="built_in">c</span>
+  <span class="number">2</span>. b
+</code></pre></li>
 <li>效果为：<ol>
 <li>a</li>
 <li>c</li>
@@ -782,26 +778,68 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
 <h2 id="斜体粗体">斜体粗体</h2>
 <ul>
 <li>将需要斜体的文字两端使用1个<code>*</code>或者<code>_</code>夹起来</li>
-<li>将需要加粗的文字两端使用2个<code>*</code>或者<code>_</code>夹起来</li>
+<li><p>将需要加粗的文字两端使用2个<code>*</code>或者<code>_</code>夹起来</p>
+<pre><code>  <span class="keyword">*</span>斜体<span class="keyword">*</span> _斜体_ <span class="keyword">*</span><span class="keyword">*</span>粗体<span class="keyword">*</span><span class="keyword">*</span> __粗体__
+</code></pre><p>效果为：</p>
+<p><em>斜体</em>  <em>斜体</em> <strong>粗体</strong> <strong>粗体</strong></p>
+</li>
 </ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">*</span>斜体<span class="keyword">*</span> _斜体_ <span class="keyword">*</span><span class="keyword">*</span>粗体<span class="keyword">*</span><span class="keyword">*</span> __粗体__</div></pre></td></tr></table></figure>
-
-<p>效果为：</p>
-<p>  <em>斜体</em>  <em>斜体</em> <strong>粗体</strong> <strong>粗体</strong></p>
 <h2 id="代码">代码</h2>
 <ul>
-<li>对于代码区块，只需要简单的缩进四个空格或者一个Tab,或者可以使用两个`` </li>
+<li>对于代码区块，只需要简单的缩进四个空格或者一个Tab即可</li>
+<li>对于单行的代码注释可使用两个<code>` </code>将其夹起来，例<pre><code>  <span class="code">`aaa`</span>
+</code></pre>效果为：<br><code>aaa</code></li>
 </ul>
-<figure class="highlight ``将代码区块夹起来"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- 对于单行的代码注释可使用两个<span class="escape">``</span> <span class="escape">` </span><span class="escape">``</span>将其夹起来，例</div></pre></td></tr></table></figure>
+<h2 id="分割线">分割线</h2>
+<ul>
+<li>可以在一行中使用三个以上的<code>*</code>或者<code>-</code>或者<code>_</code>来建立分割线，例：<pre><code>  1
+  ---
+  2
+  ___
+  3
+  <span class="keyword">*</span><span class="keyword">*</span><span class="keyword">*</span>
+</code></pre>效果为：</li>
+</ul>
+<p>1</p>
+<hr>
+<p>2</p>
+<hr>
+<p>3</p>
+<hr>
+<h2 id="链接">链接</h2>
+<ul>
+<li>内联方式：<code>This is an [example link](http://baidu.com/)</code></li>
+<li>引用方式（注意换行，网址写全且顶头）：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="type">This</span> <span class="keyword">is</span> an [example link][<span class="keyword">ref</span>]</div><div class="line">[<span class="keyword">ref</span>]:http://baidu.com</div></pre></td></tr></table></figure>
 
-
-<p>  <code>aaa</code></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">效果为：</div><div class="line"></div><div class="line">  `aaa`</div><div class="line"></div><div class="line"><span class="comment">##分割线</span></div><div class="line"></div><div class="line">- 可以在一行中使用三个以上的`*`或者`-`或者`_`来建立分割线，例：</div><div class="line"></div><div class="line"></div><div class="line">        ---</div><div class="line">        ___</div><div class="line"></div><div class="line">        ***</div><div class="line"></div><div class="line"></div><div class="line">效果为：</div><div class="line"></div><div class="line"></div><div class="line">---</div><div class="line">___</div><div class="line"></div><div class="line">***</div><div class="line"></div><div class="line"><span class="comment">##链接</span></div><div class="line">- 内联方式：`<span class="type">This</span> <span class="keyword">is</span> an [example link](http://baidu.com/)`</div><div class="line">- 引用方式（注意换行，网址写全且顶头）：</div><div class="line">           </div><div class="line">        <span class="type">This</span> <span class="keyword">is</span> an [example link][<span class="keyword">ref</span>]</div><div class="line"></div><div class="line">	    [<span class="keyword">ref</span>]:http://baidu.com</div><div class="line"></div><div class="line">效果为：</div><div class="line"></div><div class="line">- <span class="type">This</span> <span class="keyword">is</span> an [example link](http://baidu.com/)</div><div class="line">- <span class="type">This</span> <span class="keyword">is</span> an [example link][<span class="keyword">ref</span>].</div><div class="line"></div><div class="line">[<span class="keyword">ref</span>]:http://baidu.com</div><div class="line"></div><div class="line"><span class="comment">##图片</span></div><div class="line">- 内联方式：`![example](http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg)`</div><div class="line">- 外联方式（注意换行，网址写全且顶头）：</div><div class="line">          </div><div class="line">        ![example][<span class="keyword">ref</span>]</div><div class="line"></div><div class="line">	    [<span class="keyword">ref</span>]:http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg</div><div class="line"></div><div class="line">效果为：</div><div class="line"></div><div class="line">- ![example](http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg)</div><div class="line">- ![example][<span class="keyword">ref</span>]</div><div class="line"></div><div class="line">[<span class="keyword">ref</span>]:http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg</div><div class="line"></div><div class="line"><span class="comment">##自动连接</span></div><div class="line">- 使用` &lt;&gt; `将输入的<span class="type">URL</span>及邮箱夹在中间，例:</div></pre></td></tr></table></figure>
-
-<p>  <a href="http://www.baidu.com" target="_blank" rel="external">http://www.baidu.com</a><br>  <a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#58;&#99;&#x68;&#101;&#x6e;&#x67;&#x67;&#x6f;&#105;&#x40;&#x73;&#105;&#x6e;&#x61;&#x2e;&#99;&#x6f;&#109;">&#99;&#x68;&#101;&#x6e;&#x67;&#x67;&#x6f;&#105;&#x40;&#x73;&#105;&#x6e;&#x61;&#x2e;&#99;&#x6f;&#109;</a><br>  ```</p>
 <p>效果为：</p>
-<p>  <a href="http://www.baidu.com" target="_blank" rel="external">http://www.baidu.com</a></p>
-<p>  <a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#116;&#101;&#115;&#116;&#64;&#99;&#x68;&#101;&#110;&#103;&#x67;&#x6f;&#x69;&#x2e;&#99;&#111;&#109;">&#116;&#101;&#115;&#116;&#64;&#99;&#x68;&#101;&#110;&#103;&#x67;&#x6f;&#x69;&#x2e;&#99;&#111;&#109;</a></p>
+<ul>
+<li>This is an <a href="http://baidu.com/" target="_blank" rel="external">example link</a></li>
+<li>This is an <a href="http://7tsyx2.com1.z0.glb.clouddn.com/logo.jpg" target="_blank" rel="external">example link</a>.</li>
+</ul>
+<h2 id="图片">图片</h2>
+<ul>
+<li>内联方式：<code>![example](http://7tsyx2.com1.z0.glb.clouddn.com/logo.jpg)</code></li>
+<li>外联方式（注意换行，网址写全且顶头）：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">![example][<span class="keyword">ref</span>]</div><div class="line">[<span class="keyword">ref</span>]:http://<span class="number">7</span>tsyx2.com1.z0.glb.clouddn.com/logo.jpg</div></pre></td></tr></table></figure>
+
+<p>效果为：</p>
+<ul>
+<li><img src="http://7tsyx2.com1.z0.glb.clouddn.com/logo.jpg" alt="example"></li>
+<li><img src="http://7tsyx2.com1.z0.glb.clouddn.com/logo.jpg" alt="example"></li>
+</ul>
+<h2 id="自动连接">自动连接</h2>
+<ul>
+<li><p>使用<code>&lt;&gt;</code>将输入的URL及邮箱夹在中间，例:</p>
+<pre><code>  <span class="tag">&lt;<span class="title">http:</span>//<span class="attribute">www.baidu.com</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">chenggoi@sina.com</span>&gt;</span>
+</code></pre><p>效果为：</p>
+<p><a href="http://www.baidu.com" target="_blank" rel="external">http://www.baidu.com</a></p>
+<p><a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#116;&#101;&#x73;&#x74;&#x40;&#x63;&#104;&#101;&#110;&#103;&#x67;&#111;&#105;&#46;&#x63;&#111;&#109;">&#116;&#101;&#x73;&#x74;&#x40;&#x63;&#104;&#101;&#110;&#103;&#x67;&#111;&#105;&#46;&#x63;&#111;&#109;</a></p>
+</li>
+</ul>
 <h2 id="转义字符">转义字符</h2>
 <ul>
 <li>\\表示<code>\</code></li>
