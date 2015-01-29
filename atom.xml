@@ -4,7 +4,7 @@
   <subtitle><![CDATA[工作虽然很开心但也不要忘记休息哦～～]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://chenggoi.com/"/>
-  <updated>2015-01-28T12:57:42.350Z</updated>
+  <updated>2015-01-29T02:40:57.199Z</updated>
   <id>http://chenggoi.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://chenggoi.com/2015/01/28/AndroidLaunchMode/"/>
     <id>http://chenggoi.com/2015/01/28/AndroidLaunchMode/</id>
     <published>2015-01-28T12:07:43.000Z</published>
-    <updated>2015-01-28T12:57:36.000Z</updated>
+    <updated>2015-01-28T12:59:20.000Z</updated>
     <content type="html"><![CDATA[<h2 id="环境配置">环境配置</h2>
 <pre><code>操作系统：Ubuntu <span class="number">14.04</span> <span class="number">64</span>位
 gcc版本：<span class="number">4.4</span>
@@ -42,11 +42,14 @@ Android版本：<span class="number">4.4</span><span class="number">.2</span>
 <h3 id="方法一：">方法一：</h3>
 <ul>
 <li>效果比较完美，但是涉及启动模式的改动，文末会有该部分粗略的解析，权当抛砖引玉</li>
-<li>打开<code>src/com/android/music/MediaPlaybackActivity.java</code> 文件，注释掉<code>public boolean onOptionsItemSelected(MenuItem item)</code>函数中的：<br>  //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);//设定从播放假面跳转到音乐库界面的启动模式</li>
-<li>打开<code>src/com/android/music/MusicUtils.java</code>文件，注释掉<code>static void activateTab(Activity a, int id)</code>函数中的：<br>   //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//从音乐库跳转到四个Tab页面的启动模式</li>
+<li>打开<code>src/com/android/music/MediaPlaybackActivity.java</code> 文件，注释掉<code>public boolean onOptionsItemSelected(MenuItem item)</code>函数中的：<pre><code>  <span class="comment">//intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);//设定从播放假面跳转到音乐库界面的启动模式</span>
+</code></pre></li>
+<li>打开<code>src/com/android/music/MusicUtils.java</code>文件，注释掉<code>static void activateTab(Activity a, int id)</code>函数中的：<pre><code>  <span class="comment">//intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//从音乐库跳转到四个Tab页面的启动模式</span>
+</code></pre></li>
 <li>最后打开<code>AndroidManifest.xml</code>配置文件，进行如下修改<ul>
 <li>删除<code>com.android.music.MediaPlaybackActivity</code>中的<code>android:launchMode=&quot;singleTask&quot;</code></li>
-<li>为<code>com.android.music.ArtistAlbumBrowserActivity</code>、<code>com.android.music.AlbumBrowserActivity</code>、<code>com.android.music.TrackBrowserActivity</code>、<code>com.android.music.PlaylistBrowserActivity</code> 四个<code>Activity</code>添加<code>android:launchMode=&quot;singleTask&quot;</code>，如（其余三个也加在相似位置）：<pre><code>&lt;activity android:<span class="variable">name=</span><span class="string">"com.android.music.ArtistAlbumBrowserActivity"</span> android:<span class="variable">exported=</span><span class="string">"false"</span> android:<span class="variable">launchMode=</span><span class="string">"singleTask"</span>&gt;
+<li>为<pre><code> <span class="escape">`c</span>om.android.music.ArtistAlbumBrowserActivity<span class="escape">`、</span><span class="escape">`c</span>om.android.music.AlbumBrowserActivity<span class="escape">`、</span><span class="escape">`c</span>om.android.music.TrackBrowserActivity<span class="escape">`、</span><span class="escape">`c</span>om.android.music.PlaylistBrowserActivity<span class="escape">` </span>
+</code></pre>四个<code>Activity</code>添加<code>android:launchMode=&quot;singleTask&quot;</code>，如（其余三个也加在相似位置）：<pre><code>&lt;activity android:<span class="variable">name=</span><span class="string">"com.android.music.ArtistAlbumBrowserActivity"</span> android:<span class="variable">exported=</span><span class="string">"false"</span> android:<span class="variable">launchMode=</span><span class="string">"singleTask"</span>&gt;
 </code></pre></li>
 </ul>
 </li>
@@ -79,10 +82,10 @@ Android版本：<span class="number">4.4</span><span class="number">.2</span>
     <link href="http://chenggoi.com/2015/01/21/AndroidStudio/"/>
     <id>http://chenggoi.com/2015/01/21/AndroidStudio/</id>
     <published>2015-01-21T11:53:05.000Z</published>
-    <updated>2015-01-21T12:49:23.000Z</updated>
+    <updated>2015-01-29T02:40:10.000Z</updated>
     <content type="html"><![CDATA[<h2 id="使用VPN">使用VPN</h2>
 <p>如果手里有VPN实在是再好不过了，只需要在主界面选择setting-&gt;HttpProxy-&gt;Manual proxy Configuration设置即可</p>
-<p><img src="http://7tsyx2.com1.z0.glb.clouddn.com/androidstudio1.png" alt="示例"></p>
+<p><img src="http://7tsyx2.com1.z0.glb.clouddn.com/androidStudio.jpg" alt="示例"></p>
 <p>然后在更新SDK的界面也配置好代理即可：<br><a href="http://chenggoi.com/2015/01/01/SDK_Manager/" target="_blank" rel="external">SDK Manager更新速度慢</a></p>
 <p>这样一来更新就不会有问题了</p>
 <h2 id="不使用VPN">不使用VPN</h2>

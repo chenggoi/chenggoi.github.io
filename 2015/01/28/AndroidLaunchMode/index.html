@@ -76,7 +76,7 @@
     </p>
   <p class="article-time">
     <time datetime="2015-01-28T12:07:43.000Z" itemprop="datePublished">1月 28 2015</time>
-    更新日期:<time datetime="2015-01-28T12:57:36.000Z" itemprop="dateModified">1月 28 2015</time>
+    更新日期:<time datetime="2015-01-28T12:59:20.000Z" itemprop="dateModified">1月 28 2015</time>
     
   </p>
 </header>
@@ -110,11 +110,14 @@ Android版本：<span class="number">4.4</span><span class="number">.2</span>
 <h3 id="方法一：">方法一：</h3>
 <ul>
 <li>效果比较完美，但是涉及启动模式的改动，文末会有该部分粗略的解析，权当抛砖引玉</li>
-<li>打开<code>src/com/android/music/MediaPlaybackActivity.java</code> 文件，注释掉<code>public boolean onOptionsItemSelected(MenuItem item)</code>函数中的：<br>  //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);//设定从播放假面跳转到音乐库界面的启动模式</li>
-<li>打开<code>src/com/android/music/MusicUtils.java</code>文件，注释掉<code>static void activateTab(Activity a, int id)</code>函数中的：<br>   //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//从音乐库跳转到四个Tab页面的启动模式</li>
+<li>打开<code>src/com/android/music/MediaPlaybackActivity.java</code> 文件，注释掉<code>public boolean onOptionsItemSelected(MenuItem item)</code>函数中的：<pre><code>  <span class="comment">//intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);//设定从播放假面跳转到音乐库界面的启动模式</span>
+</code></pre></li>
+<li>打开<code>src/com/android/music/MusicUtils.java</code>文件，注释掉<code>static void activateTab(Activity a, int id)</code>函数中的：<pre><code>  <span class="comment">//intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//从音乐库跳转到四个Tab页面的启动模式</span>
+</code></pre></li>
 <li>最后打开<code>AndroidManifest.xml</code>配置文件，进行如下修改<ul>
 <li>删除<code>com.android.music.MediaPlaybackActivity</code>中的<code>android:launchMode=&quot;singleTask&quot;</code></li>
-<li>为<code>com.android.music.ArtistAlbumBrowserActivity</code>、<code>com.android.music.AlbumBrowserActivity</code>、<code>com.android.music.TrackBrowserActivity</code>、<code>com.android.music.PlaylistBrowserActivity</code> 四个<code>Activity</code>添加<code>android:launchMode=&quot;singleTask&quot;</code>，如（其余三个也加在相似位置）：<pre><code>&lt;activity android:<span class="variable">name=</span><span class="string">"com.android.music.ArtistAlbumBrowserActivity"</span> android:<span class="variable">exported=</span><span class="string">"false"</span> android:<span class="variable">launchMode=</span><span class="string">"singleTask"</span>&gt;
+<li>为<pre><code> <span class="escape">`c</span>om.android.music.ArtistAlbumBrowserActivity<span class="escape">`、</span><span class="escape">`c</span>om.android.music.AlbumBrowserActivity<span class="escape">`、</span><span class="escape">`c</span>om.android.music.TrackBrowserActivity<span class="escape">`、</span><span class="escape">`c</span>om.android.music.PlaylistBrowserActivity<span class="escape">` </span>
+</code></pre>四个<code>Activity</code>添加<code>android:launchMode=&quot;singleTask&quot;</code>，如（其余三个也加在相似位置）：<pre><code>&lt;activity android:<span class="variable">name=</span><span class="string">"com.android.music.ArtistAlbumBrowserActivity"</span> android:<span class="variable">exported=</span><span class="string">"false"</span> android:<span class="variable">launchMode=</span><span class="string">"singleTask"</span>&gt;
 </code></pre></li>
 </ul>
 </li>
