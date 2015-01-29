@@ -4,7 +4,7 @@
   <subtitle><![CDATA[工作虽然很开心但也不要忘记休息哦～～]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://chenggoi.com/"/>
-  <updated>2015-01-29T02:40:57.199Z</updated>
+  <updated>2015-01-29T13:20:21.548Z</updated>
   <id>http://chenggoi.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://chenggoi.com/2015/01/28/AndroidLaunchMode/"/>
     <id>http://chenggoi.com/2015/01/28/AndroidLaunchMode/</id>
     <published>2015-01-28T12:07:43.000Z</published>
-    <updated>2015-01-28T12:59:20.000Z</updated>
+    <updated>2015-01-29T13:19:11.000Z</updated>
     <content type="html"><![CDATA[<h2 id="环境配置">环境配置</h2>
 <pre><code>操作系统：Ubuntu <span class="number">14.04</span> <span class="number">64</span>位
 gcc版本：<span class="number">4.4</span>
@@ -37,8 +37,11 @@ Android版本：<span class="number">4.4</span><span class="number">.2</span>
 </ol>
 </blockquote>
 <h2 id="解决方案">解决方案</h2>
-<p>首先先放出解决方案，不过由于本人对系统并没有深入的研究过，该方案是否有后遗症目前还未可知，等待测试的同学汇报结果吧。</p>
-<p><strong>文件目录：</strong><code>workspace/packages/apps/Music</code></p>
+<p>首先先放出解决方案，不过由于本人对操作系统并没有深入的研究过，该方案是否有后遗症目前还未可知，等待测试的同学汇报结果吧。</p>
+<p><strong>文件目录：</strong></p>
+<blockquote>
+<p>workspace/packages/apps/Music</p>
+</blockquote>
 <h3 id="方法一：">方法一：</h3>
 <ul>
 <li>效果比较完美，但是涉及启动模式的改动，文末会有该部分粗略的解析，权当抛砖引玉</li>
@@ -48,7 +51,10 @@ Android版本：<span class="number">4.4</span><span class="number">.2</span>
 </code></pre></li>
 <li>最后打开<code>AndroidManifest.xml</code>配置文件，进行如下修改<ul>
 <li>删除<code>com.android.music.MediaPlaybackActivity</code>中的<code>android:launchMode=&quot;singleTask&quot;</code></li>
-<li>为<pre><code> <span class="escape">`c</span>om.android.music.ArtistAlbumBrowserActivity<span class="escape">`、</span><span class="escape">`c</span>om.android.music.AlbumBrowserActivity<span class="escape">`、</span><span class="escape">`c</span>om.android.music.TrackBrowserActivity<span class="escape">`、</span><span class="escape">`c</span>om.android.music.PlaylistBrowserActivity<span class="escape">` </span>
+<li>为<pre><code><span class="string">"com.android.music.ArtistAlbumBrowserActivity"</span>、
+<span class="string">"com.android.music.AlbumBrowserActivity"</span>、
+<span class="string">"com.android.music.TrackBrowserActivity"</span>、
+<span class="string">"com.android.music.PlaylistBrowserActivity"</span>
 </code></pre>四个<code>Activity</code>添加<code>android:launchMode=&quot;singleTask&quot;</code>，如（其余三个也加在相似位置）：<pre><code>&lt;activity android:<span class="variable">name=</span><span class="string">"com.android.music.ArtistAlbumBrowserActivity"</span> android:<span class="variable">exported=</span><span class="string">"false"</span> android:<span class="variable">launchMode=</span><span class="string">"singleTask"</span>&gt;
 </code></pre></li>
 </ul>
@@ -57,7 +63,32 @@ Android版本：<span class="number">4.4</span><span class="number">.2</span>
 </ul>
 <h3 id="方法二：">方法二：</h3>
 <ul>
-<li>该方法通过重写<code>Activity</code>的<code>onKeyDown</code>方法，监听用户按下返回键的动作，从而跳转到一个指定的<code>Activity</code>，应该是比较保险的，只是灵活性不足。</li>
+<li>该方法通过重写<code>Activity</code>的<code>onKeyDown</code>方法，监听用户按下返回键的动作，从而跳转到一个指定的<code>Activity</code>，比较保险，只是灵活性不足。以下代码实现的效果与按下<code>HOME</code>效果相同</li>
+<li>打开<code>ArtistAlbumBrowserActivity.java</code>，添加如下代码(其余三个Activity同理)：<pre><code>  <span class="annotation">@Override</span>
+  <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onKeyDown</span>(<span class="keyword">int</span> keyCode, KeyEvent event) {
+      <span class="keyword">if</span> (keyCode == KeyEvent.KEYCODE_BACK) {
+          Intent HomeIntent = <span class="keyword">new</span> Intent(Intent.ACTION_MAIN);
+          HomeIntent.addCategory(Intent.CATEGORY_HOME);
+          startActivity(HomeIntent);<span class="comment">//通过Intent跳转到桌面Activity</span>
+          finish();
+      } <span class="keyword">else</span> {
+          <span class="keyword">return</span> <span class="keyword">super</span>.onKeyDown(keyCode, event);
+      }
+  }
+</code></pre></li>
+</ul>
+<h2 id="知识总结">知识总结</h2>
+<h3 id="ActivityStack">ActivityStack</h3>
+<ul>
+<li>Android采用栈存储结构来管理打开的<code>Activity</code>，将每个失去焦点又没有<code>finish()</code>的Activity依次存入栈空间中，待用户按返回键时就将栈顶的<code>Activity</code>弹出，重新赋予焦点，以显示在最上层界面。</li>
+<li>在这里要先介绍几条<code>adb</code>指令：<pre><code>  查询ActivityStack的详细情况：
+  <span class="variable">$adb</span> shell dumpsys activity activities
+  查询当前在栈中的Activity：
+  <span class="variable">$adb</span> shell dumpsys activity activities | sed -En <span class="operator">-e</span> <span class="string">'/Running activities/,/Run #0/p'</span>
+</code></pre></li>
+<li>我们用第二条指令来查看一下<code>Android 4.2</code>和<code>Android 4.4</code>的Activity栈空间</li>
+<li><code>Android 4.2</code>采用单栈结构，每一个<code>Activity</code>获得焦点的时候就会存入栈顶，因此当按返回键的时候会依次弹出栈顶<code>Activity</code>，不会出现问题，如下图：<br>  <img src="http://7tsyx2.com1.z0.glb.clouddn.com/android4.2activitystack.jpg" alt="Android4.2"><br>  从图中我们可以看到仅有一个<code>Running activities</code>就是所谓的<code>Activity栈</code>，而下面分为了很多<code>TaskRecord</code>，是根据每个<code>Activity</code>的<code>LaunchMode</code>决定的，后面会进行介绍。在每个<code>Run</code>后面的就是当前存在栈中的<code>Activity</code>，大家可以看到，位于栈顶的是<code>systemui</code>，也就是我正连接电脑所弹出的下拉通知界面，这时我按下返回键就会返回到<code>Run #2</code>，也就是<code>launcher</code>，返回桌面了。当你返回到桌面以后再按返回键也不会返回到上一个<code>Activity</code>中了，因为桌面的返回键监听和别的<code>Activity</code>不同，剩下的<code>Activity</code>只有当你再次打开该软件时会优先弹出该界面。</li>
+<li><code>Android 4.4</code>并没有沿用之前的规则，我们先来看图：<br>  <img src="http://7tsyx2.com1.z0.glb.clouddn.com/android4.4activitystack.jpg" alt="Android 4.4"><br>  细心的人可能发现了，图中有两个<code>Running activities</code>，没错，<code>Android 4.4</code>采用的是双栈的管理结构，一个栈负责存储<code>Launcher</code>和<code>systemui</code>，另一个栈负责存储其他应用的<code>Activity</code></li>
 </ul>
 ]]></content>
     <summary type="html">
