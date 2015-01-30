@@ -4,7 +4,7 @@
   <subtitle><![CDATA[工作虽然很开心但也不要忘记休息哦～～]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://chenggoi.com/"/>
-  <updated>2015-01-30T03:44:41.059Z</updated>
+  <updated>2015-01-30T05:23:41.506Z</updated>
   <id>http://chenggoi.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://chenggoi.com/2015/01/28/AndroidLaunchMode/"/>
     <id>http://chenggoi.com/2015/01/28/AndroidLaunchMode/</id>
     <published>2015-01-28T12:07:43.000Z</published>
-    <updated>2015-01-30T03:44:36.000Z</updated>
+    <updated>2015-01-30T05:23:29.000Z</updated>
     <content type="html"><![CDATA[<h2 id="环境配置">环境配置</h2>
 <pre><code>操作系统：Ubuntu <span class="number">14.04</span> <span class="number">64</span>位
 gcc版本：<span class="number">4.4</span>
@@ -98,15 +98,30 @@ Android版本：<span class="number">4.4</span><span class="number">.2</span>
 </ul>
 <h3 id="LaunchMode">LaunchMode</h3>
 <p>　　<code>LaunchMode</code>的设定在<code>AndroidManifest.xml</code>文件中，为目标<code>Activity</code>添加<code>android:launchMode</code>即可。<code>Activity</code>共有四种启动模式，分为<code>standard</code>（默认）、<code>singleTop</code>、<code>singleTask</code>以及<code>singleInstance</code>，以下我会分条列明，在这里我们不考虑人为<code>finish()</code>的情况。</p>
-<h4 id="standard">standard</h4>
+<h4 id="1-standard">1.standard</h4>
 <p><code>standard</code>是<code>Activity</code>的默认启动方法，如果没有单独设定，则会使用该方法启动<code>Activity</code>。每次通过<code>Intent</code>启动一个<code>Activity</code>时都会将该<code>Activity</code>压入栈中，无论 是否已经存在该<code>Activity</code>，即当前栈中的情况为<code>A B C</code>当我们通过<code>C</code>调用<code>Intent</code>依然启动<code>C</code>的时候，栈中情况变为<code>A B C C</code>，若是通过<code>C</code>调用<code>Intent</code>启动<code>D</code>，则栈中情况变为<code>A B C C D</code>，以此类推，而当我们按下返回键时，则会按照<code>C C B A</code>的顺序弹出。</p>
-<h4 id="singleTop">singleTop</h4>
+<h4 id="2-singleTop">2.singleTop</h4>
 <p>设定启动模式为<code>singleTop</code>的<code>Activity</code>位于栈顶时，通过<code>Intent</code>依然跳转到该<code>Activity</code>时，则不会新建一个实例来存储该<code>Activity</code>。例如目前栈中情况为<code>A B C</code>，<code>A B C</code>的启动模式均为<code>singleTop</code>，当我们通过<code>C</code>调用<code>Intent</code>依然启动<code>C</code>时，栈中的情况仍是<code>A B C</code>，不会新创建一个<code>C</code>的实例压入栈中。但是当我们通过<code>C</code>调用<code>Intent</code>启动<code>B</code>的时候，则会新建一个<code>B</code>的实例压入栈中，栈中的情况变为<code>A B C B</code>。</p>
-<h4 id="singleTask">singleTask</h4>
+<h4 id="3-singleTask">3.singleTask</h4>
 <p>设定启动模式为<code>singleTask</code>的<code>Activity</code>在<code>Task</code>栈中只会有一个实例存在，即当前<code>TaskRecord</code>中情况为<code>A B C</code>，其中<code>B</code>的启动模式为<code>singleTask</code>，当我们通过<code>C</code>调用<code>Intent</code>启动<code>B</code>时，栈中情况变为<code>A B</code>，即<code>B</code>继续使用之前存于栈中的实例，而<code>B</code>之后的实例均被弹出销毁。如果当前<code>TaskRecord</code>中没有该实例，则会新建一个<code>TaskRecord</code>，并将该实例压入栈中。本文的解决方法便是用的该模式，讲<code>A</code>设为<code>singleTask</code>模式，使得从软件中任何<code>Activity</code>跳转到<code>A</code>时都是使用的<code>A</code>已经存在于栈中的实例，从而能够正确的识别出<code>A</code>的上层<code>Activity栈</code>。</p>
-<h4 id="singleInstance">singleInstance</h4>
+<h4 id="4-singleInstance">4.singleInstance</h4>
 <p>设定启动模式为<code>singleInstance</code>的<code>Activity</code>会在<code>Activity栈</code>中新建一个<code>TaskRecord</code>，即当前<code>TaskRecord 1</code>中的情况为<code>A B C</code>，通过<code>C</code>调用<code>Intent</code>启动<code>D</code>，如果<code>D</code>设定为<code>singleInstance</code>，则会新建一个<code>TaskRecord 2</code>并将<code>D</code>压入该栈中，而<code>TaskRecord 1</code>的情况依然为<code>A B C</code>。当通过<code>D</code>调用<code>Intent</code>仍然启动<code>D</code>时，<code>TaskRecord 2</code>中不会新建一个<code>D</code>的实例，也不会新建一个<code>TaskRecord</code>，所以状态没有任何改变。但是当从<code>D</code>跳转到<code>C</code>时，<code>TaskRecord 1</code>中会变为<code>A B C C</code>，而此时按下返回键也不会回到<code>D</code>中，而是按照<code>C B A</code>的顺序弹出。</p>
 <h3 id="Activity_Intent_Flag">Activity Intent Flag</h3>
+<p><code>Intent Flag</code>是在初始化<code>Intent</code>通过<code>intent.addFlags（flag）</code>来指定通过<code>Intent</code>启动的<code>Activity</code>的启动模式，下面是几种常用的<code>flag</code>：</p>
+<h4 id="1-Intent-FLAG_ACTIVITY_NEW_TASK">1.Intent.FLAG_ACTIVITY_NEW_TASK</h4>
+<p>判断在<code>AndroidManifest.xml</code>中为<code>Activity</code>添加的<code>Affinity</code>值，如果和当前的<code>TaskRecord</code>中的值不一样的话，则会在一个新的<code>TaskRecord</code>中标记该<code>Affinity</code>值并将新的<code>Activity</code>压入其中。如果并没有设定<code>Affinity</code>或者与<code>TaskRecord</code>中的值相同，则采取标准的启动模式。</p>
+<h4 id="2-Intent-FLAG_ACTIVITY_SINGLE_TOP">2.Intent.FLAG_ACTIVITY_SINGLE_TOP</h4>
+<p>该模式与在<code>LaunchMode</code>中设定<code>singleTop</code>相类似，如果正要启动的<code>Activity</code>在栈中位于栈顶，则不会新建一个实例压入栈中。</p>
+<h4 id="3-Intent-FLAG_ACTIVITY_CLEAR_TOP">3.Intent.FLAG_ACTIVITY_CLEAR_TOP</h4>
+<p>该模式与在<code>LaunchMode</code>中设定<code>singleTask</code>相类似，如果正要启动的<code>Activity</code>位于栈中，则不会新建实例压入栈中，并且会弹出并销毁栈中该<code>Activity</code>之上的<code>Activity</code>。</p>
+<h4 id="4-Intent-FLAG_ACTIVITY_NO_HISTORY">4.Intent.FLAG_ACTIVITY_NO_HISTORY</h4>
+<p>该模式不会将<code>Activity</code>压入栈中，从该<code>Activity</code>跳转到其他界面之后无法再返回到该<code>Activity</code>。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="http://blog.csdn.net/zhangjg_blog/article/details/10923643" target="_blank" rel="external">Android中Activity四种启动模式和taskAffinity属性详解</a></li>
+<li><a href="http://www.cnphp6.com/archives/58911" target="_blank" rel="external">ACTIVITY的启动模式与FLAG详解</a></li>
+</ul>
+<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/01/28/AndroidLaunchMode/" target="_blank" rel="external">http://chenggoi.com/2015/01/28/AndroidLaunchMode/</a>,转载请注明出处。</p>
 ]]></content>
     <summary type="html">
     <![CDATA[修复音乐播放器按返回键跳转到其他应用，以及粗略记录下Activity栈及LaunchMode知识]]>
