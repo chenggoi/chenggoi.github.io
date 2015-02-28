@@ -4,7 +4,7 @@
   <subtitle><![CDATA[工作虽然很开心但也不要忘记休息哦～～]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://chenggoi.com/"/>
-  <updated>2015-02-28T12:12:49.995Z</updated>
+  <updated>2015-02-28T12:13:50.819Z</updated>
   <id>http://chenggoi.com/</id>
   
   <author>
@@ -15,14 +15,12 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[]]></title>
+    <title><![CDATA[ADT个人设置备份]]></title>
     <link href="http://chenggoi.com/2015/02/28/ADT/"/>
     <id>http://chenggoi.com/2015/02/28/ADT/</id>
-    <published>2015-02-28T12:12:41.000Z</published>
-    <updated>2015-02-28T12:12:41.000Z</updated>
-    <content type="html"><![CDATA[<p>layout: post<br>title: ADT个人设置备份<br>date: 2015-02-28 19:54:22<br>category:随笔<br>tags:备份</p>
-<h2 id="description:ADT个人设置备份">description:ADT个人设置备份</h2>
-<ul>
+    <published>2015-02-28T11:54:22.000Z</published>
+    <updated>2015-02-28T12:13:44.000Z</updated>
+    <content type="html"><![CDATA[<ul>
 <li>自动补全：<ul>
 <li>java：<code>._abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</code><br><img src="http://7tsyx2.com1.z0.glb.clouddn.com/java_assist.jpg" alt="java"></li>
 <li>xml:<code>&lt;=:_abcdefghijklmnopqrstuvwxyz</code><br><img src="http://7tsyx2.com1.z0.glb.clouddn.com/xml_assist.jpg" alt="xml"></li>
@@ -38,12 +36,16 @@
 </blockquote>
 </li>
 </ul>
-<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/01/15/AddSecretCode/" target="_blank" rel="external">http://chenggoi.com/2015/01/15/AddSecretCode/</a>,转载请注明出处。</p>
+<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/02/28/ADT/" target="_blank" rel="external">http://chenggoi.com/2015/02/28/ADT/</a>,转载请注明出处。</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>layout: post<br>title: ADT个人设置备份<br>date: 2015-02-28 19:54:22<br>category:随笔<br>tags:备份</p>
-<h2 id="description:ADT个人设置备份">description:AD]]>
+    <![CDATA[ADT个人设置备份]]>
+    
     </summary>
+    
+      <category term="备份" scheme="http://chenggoi.com/tags/%E5%A4%87%E4%BB%BD/"/>
+    
+      <category term="随笔" scheme="http://chenggoi.com/categories/life/"/>
     
   </entry>
   
