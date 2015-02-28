@@ -4,7 +4,7 @@
   <subtitle><![CDATA[工作虽然很开心但也不要忘记休息哦～～]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://chenggoi.com/"/>
-  <updated>2015-02-28T12:13:50.819Z</updated>
+  <updated>2015-02-28T12:15:13.900Z</updated>
   <id>http://chenggoi.com/</id>
   
   <author>
@@ -299,7 +299,7 @@ imm.hideSoftInputFromWindow(<span class="keyword">edit</span>.getWindowToken(),<
     <link href="http://chenggoi.com/2015/01/15/AddSecretCode/"/>
     <id>http://chenggoi.com/2015/01/15/AddSecretCode/</id>
     <published>2015-01-15T12:35:05.000Z</published>
-    <updated>2015-01-30T06:00:27.000Z</updated>
+    <updated>2015-02-28T12:15:07.000Z</updated>
     <content type="html"><![CDATA[<h2 id="环境配置">环境配置</h2>
 <pre><code>操作系统：Unubtu <span class="number">14.04</span>
 Android：<span class="number">4.2</span><span class="number">.2</span>
@@ -321,7 +321,7 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
  <span class="tag">&lt;/<span class="title">intent-filter</span>&gt;</span>
 <span class="tag">&lt;/<span class="title">activity</span>&gt;</span>
 </code></pre><h2 id="添加调用代码">添加调用代码</h2>
-<p>打开    </p>
+<p>打开</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">workspace<span class="regexp">/packages/</span>apps<span class="regexp">/Contacts/</span>src<span class="regexp">/com/</span>android<span class="regexp">/contacts/</span>src<span class="regexp">/com/</span>android<span class="regexp">/contacts/</span>SpecialCharSequenceMgr.java</div></pre></td></tr></table></figure>
 
 <p>文件，找到<code>handleSecretCode</code>方法的定义，并在其中添加如下代码，其中<code>OPEN_WiFiTestActivity</code>替换为之前注册的，<code>*#1111#</code>替换为你自己的暗码</p>
