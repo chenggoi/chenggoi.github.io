@@ -78,7 +78,7 @@
     </p>
   <p class="article-time">
     <time datetime="2015-03-17T10:12:13.000Z" itemprop="datePublished">3月 17 2015</time>
-    更新日期:<time datetime="2015-03-17T10:42:49.000Z" itemprop="dateModified">3月 17 2015</time>
+    更新日期:<time datetime="2015-03-17T10:43:57.000Z" itemprop="dateModified">3月 17 2015</time>
     
   </p>
 </header>
@@ -97,29 +97,28 @@ gcc：<span class="number">4.4</span>
 java：<span class="number">1.6</span> <span class="number">71u</span>
 </code></pre><h2 id="获取UA信息">获取UA信息</h2>
 <ul>
-<li><p>通过调用<code>Android</code>自带的<code>WebSettings.getCurrentUserAgent()</code>方法即可：</p>
-<pre><code>  <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UAInfo</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>{
-
-  TextView mUAInfoView = <span class="keyword">null</span>;
-  WebView mWebView = <span class="keyword">null</span>;
-  String mUAString = <span class="keyword">null</span>;
-
-  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span>(Bundle paramBundle)
-  {
-  <span class="keyword">super</span>.onCreate(paramBundle);
-  setContentView(R.layout.uainfo);
-
-  mUAInfoView=(TextView)findViewById(R.id.uainfo);
-  mWebView = <span class="keyword">new</span> WebView(<span class="keyword">this</span>);
-  mWebView.layout(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
-  WebSettings mWebSettings = mWebView.getSettings();
-  mUAString = mWebSettings.getUserAgentString();
-  mUAInfoView.setText(mUAString);
-  }
-  }
-</code></pre></li>
+<li>通过调用<code>Android</code>自带的<code>WebSettings.getCurrentUserAgent()</code>方法即可：</li>
 </ul>
-<h2 id="获取信息解析">获取信息解析</h2>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UAInfo</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>{
+
+    TextView mUAInfoView = <span class="keyword">null</span>;
+    WebView mWebView = <span class="keyword">null</span>;
+    String mUAString = <span class="keyword">null</span>;
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span>(Bundle paramBundle)
+    {
+    <span class="keyword">super</span>.onCreate(paramBundle);
+    setContentView(R.layout.uainfo);
+
+    mUAInfoView=(TextView)findViewById(R.id.uainfo);
+    mWebView = <span class="keyword">new</span> WebView(<span class="keyword">this</span>);
+    mWebView.layout(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
+    WebSettings mWebSettings = mWebView.getSettings();
+    mUAString = mWebSettings.getUserAgentString();
+    mUAInfoView.setText(mUAString);
+    }
+}
+</code></pre><h2 id="获取信息解析">获取信息解析</h2>
 <ul>
 <li><p>通过上述方法我们可以得到如下信息：</p>
 <p>  Mozilla/5.0 (Linux; U; Android $(VERSION) ; $(LOCALE) ; $(MODEL) Build/$(BUILD) ) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30</p>
