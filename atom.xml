@@ -4,7 +4,7 @@
   <subtitle><![CDATA[工作虽然很开心但也不要忘记休息哦～～]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://chenggoi.com/"/>
-  <updated>2015-03-17T10:42:11.440Z</updated>
+  <updated>2015-03-17T10:43:00.708Z</updated>
   <id>http://chenggoi.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://chenggoi.com/2015/03/17/UA-Info/"/>
     <id>http://chenggoi.com/2015/03/17/UA-Info/</id>
     <published>2015-03-17T10:12:13.000Z</published>
-    <updated>2015-03-17T10:42:08.000Z</updated>
+    <updated>2015-03-17T10:42:49.000Z</updated>
     <content type="html"><![CDATA[<h2 id="环境配置">环境配置</h2>
 <pre><code>操作系统：Unubtu <span class="number">14.04</span>
 Android：<span class="number">4.2</span><span class="number">.2</span>
@@ -28,8 +28,9 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
 </code></pre><h2 id="获取UA信息">获取UA信息</h2>
 <ul>
 <li><p>通过调用<code>Android</code>自带的<code>WebSettings.getCurrentUserAgent()</code>方法即可：</p>
-<p>  public class UAInfo extends Activity {</p>
-<pre><code>  TextView mUAInfoView = <span class="keyword">null</span>;
+<pre><code>  <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UAInfo</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>{
+
+  TextView mUAInfoView = <span class="keyword">null</span>;
   WebView mWebView = <span class="keyword">null</span>;
   String mUAString = <span class="keyword">null</span>;
 
@@ -45,8 +46,8 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
   mUAString = mWebSettings.getUserAgentString();
   mUAInfoView.setText(mUAString);
   }
-</code></pre><p>  }</p>
-</li>
+  }
+</code></pre></li>
 </ul>
 <h2 id="获取信息解析">获取信息解析</h2>
 <ul>
