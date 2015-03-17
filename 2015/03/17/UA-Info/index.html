@@ -7,12 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>小米2s个人刷机记录 | Chenggoi&#39;s Blog</title>
+    <title>Android 4.2 UA信息获取 | Chenggoi&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Chenggoi">
     
-    <meta name="description" itemprop="description" content="记录网络上大量小米2s的Rom在本人手机的使用情况">
+    <meta name="description" itemprop="description" content="获取Android 4.2的UA信息">
     
     
     
@@ -70,15 +70,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/03/03/XiaoMi_2s_Rom/" title="小米2s个人刷机记录" itemprop="url">小米2s个人刷机记录</a>
+      <a href="/2015/03/17/UA-Info/" title="Android 4.2 UA信息获取" itemprop="url">Android 4.2 UA信息获取</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://chenggoi.com" title="Chenggoi">Chenggoi</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-03-03T01:30:52.000Z" itemprop="datePublished">3月 3 2015</time>
-    更新日期:<time datetime="2015-03-04T00:46:27.000Z" itemprop="dateModified">3月 4 2015</time>
+    <time datetime="2015-03-17T10:12:13.000Z" itemprop="datePublished">3月 17 2015</time>
+    更新日期:<time datetime="2015-03-17T10:35:52.000Z" itemprop="dateModified">3月 17 2015</time>
     
   </p>
 </header>
@@ -87,47 +87,131 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#cm12-plus-5-0-Beta5-0-aries"><span class="toc-number">1.</span> <span class="toc-text">cm12-plus-5.0-Beta5.0-aries</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MK44-4-aries-150131-HISTORY"><span class="toc-number">2.</span> <span class="toc-text">MK44.4-aries-150131-HISTORY</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取UA信息"><span class="toc-number">2.</span> <span class="toc-text">获取UA信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取信息解析"><span class="toc-number">3.</span> <span class="toc-text">获取信息解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文章"><span class="toc-number">4.</span> <span class="toc-text">参考文章</span></a></li></ol>
 		</div>
 		
-		<p><strong>注：</strong>跳屏这件事也许与屏幕质量有关，但是我的确刷到过不跳的Rom</p>
-<h3 id="cm12-plus-5-0-Beta5-0-aries">cm12-plus-5.0-Beta5.0-aries</h3>
+		<h2 id="环境配置">环境配置</h2>
+<pre><code>操作系统：Unubtu <span class="number">14.04</span>
+Android：<span class="number">4.2</span><span class="number">.2</span>
+gcc：<span class="number">4.4</span>
+java：<span class="number">1.6</span> <span class="number">71u</span>
+</code></pre><h2 id="获取UA信息">获取UA信息</h2>
 <ul>
-<li>描述：安卓梦工厂适配Rom，基于Android 5.0.2</li>
-<li>耗电：看1080p视频45分钟，3G网络打开,剩余电量67%</li>
-<li>发热：看视频和充电时有中度温度提升</li>
-<li>跳屏：使用中（非充电状态）跳屏一次</li>
-<li>流畅：流畅度一般，尤其在使用钛备份恢复完成后以及使用中突然出现严重卡顿</li>
+<li><p>通过调用<code>Android</code>自带的<code>WebSettings.getCurrentUserAgent()</code>方法即可：</p>
+<p>  public class UAInfo extends Activity {</p>
+<pre><code>  TextView mUAInfoView = <span class="keyword">null</span>;
+  WebView mWebView = <span class="keyword">null</span>;
+  String mUAString = <span class="keyword">null</span>;
+
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span>(Bundle paramBundle)
+  {
+  <span class="keyword">super</span>.onCreate(paramBundle);
+  setContentView(R.layout.uainfo);
+
+  mUAInfoView=(TextView)findViewById(R.id.uainfo);
+  mWebView = <span class="keyword">new</span> WebView(<span class="keyword">this</span>);
+  mWebView.layout(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
+  WebSettings mWebSettings = mWebView.getSettings();
+  mUAString = mWebSettings.getUserAgentString();
+  mUAInfoView.setText(mUAString);
+  }
+</code></pre><p>  }</p>
+</li>
 </ul>
-<h3 id="MK44-4-aries-150131-HISTORY">MK44.4-aries-150131-HISTORY</h3>
+<h2 id="获取信息解析">获取信息解析</h2>
 <ul>
-<li>描述：魔趣论坛Rom，历史版（长期支持版本）</li>
-<li>耗电：看1080p视频45分钟，3G网络打开，省电模式打开（未限制CPU），剩余电量56%</li>
-<li>发热：看视频和充电时有很明显的温度提升</li>
-<li>跳屏：使用中（非充电状态）偶尔会跳屏数次</li>
-<li>流畅：非常流畅（开启限制CPU的省电模式会出现卡顿）</li>
+<li><p>通过上述方法我们可以得到如下信息：</p>
+<p>  Mozilla/5.0 (Linux; U; Android $(VERSION) ; $(LOCALE) ; $(MODEL) Build/$(BUILD) ) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30</p>
+</li>
+<li><p>先说结论，其中：</p>
+</li>
+<li><code>$(VERSION)</code>的值为<code>build.prop</code>中<code>ro.build.version.release</code>字段的值</li>
+<li><code>$(LOCALE)</code>的值为当前系统中的语言设置的值</li>
+<li><code>$(MODEL)</code>的值为<code>build.prop</code>中<code>ro.product.model</code>字段的值</li>
+<li><code>$(BUILD)</code>的值为<code>build.prop</code>中<code>ro.build.id</code>字段的值</li>
+<li><p>后面附上系统源码的实现方式</p>
+<pre><code>  <span class="keyword">private</span> <span class="keyword">synchronized</span> String getCurrentUserAgent() {
+     Locale locale;
+     <span class="keyword">synchronized</span>(sLockForLocaleSettings) {
+     locale = sLocale;
+     }
+     <span class="keyword">return</span> getDefaultUserAgentForLocale(mContext, locale);
+  }
+  <span class="keyword">public</span> <span class="keyword">static</span> String getDefaultUserAgentForLocale(Context context, Locale locale) {
+  StringBuffer buffer = <span class="keyword">new</span> StringBuffer();
+  <span class="comment">// Add version</span>
+  <span class="keyword">final</span> String version = Build.VERSION.RELEASE;
+  <span class="keyword">if</span> (version.length() &gt; <span class="number">0</span>) {
+      <span class="keyword">if</span> (Character.isDigit(version.charAt(<span class="number">0</span>))) {
+          <span class="comment">// Release is a version, eg "3.1"</span>
+          buffer.<span class="keyword">append</span>(version);
+      } <span class="keyword">else</span> {
+          <span class="comment">// Release is a codename, eg "Honeycomb"</span>
+          <span class="comment">// In this case, use the previous release's version</span>
+          buffer.<span class="keyword">append</span>(PREVIOUS_VERSION);
+      }
+  } <span class="keyword">else</span> {
+      <span class="comment">// default to "1.0"</span>
+      buffer.<span class="keyword">append</span>(<span class="string">"1.0"</span>);
+  }
+  buffer.<span class="keyword">append</span>(<span class="string">"; "</span>);
+  <span class="keyword">final</span> String language = locale.getLanguage();
+  <span class="keyword">if</span> (language != <span class="keyword">null</span>) {
+      buffer.<span class="keyword">append</span>(convertObsoleteLanguageCodeToNew(language));
+      <span class="keyword">final</span> String country = locale.getCountry();
+      <span class="keyword">if</span> (country != <span class="keyword">null</span>) {
+          buffer.<span class="keyword">append</span>(<span class="string">"-"</span>);
+          buffer.<span class="keyword">append</span>(country.toLowerCase());
+      }
+  } <span class="keyword">else</span> {
+      <span class="comment">// default to "en"</span>
+      buffer.<span class="keyword">append</span>(<span class="string">"en"</span>);
+  }
+  buffer.<span class="keyword">append</span>(<span class="string">";"</span>);
+  <span class="comment">// add the model for the release build</span>
+  <span class="keyword">if</span> (<span class="string">"REL"</span>.equals(Build.VERSION.CODENAME)) {
+      <span class="keyword">final</span> String model = Build.MODEL;
+      <span class="keyword">if</span> (model.length() &gt; <span class="number">0</span>) {
+          buffer.<span class="keyword">append</span>(<span class="string">" "</span>);
+          buffer.<span class="keyword">append</span>(model);
+      }
+  }
+  <span class="keyword">final</span> String id = Build.ID;
+  <span class="keyword">if</span> (id.length() &gt; <span class="number">0</span>) {
+      buffer.<span class="keyword">append</span>(<span class="string">" Build/"</span>);
+      buffer.<span class="keyword">append</span>(id);
+  }
+  String mobile = context.getResources().<span class="keyword">getText</span>(
+      com.android.internal.R.string.web_user_agent_target_content).toString();
+  <span class="keyword">final</span> String base = context.getResources().<span class="keyword">getText</span>(
+          com.android.internal.R.string.web_user_agent).toString();
+  <span class="keyword">return</span> String.format(base, buffer, mobile);
+  }
+</code></pre></li>
 </ul>
-<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/03/03/XiaoMi_2s_Rom/" target="_blank" rel="external">http://chenggoi.com/2015/03/03/XiaoMi_2s_Rom/</a>,转载请注明出处。</p>
+<h2 id="参考文章">参考文章</h2>
+<p><a href="http://hw3com.iteye.com/blog/1152915" target="_blank" rel="external">Android中浏览器UA的生成策略</a></p>
+<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/01/15/AddSecretCode/" target="_blank" rel="external">http://chenggoi.com/2015/01/15/AddSecretCode/</a>,转载请注明出处。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/刷机/">刷机</a>
+  <span></span> <a href="/tags/Android/">Android</a>
   </div>
 
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/life/">随笔</a>
+  <a class="article-category-link" href="/categories/code/">技术</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://chenggoi.com/2015/03/03/XiaoMi_2s_Rom/" data-title="小米2s个人刷机记录 | Chenggoi&#39;s Blog" data-tsina="null" class="share clearfix">
+  <div data-url="http://chenggoi.com/2015/03/17/UA-Info/" data-title="Android 4.2 UA信息获取 | Chenggoi&#39;s Blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -136,19 +220,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/03/17/UA-Info/" title="Android 4.2 UA信息获取">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  Android 4.2 UA信息获取</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/02/28/ADT/"  title="ADT个人设置备份">
+<a href="/2015/03/03/XiaoMi_2s_Rom/"  title="小米2s个人刷机记录">
  <strong>NEXT:</strong><br/> 
- <span>ADT个人设置备份
+ <span>小米2s个人刷机记录
 </span>
 </a>
 </div>
@@ -158,7 +234,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="小米2s个人刷机记录" data-thread-key="XiaoMi_2s_Rom" data-author-key="Chenggoi" data-url="http://chenggoi.com/post/XiaoMi_2s_Rom"></div>
+	<div class="ds-thread" data-title="Android 4.2 UA信息获取" data-thread-key="UA-Info" data-author-key="Chenggoi" data-url="http://chenggoi.com/post/UA-Info"></div>
 	
 </section>
 
@@ -168,7 +244,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#cm12-plus-5-0-Beta5-0-aries"><span class="toc-number">1.</span> <span class="toc-text">cm12-plus-5.0-Beta5.0-aries</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MK44-4-aries-150131-HISTORY"><span class="toc-number">2.</span> <span class="toc-text">MK44.4-aries-150131-HISTORY</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取UA信息"><span class="toc-number">2.</span> <span class="toc-text">获取UA信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取信息解析"><span class="toc-number">3.</span> <span class="toc-text">获取信息解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文章"><span class="toc-number">4.</span> <span class="toc-text">参考文章</span></a></li></ol>
   </div>
 
 <div id="asidepart">
