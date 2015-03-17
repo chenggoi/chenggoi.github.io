@@ -4,7 +4,7 @@
   <subtitle><![CDATA[工作虽然很开心但也不要忘记休息哦～～]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://chenggoi.com/"/>
-  <updated>2015-03-17T10:46:38.388Z</updated>
+  <updated>2015-03-17T10:47:53.276Z</updated>
   <id>http://chenggoi.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://chenggoi.com/2015/03/17/UA-Info/"/>
     <id>http://chenggoi.com/2015/03/17/UA-Info/</id>
     <published>2015-03-17T10:12:13.000Z</published>
-    <updated>2015-03-17T10:44:49.000Z</updated>
+    <updated>2015-03-17T10:47:50.000Z</updated>
     <content type="html"><![CDATA[<h2 id="环境配置">环境配置</h2>
 <pre><code>操作系统：Unubtu <span class="number">14.04</span>
 Android：<span class="number">4.2</span><span class="number">.2</span>
@@ -50,11 +50,12 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
     }
 </code></pre><h2 id="获取信息解析">获取信息解析</h2>
 <ul>
-<li><p>通过上述方法我们可以得到如下信息：</p>
-<pre><code>  <span class="constant">Mozilla</span>/<span class="number">5.0</span> (<span class="constant">Linux</span>; <span class="constant">U</span>; <span class="constant">Android</span> <span class="variable">$(</span><span class="constant">VERSION</span>) ; <span class="variable">$(</span><span class="constant">LOCALE</span>) ; <span class="variable">$(</span><span class="constant">MODEL</span>) <span class="constant">Build</span>/<span class="variable">$(</span><span class="constant">BUILD</span>) ) <span class="constant">AppleWebKit</span>/<span class="number">534.30</span> (<span class="constant">KHTML</span>, like <span class="constant">Gecko</span>) <span class="constant">Version</span>/<span class="number">4.0</span> <span class="constant">Mobile</span> <span class="constant">Safari</span>/<span class="number">534.30</span>
-</code></pre></li>
-<li><p>先说结论，其中：</p>
-</li>
+<li>通过上述方法我们可以得到如下信息：</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="constant">Mozilla</span>/<span class="number">5.0</span> (<span class="constant">Linux</span>; <span class="constant">U</span>; <span class="constant">Android</span> <span class="variable">$(</span><span class="constant">VERSION</span>) ; <span class="variable">$(</span><span class="constant">LOCALE</span>) ; <span class="variable">$(</span><span class="constant">MODEL</span>) <span class="constant">Build</span>/<span class="variable">$(</span><span class="constant">BUILD</span>) ) <span class="constant">AppleWebKit</span>/<span class="number">534.30</span> (<span class="constant">KHTML</span>, like <span class="constant">Gecko</span>) <span class="constant">Version</span>/<span class="number">4.0</span> <span class="constant">Mobile</span> <span class="constant">Safari</span>/<span class="number">534.30</span></div></pre></td></tr></table></figure>
+
+<ul>
+<li>先说结论，其中：</li>
 <li><code>$(VERSION)</code>的值为<code>build.prop</code>中<code>ro.build.version.release</code>字段的值</li>
 <li><code>$(LOCALE)</code>的值为当前系统中的语言设置的值</li>
 <li><code>$(MODEL)</code>的值为<code>build.prop</code>中<code>ro.product.model</code>字段的值</li>
