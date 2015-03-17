@@ -78,7 +78,7 @@
     </p>
   <p class="article-time">
     <time datetime="2015-03-17T10:12:13.000Z" itemprop="datePublished">3月 17 2015</time>
-    更新日期:<time datetime="2015-03-17T10:43:57.000Z" itemprop="dateModified">3月 17 2015</time>
+    更新日期:<time datetime="2015-03-17T10:44:49.000Z" itemprop="dateModified">3月 17 2015</time>
     
   </p>
 </header>
@@ -99,30 +99,30 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
 <ul>
 <li>通过调用<code>Android</code>自带的<code>WebSettings.getCurrentUserAgent()</code>方法即可：</li>
 </ul>
-<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UAInfo</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>{
+<pre><code>    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UAInfo</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>{
 
-    TextView mUAInfoView = <span class="keyword">null</span>;
-    WebView mWebView = <span class="keyword">null</span>;
-    String mUAString = <span class="keyword">null</span>;
+        TextView mUAInfoView = <span class="keyword">null</span>;
+        WebView mWebView = <span class="keyword">null</span>;
+        String mUAString = <span class="keyword">null</span>;
 
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span>(Bundle paramBundle)
-    {
-    <span class="keyword">super</span>.onCreate(paramBundle);
-    setContentView(R.layout.uainfo);
+        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span>(Bundle paramBundle)
+        {
+        <span class="keyword">super</span>.onCreate(paramBundle);
+        setContentView(R.layout.uainfo);
 
-    mUAInfoView=(TextView)findViewById(R.id.uainfo);
-    mWebView = <span class="keyword">new</span> WebView(<span class="keyword">this</span>);
-    mWebView.layout(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
-    WebSettings mWebSettings = mWebView.getSettings();
-    mUAString = mWebSettings.getUserAgentString();
-    mUAInfoView.setText(mUAString);
+        mUAInfoView=(TextView)findViewById(R.id.uainfo);
+        mWebView = <span class="keyword">new</span> WebView(<span class="keyword">this</span>);
+        mWebView.layout(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
+        WebSettings mWebSettings = mWebView.getSettings();
+        mUAString = mWebSettings.getUserAgentString();
+        mUAInfoView.setText(mUAString);
+        }
     }
-}
 </code></pre><h2 id="获取信息解析">获取信息解析</h2>
 <ul>
 <li><p>通过上述方法我们可以得到如下信息：</p>
-<p>  Mozilla/5.0 (Linux; U; Android $(VERSION) ; $(LOCALE) ; $(MODEL) Build/$(BUILD) ) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30</p>
-</li>
+<pre><code>  <span class="constant">Mozilla</span>/<span class="number">5.0</span> (<span class="constant">Linux</span>; <span class="constant">U</span>; <span class="constant">Android</span> <span class="variable">$(</span><span class="constant">VERSION</span>) ; <span class="variable">$(</span><span class="constant">LOCALE</span>) ; <span class="variable">$(</span><span class="constant">MODEL</span>) <span class="constant">Build</span>/<span class="variable">$(</span><span class="constant">BUILD</span>) ) <span class="constant">AppleWebKit</span>/<span class="number">534.30</span> (<span class="constant">KHTML</span>, like <span class="constant">Gecko</span>) <span class="constant">Version</span>/<span class="number">4.0</span> <span class="constant">Mobile</span> <span class="constant">Safari</span>/<span class="number">534.30</span>
+</code></pre></li>
 <li><p>先说结论，其中：</p>
 </li>
 <li><code>$(VERSION)</code>的值为<code>build.prop</code>中<code>ro.build.version.release</code>字段的值</li>
