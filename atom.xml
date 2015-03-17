@@ -4,7 +4,7 @@
   <subtitle><![CDATA[工作虽然很开心但也不要忘记休息哦～～]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://chenggoi.com/"/>
-  <updated>2015-03-17T10:44:57.496Z</updated>
+  <updated>2015-03-17T10:46:38.388Z</updated>
   <id>http://chenggoi.com/</id>
   
   <author>
@@ -139,9 +139,9 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
     <link href="http://chenggoi.com/2015/03/03/XiaoMi_2s_Rom/"/>
     <id>http://chenggoi.com/2015/03/03/XiaoMi_2s_Rom/</id>
     <published>2015-03-03T01:30:52.000Z</published>
-    <updated>2015-03-17T10:40:53.000Z</updated>
+    <updated>2015-03-17T10:46:25.000Z</updated>
     <content type="html"><![CDATA[<p><strong>注：</strong>跳屏这件事也许与屏幕质量有关，但是我的确刷到过不跳的Rom</p>
-<h3 id="IUNI_OS_小米_2/2S_V3-0-02">IUNI OS 小米 2/2S V3.0.02</h3>
+<h3 id="IUNI_OS_小米_2/2S_V3-0-02"><strong>IUNI OS 小米 2/2S V3.0.02</strong></h3>
 <ul>
 <li>描述：一加手机适配rom，简约为主</li>
 <li>耗电：看1080p视频45分钟,3G网路打开，剩余电量77%</li>
@@ -149,7 +149,7 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
 <li>跳屏：偶尔会跳屏一次</li>
 <li>流畅：由于主打精简的设计，所以流畅度很好，不过功能上就精简了很多</li>
 </ul>
-<h3 id="cm12-plus-5-0-Beta5-0-aries">cm12-plus-5.0-Beta5.0-aries</h3>
+<h3 id="cm12-plus-5-0-Beta5-0-aries"><strong>cm12-plus-5.0-Beta5.0-aries</strong></h3>
 <ul>
 <li>描述：安卓梦工厂适配Rom，基于Android 5.0.2</li>
 <li>耗电：看1080p视频45分钟，3G网络打开,剩余电量67%</li>
@@ -157,7 +157,7 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
 <li>跳屏：使用中（非充电状态）跳屏一次</li>
 <li>流畅：流畅度一般，尤其在使用钛备份恢复完成后以及使用中突然出现严重卡顿</li>
 </ul>
-<h3 id="MK44-4-aries-150131-HISTORY">MK44.4-aries-150131-HISTORY</h3>
+<h3 id="MK44-4-aries-150131-HISTORY"><strong>MK44.4-aries-150131-HISTORY</strong></h3>
 <ul>
 <li>描述：魔趣论坛Rom，历史版（长期支持版本）</li>
 <li>耗电：看1080p视频45分钟，3G网络打开，省电模式打开（未限制CPU），剩余电量56%</li>
@@ -1044,30 +1044,6 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
   </entry>
   
   <entry>
-    <title><![CDATA[SDK Manager更新速度慢]]></title>
-    <link href="http://chenggoi.com/2015/01/01/SDK_Manager/"/>
-    <id>http://chenggoi.com/2015/01/01/SDK_Manager/</id>
-    <published>2015-01-01T07:30:16.000Z</published>
-    <updated>2015-01-30T06:06:16.000Z</updated>
-    <content type="html"><![CDATA[<p>1、打开tools-&gt;opinion</p>
-<p>2、设置HTTP Proxy server：mirrors.neusoft.edu.cn</p>
-<p>3、设置HTTP Proxy Port：80</p>
-<p>4、选中Force ..<a href="https://...sources" target="_blank" rel="external">https://...sources</a> to be fetched using http:</p>
-<p>5、关闭，重新更新</p>
-<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/01/01/SDK_Manager/" target="_blank" rel="external">http://chenggoi.com/2015/01/01/SDK_Manager/</a>,转载请注明出处。</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[更新SDK缓慢解决方案]]>
-    
-    </summary>
-    
-      <category term="Android" scheme="http://chenggoi.com/tags/Android/"/>
-    
-      <category term="技术" scheme="http://chenggoi.com/categories/code/"/>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[Markdown的常用语法]]></title>
     <link href="http://chenggoi.com/2015/01/01/markdown/"/>
     <id>http://chenggoi.com/2015/01/01/markdown/</id>
@@ -1192,7 +1168,7 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
   <span class="tag">&lt;<span class="title">chenggoi@sina.com</span>&gt;</span>
 </code></pre><p>效果为：</p>
 <p><a href="http://www.baidu.com" target="_blank" rel="external">http://www.baidu.com</a></p>
-<p><a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x74;&#x65;&#115;&#x74;&#x40;&#99;&#104;&#101;&#110;&#103;&#x67;&#111;&#x69;&#46;&#x63;&#x6f;&#109;">&#x74;&#x65;&#115;&#x74;&#x40;&#99;&#104;&#101;&#110;&#103;&#x67;&#111;&#x69;&#46;&#x63;&#x6f;&#109;</a></p>
+<p><a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#116;&#101;&#115;&#x74;&#x40;&#99;&#x68;&#x65;&#110;&#x67;&#103;&#x6f;&#105;&#x2e;&#99;&#111;&#109;">&#116;&#101;&#115;&#x74;&#x40;&#99;&#x68;&#x65;&#110;&#x67;&#103;&#x6f;&#105;&#x2e;&#99;&#111;&#109;</a></p>
 </li>
 </ul>
 <h2 id="转义字符">转义字符</h2>
@@ -1218,6 +1194,30 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
     </summary>
     
       <category term="Markdown" scheme="http://chenggoi.com/tags/Markdown/"/>
+    
+      <category term="技术" scheme="http://chenggoi.com/categories/code/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[SDK Manager更新速度慢]]></title>
+    <link href="http://chenggoi.com/2015/01/01/SDK_Manager/"/>
+    <id>http://chenggoi.com/2015/01/01/SDK_Manager/</id>
+    <published>2015-01-01T07:30:16.000Z</published>
+    <updated>2015-01-30T06:06:16.000Z</updated>
+    <content type="html"><![CDATA[<p>1、打开tools-&gt;opinion</p>
+<p>2、设置HTTP Proxy server：mirrors.neusoft.edu.cn</p>
+<p>3、设置HTTP Proxy Port：80</p>
+<p>4、选中Force ..<a href="https://...sources" target="_blank" rel="external">https://...sources</a> to be fetched using http:</p>
+<p>5、关闭，重新更新</p>
+<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/01/01/SDK_Manager/" target="_blank" rel="external">http://chenggoi.com/2015/01/01/SDK_Manager/</a>,转载请注明出处。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[更新SDK缓慢解决方案]]>
+    
+    </summary>
+    
+      <category term="Android" scheme="http://chenggoi.com/tags/Android/"/>
     
       <category term="技术" scheme="http://chenggoi.com/categories/code/"/>
     
