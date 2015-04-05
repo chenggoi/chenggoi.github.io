@@ -1,0 +1,484 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="baidu_union_verify" content="d1952c66cf48912e21c18c7c581f382a">
+  <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
+<meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
+  
+    <title>ActionBar的美化 | Chenggoi&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Chenggoi">
+    
+    <meta name="description" itemprop="description" content="修改ActionBar的样式，添加图标等">
+    
+    
+    
+    
+    <link rel="alternate" href="/atom.xml" title="Chenggoi&#39;s Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+     
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Chenggoi&#39;s Blog">Chenggoi&#39;s Blog</a></h1>
+				<a class="blog-motto">工作虽然很开心但也不要忘记休息哦～～</a>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页</a></li>
+					
+						<li><a href="/categories/code">技术</a></li>
+					
+						<li><a href="/categories/life">随笔</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:chenggoi.com">
+					</form>
+					
+					</li>
+				</ul>
+                            </nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/04/05/ActionBar/" title="ActionBar的美化" itemprop="url">ActionBar的美化</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://chenggoi.com" title="Chenggoi">Chenggoi</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-04-05T06:06:48.000Z" itemprop="datePublished">4月 5 2015</time>
+    更新日期:<time datetime="2015-04-05T07:22:38.000Z" itemprop="dateModified">4月 5 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#需求分析"><span class="toc-number">2.</span> <span class="toc-text">需求分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加AppCompat库"><span class="toc-number">3.</span> <span class="toc-text">添加AppCompat库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建立Menu的布局"><span class="toc-number">4.</span> <span class="toc-text">建立Menu的布局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改主题样式"><span class="toc-number">5.</span> <span class="toc-text">修改主题样式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改Java类"><span class="toc-number">6.</span> <span class="toc-text">修改Java类</span></a></li></ol>
+		</div>
+		
+		<h2 id="环境配置">环境配置</h2>
+<pre><code>操作系统：Ubuntu 14.04 64位
+IDE：Android Studio 1.1.0
+Android版本：4.4
+</code></pre><hr>
+<h2 id="需求分析">需求分析</h2>
+<ul>
+<li>修改<code>ActionBar</code>的背景色，在右侧添加一个图标按钮，效果如下:<br><img src="http://7tsyx2.com1.z0.glb.clouddn.com/actionbar.png" alt="actionbar"></li>
+</ul>
+<h2 id="添加AppCompat库">添加AppCompat库</h2>
+<ul>
+<li><p>打开<code>Module</code>中的<code>build.gradle</code>文件，在<code>dependencies</code>中添加如下内容：</p>
+<pre><code>  <span class="keyword">compile</span> <span class="string">'com.android.support:appcompat-v7:21.0.3'</span>
+</code></pre></li>
+</ul>
+<h2 id="建立Menu的布局">建立Menu的布局</h2>
+<ul>
+<li><p>在<code>res/menu</code>文件夹下建立<code>discuss_add.xml</code>文件，写入如下内容：</p>
+<pre><code>  &lt;menu xmlns:<span class="variable">app=</span><span class="string">"http://schemas.android.com/apk/res-auto"</span>
+  xmlns:<span class="variable">android=</span><span class="string">"http://schemas.android.com/apk/res/android"</span>
+  xmlns:<span class="variable">tools=</span><span class="string">"http://schemas.android.com/tools"</span>
+  tools:<span class="variable">context=</span><span class="string">"net.coding.program.project.detail.TopicAddActivity"</span>&gt;
+  &lt;item
+      android:<span class="variable">id=</span><span class="string">"@+id/action_add_discuss"</span>
+      android:<span class="variable">icon=</span><span class="string">"@drawable/ic_menu_edit"</span>
+      android:<span class="variable">title=</span><span class="string">"发表评论"</span>
+      app:<span class="variable">showAsAction=</span><span class="string">"always"</span> /&gt;
+  &lt;/menu&gt;
+</code></pre></li>
+<li><p>其中<code>android:id</code>为调用该控件的<code>id</code>，<code>android:icon</code>为该控件的图标，即上图中右侧的<code>白色铅笔</code>，<code>android:title</code>为该控件的标题，在屏幕空间不够时，未显示的控件会隐藏到下拉列表中，并且只显示标题，<code>app:showAsAction</code>为控件的显示样式，有五种属性，分别为：<br>  <strong>1.ifRoom：</strong>会优先以图标的形式显示，如果屏幕空间不够则会隐藏到下拉菜单中<br>  <strong>2.never：</strong>永远都不会以图标形式显示，只会显示在下拉菜单中，并且只显示标题<br>  <strong>3.always：</strong>无论空间是否足够，都会以图标的形式显示<br>  <strong>4.whitText：</strong>在ActionBar上会尽量显示标题，但是如果空间有限但图标有效，标题可能显示不全<br>  <strong>5.collapseActionView：</strong>声明了这个操作的视窗应该被折叠到一个按钮中，当用户选择这个按钮时，这个操作视窗展开。否则，这个操作视窗在默认的情况下是可见的，并且即便在用于不适用的时候，也要占据操作栏的有效空间</p>
+</li>
+<li><p>在使用<code>app:showAsAction</code>时需添加以下命名空间：</p>
+<pre><code>  xmln<span class="variable">s:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span>
+</code></pre></li>
+</ul>
+<h2 id="修改主题样式">修改主题样式</h2>
+<ul>
+<li>使用<code>appcompat-v7</code>的<code>ActionBar</code>需要主题继承自<code>Theme.AppCompat</code></li>
+<li><p>我们在<code>res/velues/styles.xml</code>中添加如下内容：</p>
+<pre><code>  &lt;style <span class="property">name</span>=<span class="string">"AppBaseTheme"</span> parent=<span class="string">"Theme.AppCompat.Light.DarkActionBar"</span>&gt;
+      &lt;!<span class="comment">-- ActionBar的背景色 --&gt;</span>
+      &lt;<span class="property">item</span> <span class="property">name</span>=<span class="string">"colorPrimary"</span>&gt;@color/action_bar_background_color&lt;/<span class="property">item</span>&gt;
+      &lt;!<span class="comment">-- 状态栏的背景色 --&gt;</span>
+      &lt;<span class="property">item</span> <span class="property">name</span>=”colorPrimaryDark”&gt;@color/status_bar_color&lt;/<span class="property">item</span>&gt;
+      &lt;!<span class="comment">-- ActionBar上字体的前景色 --&gt;</span>
+      &lt;<span class="property">item</span> <span class="property">name</span>=<span class="string">"android:textColorPrimary"</span>&gt;@color/white&lt;/<span class="property">item</span>&gt;
+      &lt;!<span class="comment">-- 整个窗口的背景色 --&gt;</span>
+      &lt;<span class="property">item</span> <span class="property">name</span>=<span class="string">"android:windowBackground"</span>&gt;@color/view_background&lt;/<span class="property">item</span>&gt;
+      &lt;!<span class="comment">-- 窗口中字体的颜色 --&gt;</span>
+      &lt;<span class="property">item</span> <span class="property">name</span>=<span class="string">"android:textColor"</span>&gt;@color/text_black&lt;/<span class="property">item</span>&gt;
+  &lt;/style&gt;
+</code></pre></li>
+<li><p>套用官网的一张图片辅助说明<a href="http://developer.android.com/training/material/theme.html#ColorPalette" target="_blank" rel="external">Using the Material Theme</a><br><img src="http://7tsyx2.com1.z0.glb.clouddn.com/ThemeColors.png" alt="ThemeColor"></p>
+</li>
+<li><p>修改好<code>styles.xml</code>之后，还需要在<code>AndroidManifest.xml</code>中对应的<code>activity</code>下调用<code>android:theme=&quot;@style/AppBaseTheme&quot;</code>，这里我就直接在<code>application</code>下调用了，也就是对整个程序生效，代码如下：</p>
+<pre><code>  <span class="tag">&lt;<span class="title">application
+</span>      <span class="attribute">android:allowBackup</span>=<span class="value">"true"</span>
+      <span class="attribute">android:icon</span>=<span class="value">"@drawable/ic_launcher"</span>
+      <span class="attribute">android:label</span>=<span class="value">"@string/app_name"</span>
+      <span class="attribute">android:theme</span>=<span class="value">"@style/AppBaseTheme"</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">activity
+</span>          <span class="attribute">android:name</span>=<span class="value">"com.chenggoi.MainActivity"</span>
+          <span class="attribute">android:label</span>=<span class="value">"@string/app_name"</span>&gt;</span>
+          <span class="tag">&lt;<span class="title">intent-filter</span>&gt;</span>
+              <span class="tag">&lt;<span class="title">action</span> <span class="attribute">android:name</span>=<span class="value">"android.intent.action.MAIN"</span> /&gt;</span>
+              <span class="tag">&lt;<span class="title">category</span> <span class="attribute">android:name</span>=<span class="value">"android.intent.category.LAUNCHER"</span> /&gt;</span>
+          <span class="tag">&lt;/<span class="title">intent-filter</span>&gt;</span>
+      <span class="tag">&lt;/<span class="title">activity</span>&gt;</span>
+
+      <span class="tag">&lt;<span class="title">activity</span> <span class="attribute">android:name</span>=<span class="value">".AddDiscussActivity"</span> /&gt;</span>
+  <span class="tag">&lt;/<span class="title">application</span>&gt;</span>
+</code></pre></li>
+</ul>
+<h2 id="修改Java类">修改Java类</h2>
+<ul>
+<li>工作到这里就差不多快要结束了，对于<code>Activity</code>则直接继承<code>ActionBarActivity</code>，然后在<code>onCreate</code>中获取<code>ActionBar</code>：<pre><code>  <span class="keyword">private</span> ActionBar actionBar;
+  actionBar = getSupportActionBar();
+</code></pre></li>
+<li><p>接下来重写如下两个方法即可：</p>
+<pre><code>  <span class="annotation">@Override</span>
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreateOptionsMenu</span>(Menu menu, MenuInflater inflater) {
+      <span class="comment">//建立ActionBar，绑定布局</span>
+      inflater.inflate(R.menu.discuss_add, menu);
+      <span class="keyword">super</span>.onCreateOptionsMenu(menu, inflater);
+  }
+
+  <span class="annotation">@Override</span>
+  <span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onOptionsItemSelected</span>(MenuItem item) {
+      <span class="comment">//响应ActionBar上控件的选择事件，如有多个控件则可根据item值判断</span>
+      Intent intent = <span class="keyword">new</span> Intent(mContext, AddDiscussActivity.class);
+      startActivity(intent);
+      <span class="keyword">return</span> <span class="keyword">true</span>;
+  }
+</code></pre></li>
+<li><p>对于<code>Fragment</code>则需要在主<code>Activity</code>上继承<code>ActionBarActivity</code>，然后在相应的<code>Fragment</code>页面重写以上两个方法，并且还要在<code>onActivityCreated</code>方法中添加<code>setHasOptionsMenu(true);</code>，如：</p>
+<pre><code>  <span class="annotation">@Override</span>
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityCreated</span>(Bundle savedInstanceState) {
+      <span class="keyword">super</span>.onActivityCreated(savedInstanceState);
+      setHasOptionsMenu(<span class="keyword">true</span>);
+  }
+</code></pre></li>
+</ul>
+<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/04/05/ActionBar/" target="_blank" rel="external">http://chenggoi.com/2015/04/05/ActionBar/</a>,转载请注明出处。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Android-ActionBar/">Android ActionBar</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/code/">技术</a>
+</div>
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://chenggoi.com/2015/04/05/ActionBar/" data-title="ActionBar的美化 | Chenggoi&#39;s Blog" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/03/17/UA-Info/"  title="Android 4.2 UA信息获取">
+ <strong>NEXT:</strong><br/> 
+ <span>Android 4.2 UA信息获取
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	
+	<div class="ds-thread" data-title="ActionBar的美化" data-thread-key="ActionBar" data-author-key="Chenggoi" data-url="http://chenggoi.com/post/ActionBar"></div>
+	
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#需求分析"><span class="toc-number">2.</span> <span class="toc-text">需求分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加AppCompat库"><span class="toc-number">3.</span> <span class="toc-text">添加AppCompat库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建立Menu的布局"><span class="toc-number">4.</span> <span class="toc-text">建立Menu的布局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改主题样式"><span class="toc-number">5.</span> <span class="toc-text">修改主题样式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改Java类"><span class="toc-number">6.</span> <span class="toc-text">修改Java类</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+<div id="authorInfo">
+	
+		<div class="author-logo"></div>		
+	
+	<div class="social-list" class="clearfix">
+		
+		
+		
+		<a href="https://github.com/chenggoi" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/code/" title="技术">技术<sup>11</sup></a></li>
+		
+			<li><a href="/categories/life/" title="随笔">随笔<sup>3</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/ActivityStack/" title="ActivityStack">ActivityStack<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Android/" title="Android">Android<sup>9</sup></a></li>
+		
+			<li><a href="/tags/Android-ActionBar/" title="Android ActionBar">Android ActionBar<sup>1</sup></a></li>
+		
+			<li><a href="/tags/EditText/" title="EditText">EditText<sup>1</sup></a></li>
+		
+			<li><a href="/tags/LaunchMode/" title="LaunchMode">LaunchMode<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Markdown/" title="Markdown">Markdown<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Music/" title="Music">Music<sup>1</sup></a></li>
+		
+			<li><a href="/tags/刷机/" title="刷机">刷机<sup>1</sup></a></li>
+		
+			<li><a href="/tags/备份/" title="备份">备份<sup>1</sup></a></li>
+		
+			<li><a href="/tags/心情/" title="心情">心情<sup>1</sup></a></li>
+		
+			<li><a href="/tags/时钟/" title="时钟">时钟<sup>1</sup></a></li>
+		
+			<li><a href="/tags/暗码/" title="暗码">暗码<sup>1</sup></a></li>
+		
+			<li><a href="/tags/添加ampm/" title="添加ampm">添加ampm<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://chenggoi.com" target="_blank" title="Chenggoi">Chenggoi's Blog</a></li>
+    </ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="archiveslist">
+    <p class="asidetitle"><a href="/archives">归档</a></p>
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">2015 年 04 月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">2015 年 03 月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">2015 年 02 月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">2015 年 01 月</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">2014 年 12 月</a><span class="archive-list-count">1</span></li></ul>
+  </div>
+
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+    
+            <p class="copyright"> © 2015 
+		
+		<a href="http://chenggoi.com" target="_blank" title="Chenggoi">Chenggoi</a>
+		
+            && Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> && Theme by <a href="http://chenggoi.com" target="_blank" title="Chenggoi">Chenggoi</a>
+            </div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"chenggoi"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254061909'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1254061909%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+
+  </body>
+</html>
+
