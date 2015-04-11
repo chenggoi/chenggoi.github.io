@@ -4,7 +4,7 @@
   <subtitle><![CDATA[工作虽然很开心但也不要忘记休息哦～～]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://chenggoi.com/"/>
-  <updated>2015-04-11T03:44:30.530Z</updated>
+  <updated>2015-04-11T03:57:32.127Z</updated>
   <id>http://chenggoi.com/</id>
   
   <author>
@@ -265,11 +265,11 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
     <link href="http://chenggoi.com/2015/03/03/XiaoMi_2s_Rom/"/>
     <id>http://chenggoi.com/2015/03/03/XiaoMi_2s_Rom/</id>
     <published>2015-03-03T01:30:52.000Z</published>
-    <updated>2015-04-11T03:43:43.000Z</updated>
+    <updated>2015-04-11T03:57:27.000Z</updated>
     <content type="html"><![CDATA[<p><strong>注：</strong>跳屏这件事也许与屏幕质量有关，但是我的确刷到过不跳的Rom</p>
 <h3 id="MIUI6+LMI2_5-4-3_5-0-2飞一般的ROM"><strong>MIUI6+L<em>MI2_5.4.3_5.0.2</em>飞一般的ROM</strong></h3>
 <ul>
-<li>描述：MIUI6官方适配Android 5.0.2 ROM，“飞一般”优化修改，相机无论原版还是努比亚相机都会出现聚焦卡住的问题</li>
+<li>描述：MIUI6官方适配Android 5.0.2 ROM，“飞一般”优化修改，相机无论原版还是努比亚相机都会出现聚焦卡住的问题，而且还会出现覆盖第三方recovery问题</li>
 <li>耗电：看1080p视频45分钟,3G网路打开，剩余电量54%</li>
 <li>发热：播放1080p视频45分钟达到非常烫手的程度</li>
 <li>跳屏：无明显跳屏，但是会有卡屏现象</li>
