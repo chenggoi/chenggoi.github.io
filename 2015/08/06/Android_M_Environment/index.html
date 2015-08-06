@@ -78,7 +78,7 @@
     </p>
   <p class="article-time">
     <time datetime="2015-08-06T08:40:39.000Z" itemprop="datePublished">8月 6 2015</time>
-    更新日期:<time datetime="2015-08-06T10:39:09.000Z" itemprop="dateModified">8月 6 2015</time>
+    更新日期:<time datetime="2015-08-06T10:41:10.000Z" itemprop="dateModified">8月 6 2015</time>
     
   </p>
 </header>
@@ -119,8 +119,19 @@ java：openjdk-7
 <li>最新的<code>Android 5.x.x</code>系统需要使用<code>Openjdk-7</code>作为其编译时的<code>java</code>环境：<pre><code>  $ sudo apt-<span class="built_in">get</span> <span class="keyword">update</span> &amp;&amp; sudo apt-<span class="built_in">get</span> install openjdk-<span class="number">7</span>-jdk
 </code></pre></li>
 <li>使用命令安装好<code>Openjdk</code>后系统会自动配置好<code>java</code>环境，如果像我一样还要同时编译<code>Android 4.4.2</code>版本，那么问题就来了，<code>Android 4.4.2</code>只能支持<code>Oracle</code>的<code>jdk1.6 || jdk1.5</code>版本，因此与<code>Android M</code>的编译环境是不兼容的，解决的方法有两个<ol>
-<li>每次编译时使用<code>update-alternatives</code>切换java的版本。首先先用下列命令添加<code>jdk1.6</code>的关联：<br>   $ sudo update-alternatives —install /usr/bin/java java /opt/jdk1.6/bin/java 50<br>   $ sudo update-alternatives —install /usr/bin/javac javac /opt/jdk1.6/bin/javac 50<br>   $ sudo update-alternatives —install /usr/bin/javah javah /opt/jdk1.6/bin/javah 50<br>   $ sudo update-alternatives —install /usr/bin/javaws javaws /opt/jdk1.6/bin/javaws 50<br>   $ sudo update-alternatives —install /usr/bin/javap javap /opt/jdk1.6/bin/javap 50<br>然后使用下列命令进行切换：<br>   $ update-alternatives —config java<br>   $ update-alternatives —config javac<br>   $ update-alternatives —config javah<br>   $ update-alternatives —config javaws<br>   $ update-alternatives —config javap</li>
-<li>第二种方法相对简单，但是需要修改源码，打开<code>workspace/build/envsetup.sh</code>文件，在开头将<code>java</code>的路径写死：<br>   export PATH=/opt/jdk1.6/bin/:$PATH</li>
+<li>每次编译时使用<code>update-alternatives</code>切换java的版本。首先先用下列命令添加<code>jdk1.6</code>的关联：<pre><code>   $ sudo <span class="keyword">update</span>-alternatives --install /usr/bin/java java /<span class="keyword">opt</span>/jdk1.<span class="number">6</span>/bin/java <span class="number">50</span>
+   $ sudo <span class="keyword">update</span>-alternatives --install /usr/bin/javac javac /<span class="keyword">opt</span>/jdk1.<span class="number">6</span>/bin/javac <span class="number">50</span>
+   $ sudo <span class="keyword">update</span>-alternatives --install /usr/bin/javah javah /<span class="keyword">opt</span>/jdk1.<span class="number">6</span>/bin/javah <span class="number">50</span>
+   $ sudo <span class="keyword">update</span>-alternatives --install /usr/bin/javaws javaws /<span class="keyword">opt</span>/jdk1.<span class="number">6</span>/bin/javaws <span class="number">50</span>
+   $ sudo <span class="keyword">update</span>-alternatives --install /usr/bin/javap javap /<span class="keyword">opt</span>/jdk1.<span class="number">6</span>/bin/javap <span class="number">50</span>
+</code></pre>然后使用下列命令进行切换：<pre><code>   $ <span class="operator"><span class="keyword">update</span>-alternatives <span class="comment">--config java</span>
+   $ <span class="keyword">update</span>-alternatives <span class="comment">--config javac</span>
+   $ <span class="keyword">update</span>-alternatives <span class="comment">--config javah</span>
+   $ <span class="keyword">update</span>-alternatives <span class="comment">--config javaws</span>
+   $ <span class="keyword">update</span>-alternatives <span class="comment">--config javap</span></span>
+</code></pre></li>
+<li>第二种方法相对简单，但是需要修改源码，打开<code>workspace/build/envsetup.sh</code>文件，在开头将<code>java</code>的路径写死：<pre><code>   <span class="keyword">export</span> PATH=/opt/jdk1.<span class="number">6</span>/bin/:<span class="variable">$PATH</span>
+</code></pre></li>
 </ol>
 </li>
 <li>如果在编译中出现如下错误：<pre><code>  out/target/product/xxx/obj/GYP/shared_intermediates/content/jni/HashSet_jni.h:10:26: error: extra tokens at <span class="operator"><span class="keyword">end</span> <span class="keyword">of</span> #ifndef directive [-Werror]  
@@ -138,7 +149,7 @@ java：openjdk-7
 </code></pre></li>
 <li>一般来说就是<code>java</code>的环境没有配好，需要按照上述方法配好，如果还是出现这个错误，则尝试将<code>out/target/product/xxx/obj/GYP/shared_intermediates/content/</code>该文件夹内的文件删除再重新编译即可。</li>
 </ul>
-<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/01/21/AndroidStudio/" target="_blank" rel="external">http://chenggoi.com/2015/01/21/AndroidStudio/</a>,转载请注明出处。</p>
+<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/08/06/Android_M_Environment/" target="_blank" rel="external">http://chenggoi.com/2015/08/06/Android_M_Environment/</a>,转载请注明出处。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
