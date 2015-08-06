@@ -7,12 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>Android 4.2.2 添加暗码 | Chenggoi&#39;s Blog</title>
+    <title>Android M 编译环境配置 | Chenggoi&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Chenggoi">
     
-    <meta name="description" itemprop="description" content="基于Android系统源码，为Android添加如“*#06#”一样的暗码">
+    <meta name="description" itemprop="description" content="Android M编译环境配置及与之前版本编译环境兼容处理">
     
     
     
@@ -70,15 +70,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/01/15/AddSecretCode/" title="Android 4.2.2 添加暗码" itemprop="url">Android 4.2.2 添加暗码</a>
+      <a href="/2015/08/06/Android_M_Environment/" title="Android M 编译环境配置" itemprop="url">Android M 编译环境配置</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://chenggoi.com" title="Chenggoi">Chenggoi</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-01-15T12:35:05.000Z" itemprop="datePublished">1月 15 2015</time>
-    更新日期:<time datetime="2015-02-28T12:15:07.000Z" itemprop="dateModified">2月 28 2015</time>
+    <time datetime="2015-08-06T08:40:39.000Z" itemprop="datePublished">8月 6 2015</time>
+    更新日期:<time datetime="2015-08-06T10:39:09.000Z" itemprop="dateModified">8月 6 2015</time>
     
   </p>
 </header>
@@ -87,48 +87,65 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">2.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Activity"><span class="toc-number">3.</span> <span class="toc-text">创建Activity</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置配置文件"><span class="toc-number">4.</span> <span class="toc-text">设置配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加调用代码"><span class="toc-number">5.</span> <span class="toc-text">添加调用代码</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作系统"><span class="toc-number">2.</span> <span class="toc-text">操作系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#依赖软件包"><span class="toc-number">3.</span> <span class="toc-text">依赖软件包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java环境配置"><span class="toc-number">4.</span> <span class="toc-text">java环境配置</span></a></li></ol>
 		</div>
 		
 		<h2 id="环境配置">环境配置</h2>
-<pre><code>操作系统：Unubtu <span class="number">14.04</span>
-Android：<span class="number">4.2</span><span class="number">.2</span>
-gcc：<span class="number">4.4</span>
-java：<span class="number">1.6</span> <span class="number">71u</span>
-</code></pre><h2 id="引言">引言</h2>
-<p>在手机的拨号界面输入 <code>*#06#</code> 会出现手机的串号，这个功能想必大家都知道，这就是所谓的<code>暗码</code>。这种暗码是可以自己添加定义的，以下我会写出添加的方法，至于原理网上有很多，大家可以自行查找。</p>
-<h2 id="创建Activity">创建Activity</h2>
-<p>首先要创建一个想要显示<code>Activity</code>，<code>Activity</code>可以创建在<code>workspace/packages/apps/Contacts/src/com/android/contacts/</code>目录下。这里我就不多赘述了，网上教程一大把。要注意的是，暗码实际上是通过<code>Intent</code>来启动<code>Activity</code>。我在这里就以<code>WiFiTestActivity.java</code>为例子为大家讲解。</p>
-<h2 id="设置配置文件">设置配置文件</h2>
-<p>打开<code>workspace/packages/apps/Contacts/</code>目录下的<code>AndroidManifest.xml</code>配置文件，添加如下代码注册刚建好的<code>Activity</code>并配置<code>Intent</code>，其中与<code>name</code>是你的<code>Activity</code>文件名，注意前面有个点，<code>label</code>是你自己定义的字符串，<code>OPEN_WiFiTestActivity</code>修改为<code>OPEN_你自己的Activity</code></p>
-<pre><code><span class="tag">&lt;<span class="title">activity
-</span> <span class="attribute">android:name</span>=<span class="value">".WiFiTestActivity"</span>
- <span class="attribute">android:label</span>=<span class="value">"@string/wifi_test"</span>
- <span class="attribute">android:screenOrientation</span>=<span class="value">"portrait"</span> &gt;</span>
- <span class="tag">&lt;<span class="title">intent-filter</span>&gt;</span>
-   <span class="tag">&lt;<span class="title">action</span> <span class="attribute">android:name</span>=<span class="value">"android.intent.action.OPEN_WiFiTestActivity"</span> /&gt;</span>
-   <span class="tag">&lt;<span class="title">category</span> <span class="attribute">android:name</span>=<span class="value">"android.intent.category.DEFAULT"</span> /&gt;</span>
- <span class="tag">&lt;/<span class="title">intent-filter</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">activity</span>&gt;</span>
-</code></pre><h2 id="添加调用代码">添加调用代码</h2>
-<p>打开</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">workspace<span class="regexp">/packages/</span>apps<span class="regexp">/Contacts/</span>src<span class="regexp">/com/</span>android<span class="regexp">/contacts/</span>src<span class="regexp">/com/</span>android<span class="regexp">/contacts/</span>SpecialCharSequenceMgr.java</div></pre></td></tr></table></figure>
-
-<p>文件，找到<code>handleSecretCode</code>方法的定义，并在其中添加如下代码，其中<code>OPEN_WiFiTestActivity</code>替换为之前注册的，<code>*#1111#</code>替换为你自己的暗码</p>
-<pre><code><span class="keyword">else</span> <span class="keyword">if</span> (input<span class="built_in">.</span><span class="keyword">equals</span>(<span class="string">"*#1111#"</span>)) {
-    Intent i <span class="subst">=</span> <span class="literal">new</span> Intent(<span class="string">"android.intent.action.OPEN_WiFiTestActivity"</span>);
-    context<span class="built_in">.</span>startActivity(i);
-    <span class="keyword">return</span> <span class="literal">true</span>;
-}
-</code></pre><p>之后就可以<code>make -j4</code>一下刷到手机或者虚拟机里看看效果了～</p>
-<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/01/15/AddSecretCode/" target="_blank" rel="external">http://chenggoi.com/2015/01/15/AddSecretCode/</a>,转载请注明出处。</p>
+<pre><code>操作系统：Unubtu 14.04
+Android：M-Preview
+gcc：4.4
+java：openjdk-7
+</code></pre><h2 id="操作系统">操作系统</h2>
+<ul>
+<li>谷歌官方推荐的操作系统是Ubuntu系统，鉴于本人喜欢用最新的系统，所以选择了<code>Ubuntu 14.04 LTS</code>版本（不要问我为什么没选择15.04，因为装系统的时候还没有出-。-）。</li>
+<li>如果需要编译<code>Android 2.3.x</code>及以上版本，我们需要安装一个64位的系统，千万不要装错了，当初就因为这个浪费了好多时间</li>
+</ul>
+<h2 id="依赖软件包">依赖软件包</h2>
+<ul>
+<li>谷歌官方给出了各个版本的Ubuntu需要安装的软件，这里只写出<code>14.04</code>需要的，其余版本的系统请参考<a href="http://source.android.com/source/initializing.html" target="_blank" rel="external">谷歌官方文档</a><pre><code>  $ sudo apt-<span class="built_in">get</span> <span class="keyword">update</span> &amp;&amp; sudo apt-<span class="built_in">get</span> install flex bison gperf libxml2-utils <span class="keyword">make</span> <span class="keyword">python</span>-networkx  zip zlib1g-de<span class="variable">v:i386</span>
+  $ sudo apt-<span class="built_in">get</span> <span class="keyword">update</span> &amp;&amp; sudo apt-<span class="built_in">get</span> install <span class="keyword">g</span>++-multilib build-essential
+</code></pre></li>
+<li>这里需要注意一下，最好将<code>g++</code>和<code>gcc</code>的版本手动调整到<code>4.4</code>，否则人品不好的话编译会出错的</li>
+<li>安装完上述依赖包之后还需要安装<code>git</code>、<code>python</code>、<code>uboot tool</code>等软件<pre><code>  $ sudo apt-<span class="built_in">get</span> <span class="built_in">remove</span> --purge git-*
+  $ sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>-software-properties
+  $ sudo <span class="built_in">add</span>-apt-repository <span class="keyword">pp</span><span class="variable">a:git</span>-core/ppa
+  $ sudo apt-<span class="built_in">get</span> <span class="keyword">update</span> &amp;&amp; sudo apt-<span class="built_in">get</span> install git git-doc git-man
+  $ sudo apt-<span class="built_in">get</span> <span class="keyword">update</span> &amp;&amp; sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>
+  $ sudo apt-<span class="built_in">get</span> <span class="keyword">update</span> &amp;&amp; sudo apt-<span class="built_in">get</span> install <span class="keyword">u</span>-boot-tools
+</code></pre></li>
+</ul>
+<h2 id="java环境配置">java环境配置</h2>
+<ul>
+<li>最新的<code>Android 5.x.x</code>系统需要使用<code>Openjdk-7</code>作为其编译时的<code>java</code>环境：<pre><code>  $ sudo apt-<span class="built_in">get</span> <span class="keyword">update</span> &amp;&amp; sudo apt-<span class="built_in">get</span> install openjdk-<span class="number">7</span>-jdk
+</code></pre></li>
+<li>使用命令安装好<code>Openjdk</code>后系统会自动配置好<code>java</code>环境，如果像我一样还要同时编译<code>Android 4.4.2</code>版本，那么问题就来了，<code>Android 4.4.2</code>只能支持<code>Oracle</code>的<code>jdk1.6 || jdk1.5</code>版本，因此与<code>Android M</code>的编译环境是不兼容的，解决的方法有两个<ol>
+<li>每次编译时使用<code>update-alternatives</code>切换java的版本。首先先用下列命令添加<code>jdk1.6</code>的关联：<br>   $ sudo update-alternatives —install /usr/bin/java java /opt/jdk1.6/bin/java 50<br>   $ sudo update-alternatives —install /usr/bin/javac javac /opt/jdk1.6/bin/javac 50<br>   $ sudo update-alternatives —install /usr/bin/javah javah /opt/jdk1.6/bin/javah 50<br>   $ sudo update-alternatives —install /usr/bin/javaws javaws /opt/jdk1.6/bin/javaws 50<br>   $ sudo update-alternatives —install /usr/bin/javap javap /opt/jdk1.6/bin/javap 50<br>然后使用下列命令进行切换：<br>   $ update-alternatives —config java<br>   $ update-alternatives —config javac<br>   $ update-alternatives —config javah<br>   $ update-alternatives —config javaws<br>   $ update-alternatives —config javap</li>
+<li>第二种方法相对简单，但是需要修改源码，打开<code>workspace/build/envsetup.sh</code>文件，在开头将<code>java</code>的路径写死：<br>   export PATH=/opt/jdk1.6/bin/:$PATH</li>
+</ol>
+</li>
+<li>如果在编译中出现如下错误：<pre><code>  out/target/product/xxx/obj/GYP/shared_intermediates/content/jni/HashSet_jni.h:10:26: error: extra tokens at <span class="operator"><span class="keyword">end</span> <span class="keyword">of</span> #ifndef directive [-Werror]  
+  out/target/product/xxx/obj/GYP/shared_intermediates/content/jni/HashSet_jni.h:<span class="number">11</span>:<span class="number">26</span>: error: missing whitespace <span class="keyword">after</span> the macro name [-Werror]  
+  target thumb C++: content_content_common_gyp &lt;= <span class="keyword">external</span>/chromium_org/content/common/android/surface_texture_peer.cc  
+  <span class="keyword">In</span> file included <span class="keyword">from</span> <span class="keyword">external</span>/chromium_org/content/common/android/hash_set.cc:<span class="number">5</span>:<span class="number">0</span>:  
+  out/target/product/xxx/obj/GYP/shared_intermediates/content/jni/HashSet_jni.h:<span class="number">24</span>:<span class="number">20</span>: error: expected initializer <span class="keyword">before</span> <span class="string">'&lt;'</span> token  
+  out/target/product/xxx/obj/GYP/shared_intermediates/content/jni/HashSet_jni.h:<span class="number">26</span>:<span class="number">17</span>: error: expected initializer <span class="keyword">before</span> <span class="string">'&lt;'</span> token  
+  out/target/product/xxx/obj/GYP/shared_intermediates/content/jni/HashSet_jni.h:<span class="number">29</span>:<span class="number">22</span>: error: expected <span class="string">'{'</span> <span class="keyword">before</span> <span class="string">'&lt;'</span> token  
+  out/target/product/xxx/obj/GYP/shared_intermediates/content/jni/HashSet_jni.h:<span class="number">29</span>:<span class="number">22</span>: error: expected unqualified-id <span class="keyword">before</span> <span class="string">'&lt;'</span> token  
+  <span class="keyword">external</span>/chromium_org/content/common/android/hash_set.cc:<span class="number">30</span>:<span class="number">1</span>: error: expected <span class="string">'}'</span> <span class="keyword">at</span> <span class="keyword">end</span> <span class="keyword">of</span> <span class="keyword">input</span>  
+  cc1plus: <span class="keyword">all</span> <span class="keyword">warnings</span> being treated <span class="keyword">as</span> <span class="keyword">errors</span>  
+  make: *** [out/target/product/xxx/obj/STATIC_LIBRARIES/content_content_common_gyp_intermediates/content/common/android/hash_set.o] 错误 <span class="number">1</span>  
+  make: *** 正在等待未完成的任务....  </span>
+</code></pre></li>
+<li>一般来说就是<code>java</code>的环境没有配好，需要按照上述方法配好，如果还是出现这个错误，则尝试将<code>out/target/product/xxx/obj/GYP/shared_intermediates/content/</code>该文件夹内的文件删除再重新编译即可。</li>
+</ul>
+<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/01/21/AndroidStudio/" target="_blank" rel="external">http://chenggoi.com/2015/01/21/AndroidStudio/</a>,转载请注明出处。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/Android/">Android</a><a href="/tags/暗码/">暗码</a>
+  <span></span> <a href="/tags/-Android/">-Android</a>
   </div>
 
 
@@ -141,7 +158,7 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
 
 <div class="article-share" id="share">
 
-  <div data-url="http://chenggoi.com/2015/01/15/AddSecretCode/" data-title="Android 4.2.2 添加暗码 | Chenggoi&#39;s Blog" data-tsina="null" class="share clearfix">
+  <div data-url="http://chenggoi.com/2015/08/06/Android_M_Environment/" data-title="Android M 编译环境配置 | Chenggoi&#39;s Blog" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -150,19 +167,11 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/01/16/EditTextShowKeyboard/" title="为EditText输入框添加自动弹出输入法框">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  为EditText输入框添加自动弹出输入法框</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2015/01/13/Add_ampm_Android/"  title="Android系统源码之桌面和锁屏时钟添加Am/Pm显示">
+<a href="/2015/04/05/ActionBar/"  title="ActionBar的美化">
  <strong>NEXT:</strong><br/> 
- <span>Android系统源码之桌面和锁屏时钟添加Am/Pm显示
+ <span>ActionBar的美化
 </span>
 </a>
 </div>
@@ -172,7 +181,7 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="Android 4.2.2 添加暗码" data-thread-key="AddSecretCode" data-author-key="Chenggoi" data-url="http://chenggoi.com/post/AddSecretCode"></div>
+	<div class="ds-thread" data-title="Android M 编译环境配置" data-thread-key="Android_M_Environment" data-author-key="Chenggoi" data-url="http://chenggoi.com/post/Android_M_Environment"></div>
 	
 </section>
 
@@ -182,7 +191,7 @@ java：<span class="number">1.6</span> <span class="number">71u</span>
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">2.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建Activity"><span class="toc-number">3.</span> <span class="toc-text">创建Activity</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置配置文件"><span class="toc-number">4.</span> <span class="toc-text">设置配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加调用代码"><span class="toc-number">5.</span> <span class="toc-text">添加调用代码</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境配置"><span class="toc-number">1.</span> <span class="toc-text">环境配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操作系统"><span class="toc-number">2.</span> <span class="toc-text">操作系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#依赖软件包"><span class="toc-number">3.</span> <span class="toc-text">依赖软件包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java环境配置"><span class="toc-number">4.</span> <span class="toc-text">java环境配置</span></a></li></ol>
   </div>
 
 <div id="asidepart">
