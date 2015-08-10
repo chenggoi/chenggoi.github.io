@@ -78,7 +78,7 @@
     </p>
   <p class="article-time">
     <time datetime="2015-08-06T08:40:39.000Z" itemprop="datePublished">8月 6 2015</time>
-    更新日期:<time datetime="2015-08-06T10:41:10.000Z" itemprop="dateModified">8月 6 2015</time>
+    更新日期:<time datetime="2015-08-10T11:44:49.000Z" itemprop="dateModified">8月 10 2015</time>
     
   </p>
 </header>
@@ -130,7 +130,8 @@ java：openjdk-7
    $ <span class="keyword">update</span>-alternatives <span class="comment">--config javaws</span>
    $ <span class="keyword">update</span>-alternatives <span class="comment">--config javap</span></span>
 </code></pre></li>
-<li>第二种方法相对简单，但是需要修改源码，打开<code>workspace/build/envsetup.sh</code>文件，在开头将<code>java</code>的路径写死：<pre><code>   <span class="keyword">export</span> PATH=/opt/jdk1.<span class="number">6</span>/bin/:<span class="variable">$PATH</span>
+<li>第二种方法相对简单，但是需要修改源码，打开<code>workspace/build/envsetup.sh</code>文件，在开头将<code>java</code>的路径写死：<pre><code>   <span class="reserved">export</span> PATH=<span class="regexp">/opt/jdk1.6/bin/</span>:$PATH
+   <span class="reserved">export</span> ANDROID_JAVA_HOME=<span class="regexp">/opt/jdk1.6/</span>
 </code></pre></li>
 </ol>
 </li>
@@ -156,7 +157,7 @@ java：openjdk-7
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/-Android/">-Android</a>
+  <span></span> <a href="/tags/Android/">Android</a>
   </div>
 
 
@@ -241,11 +242,9 @@ java：openjdk-7
 	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
-			<li><a href="/tags/-Android/" title="-Android">-Android<sup>1</sup></a></li>
-		
 			<li><a href="/tags/ActivityStack/" title="ActivityStack">ActivityStack<sup>1</sup></a></li>
 		
-			<li><a href="/tags/Android/" title="Android">Android<sup>9</sup></a></li>
+			<li><a href="/tags/Android/" title="Android">Android<sup>10</sup></a></li>
 		
 			<li><a href="/tags/Android-ActionBar/" title="Android ActionBar">Android ActionBar<sup>1</sup></a></li>
 		
