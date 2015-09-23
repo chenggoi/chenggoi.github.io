@@ -4,7 +4,7 @@
   <subtitle><![CDATA[工作虽然很开心但也不要忘记休息哦～～]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://chenggoi.com/"/>
-  <updated>2015-08-17T05:22:58.490Z</updated>
+  <updated>2015-09-23T02:53:01.661Z</updated>
   <id>http://chenggoi.com/</id>
   
   <author>
@@ -13,6 +13,92 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Android 获取当前进程名称]]></title>
+    <link href="http://chenggoi.com/2015/09/22/Get_Process_Name/"/>
+    <id>http://chenggoi.com/2015/09/22/Get_Process_Name/</id>
+    <published>2015-09-22T11:31:16.000Z</published>
+    <updated>2015-09-23T02:52:16.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="环境配置">环境配置</h2>
+<pre><code>操作系统：Ubuntu <span class="number">14.04</span> <span class="number">64</span>位
+Android版本：<span class="number">4.4</span><span class="number">.2</span>
+gcc版本：<span class="number">4.4</span>
+jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
+</code></pre><hr>
+<h2 id="方法一：可以获取到Context">方法一：可以获取到Context</h2>
+<ul>
+<li>在继承了<code>Activity</code>、<code>Service</code>、<code>Provider</code>的子类中获取<code>Context</code>对象是非常方便的，拥有了<code>Context</code>对象之后结合<code>ActivityManager</code>类可以很方便的利用进程的<code>PID</code>获取进程名，例如：<pre><code>  <span class="keyword">int</span> pid = android.os.Process.myPid();<span class="comment">//获取进程pid</span>
+  String processName = <span class="keyword">NULL</span>;
+  ActivityManager am = (ActivityManager)<span class="keyword">this</span>.getSystemService(Context.ACTIVITY_SERVICE);<span class="comment">//获取系统的ActivityManager服务</span>
+  <span class="keyword">for</span> (ActivityManager.RunningAppProcessInfo appProcess : am.getRunningAppProcesses()){
+      <span class="keyword">if</span>(appProcess.pid == pid){
+          processName = appProcess.processName;
+          <span class="keyword">break</span>;
+      }
+  }
+</code></pre></li>
+<li>同时我们也可以通过<code>RunningAppProcessInfo</code>获取到当前进程对应的<code>PackageName</code>，利用<code>PackageManager</code>类的<code>getApplicationInfo(packageName,flags)</code>方法，获取当前进程对应的应用程序的相关信息。</li>
+</ul>
+<h2 id="方法二：无法获取Context">方法二：无法获取Context</h2>
+<ul>
+<li>在一些<code>Object</code>类中，我们如果需要使用<code>Context</code>对象，一般只能通过传递参数实现，但是很多<code>framework</code>层的方法我们无法通过重写来达到传参的目的，因此只能利用<code>Android</code>基于<code>Linux</code>内核这一特性，通过读取系统文件获取进程的相关信息，例如：<pre><code>  <span class="keyword">int</span> pid = android.os.Process.myPid();
+  String processName = <span class="keyword">NULL</span>;
+  <span class="keyword">try</span> {
+      <span class="keyword">File</span> <span class="keyword">file</span> = <span class="keyword">new</span> <span class="keyword">File</span>(<span class="string">"/proc/"</span>+pid+<span class="string">"/cmdline"</span>);
+      FileInputStream fileInputStream = <span class="keyword">new</span> FileInputStream(<span class="keyword">file</span>);
+      InputStreamReader inputStreamReader = <span class="keyword">new</span> InputStreamReader(fileInputStream);
+      BufferedReader bufferedReader = <span class="keyword">new</span> BufferedReader(inputStreamReader);
+      processName = bufferedReader.readLine();
+  } <span class="keyword">catch</span> (FileNotFoundException e) {
+      e.printStackTrace();
+  } <span class="keyword">catch</span> (IOException e) {
+      e.printStackTrace();
+  } <span class="keyword">finally</span> {
+      bufferedReader.close();
+      inputStreamReader.close();
+      fileInputStream.close();
+  }
+</code></pre></li>
+<li>在<code>cmdline</code>文件中保存着进程的名称，如果有需要，还可以通过读取<code>status</code>文件，来获取进程的<code>state</code>、<code>ppid</code>、<code>uid</code>等大量信息，如：<pre><code>  Name:   kworker/<span class="number">0</span>:<span class="number">1</span>
+  State:  S (sleeping)
+  Tgid:   <span class="number">15</span>
+  Pid:    <span class="number">15</span>
+  PPid:   <span class="number">2</span>
+  TracerPid:      <span class="number">0</span>
+  Uid:    <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>
+  Gid:    <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>
+  FDSize: <span class="number">32</span>
+  Groups:
+  Threads:        <span class="number">1</span>
+  SigQ:   <span class="number">0</span>/<span class="number">1822</span>
+  SigPnd: <span class="number">0000000000000000</span>
+  ShdPnd: <span class="number">0000000000000000</span>
+  SigBlk: <span class="number">0000000000000000</span>
+  SigIgn: ffffffffffffffff
+  SigCgt: <span class="number">0000000000000000</span>
+  CapInh: <span class="number">0000000000000000</span>
+  CapPrm: <span class="number">0000001f</span>ffffffff
+  CapEff: <span class="number">0000001f</span>ffffffff
+  CapBnd: <span class="number">0000001f</span>ffffffff
+  Cpus_allowed:   <span class="number">1</span>
+  Cpus_allowed_list:      <span class="number">0</span>
+  voluntary_ctxt_switches:        <span class="number">47</span>
+  nonvoluntary_ctxt_switches:     <span class="number">1</span>
+</code></pre></li>
+</ul>
+<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/01/07/Android_Fonts_Customizing/" target="_blank" rel="external">http://chenggoi.com/2015/01/07/Android_Fonts_Customizing/</a>,转载请注明出处。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[根据进程的PID获取进程名称及其他信息]]>
+    
+    </summary>
+    
+      <category term="Android" scheme="http://chenggoi.com/tags/Android/"/>
+    
+      <category term="技术" scheme="http://chenggoi.com/categories/code/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Android M 编译环境配置]]></title>
@@ -1281,30 +1367,6 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
   </entry>
   
   <entry>
-    <title><![CDATA[SDK Manager更新速度慢]]></title>
-    <link href="http://chenggoi.com/2015/01/01/SDK_Manager/"/>
-    <id>http://chenggoi.com/2015/01/01/SDK_Manager/</id>
-    <published>2015-01-01T07:30:16.000Z</published>
-    <updated>2015-01-30T06:06:16.000Z</updated>
-    <content type="html"><![CDATA[<p>1、打开tools-&gt;opinion</p>
-<p>2、设置HTTP Proxy server：mirrors.neusoft.edu.cn</p>
-<p>3、设置HTTP Proxy Port：80</p>
-<p>4、选中Force ..<a href="https://...sources" target="_blank" rel="external">https://...sources</a> to be fetched using http:</p>
-<p>5、关闭，重新更新</p>
-<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/01/01/SDK_Manager/" target="_blank" rel="external">http://chenggoi.com/2015/01/01/SDK_Manager/</a>,转载请注明出处。</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[更新SDK缓慢解决方案]]>
-    
-    </summary>
-    
-      <category term="Android" scheme="http://chenggoi.com/tags/Android/"/>
-    
-      <category term="技术" scheme="http://chenggoi.com/categories/code/"/>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[Markdown的常用语法]]></title>
     <link href="http://chenggoi.com/2015/01/01/markdown/"/>
     <id>http://chenggoi.com/2015/01/01/markdown/</id>
@@ -1455,6 +1517,30 @@ jdk版本：<span class="number">1.6</span> <span class="number">71u</span>
     </summary>
     
       <category term="Markdown" scheme="http://chenggoi.com/tags/Markdown/"/>
+    
+      <category term="技术" scheme="http://chenggoi.com/categories/code/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[SDK Manager更新速度慢]]></title>
+    <link href="http://chenggoi.com/2015/01/01/SDK_Manager/"/>
+    <id>http://chenggoi.com/2015/01/01/SDK_Manager/</id>
+    <published>2015-01-01T07:30:16.000Z</published>
+    <updated>2015-01-30T06:06:16.000Z</updated>
+    <content type="html"><![CDATA[<p>1、打开tools-&gt;opinion</p>
+<p>2、设置HTTP Proxy server：mirrors.neusoft.edu.cn</p>
+<p>3、设置HTTP Proxy Port：80</p>
+<p>4、选中Force ..<a href="https://...sources" target="_blank" rel="external">https://...sources</a> to be fetched using http:</p>
+<p>5、关闭，重新更新</p>
+<p><strong>原文链接：</strong><a href="http://chenggoi.com/2015/01/01/SDK_Manager/" target="_blank" rel="external">http://chenggoi.com/2015/01/01/SDK_Manager/</a>,转载请注明出处。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[更新SDK缓慢解决方案]]>
+    
+    </summary>
+    
+      <category term="Android" scheme="http://chenggoi.com/tags/Android/"/>
     
       <category term="技术" scheme="http://chenggoi.com/categories/code/"/>
     
